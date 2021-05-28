@@ -9,18 +9,20 @@ import { AuthModule } from './auth/auth.module';
 // Componentes
 import { AppComponent } from './app.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ErrorPageComponent
+    ErrorPageComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     PagesModule,
     AuthModule,
-    HttpClientModule
+    HttpClientModule,
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]

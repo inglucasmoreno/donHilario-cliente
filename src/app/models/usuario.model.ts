@@ -1,3 +1,4 @@
+// Modelo - Usuario
 export class Usuario {
     constructor(
         public uid: string,

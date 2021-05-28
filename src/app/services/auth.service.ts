@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 
 import { LoginForm } from '../interfaces/login-form.inteface';
-import { Usuario } from '../models/usuario.model';
+import { UsuarioOnline } from '../models/usuarioLogin.model';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -17,7 +17,7 @@ export class AuthService {
   
   // Informacion de usuario logueado
 
-  public usuario: Usuario;
+  public usuario: UsuarioOnline;
 
   constructor(private http: HttpClient,
               private router: Router) {}
@@ -45,8 +45,8 @@ export class AuthService {
       headers: { 'x-token': token }
     }).pipe(
       map( (resp: any) => {
-        const { usuario, apellido, nombre, email, role, uid, activo } = resp.usuario;
-        this.usuario = new Usuario( uid, usuario, apellido, nombre, email, role, activo );
+        const { usuario, apellido, nombre, role} = resp.usuario;
+        this.usuario = new UsuarioOnline( usuario, nombre, apellido, role );
         localStorage.setItem('token', resp.token);
         return true;
       }),

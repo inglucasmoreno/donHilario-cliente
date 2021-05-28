@@ -8,6 +8,39 @@ export class AlertService {
 
   constructor() { }
   
+  // Alerta - Pregunta
+  question({ msg, buttonText }): any {
+    return Swal.fire({
+      title: '¿Estas seguro?',
+      text: msg,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: buttonText,
+      cancelButtonText: 'Cancelar'  
+    });
+  }
+
+  // Alerta - Completado
+  success(msg: string = 'Acción completada!'): void {
+    Swal.fire({
+      icon: 'success',
+      title: 'Completado',
+      text: msg,
+      timer: 1000,
+      showConfirmButton: false
+    });
+  }
+
+  // Alerta - Información
+  info(msg: string): void {
+    Swal.fire({
+      icon: 'info',
+      title: 'Información',
+      text: msg,
+      confirmButtonText: 'Entendido'
+    });  
+  }
+
   // Alerta - Formulario inválido
   formularioInvalido(): void {
     Swal.fire({
