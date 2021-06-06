@@ -34,7 +34,7 @@ export class EditarUsuarioComponent implements OnInit {
               private dataService: DataService) { }
 
   ngOnInit(): void {
-    this.dataService.ubicacionActual = 'Dashboard - Usuarios - Editar usuario'
+    this.dataService.ubicacionActual = 'Dashboard - Usuarios - Editando'
     this.alertService.loading();
     this.activatedRoute.params.subscribe(({id}) => { this.id = id; });
     this.usuariosService.getUsuario(this.id).subscribe(usuarioRes => {

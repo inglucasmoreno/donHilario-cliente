@@ -36,7 +36,7 @@ export class EditarPasswordComponent implements OnInit {
               private dataService: DataService) { }
 
   ngOnInit(): void {
-    this.dataService.ubicacionActual = 'Dashboard - Usuarios - Actualizar contraseña'
+    this.dataService.ubicacionActual = 'Dashboard - Usuarios - Actualizando contraseña'
     this.alertService.loading();
     this.activatedRoute.params.subscribe(({id}) => {
       this.id = id;

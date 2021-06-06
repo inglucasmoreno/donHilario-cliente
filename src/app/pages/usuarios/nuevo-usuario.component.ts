@@ -36,7 +36,7 @@ export class NuevoUsuarioComponent implements OnInit {
               ) { }
 
   ngOnInit(): void {
-    this.dataService.ubicacionActual = 'Dashboard - Usuarios - Nuevo usuario'
+    this.dataService.ubicacionActual = 'Dashboard - Usuarios - Creando'
   }
   
   // Crear nuevo usuario

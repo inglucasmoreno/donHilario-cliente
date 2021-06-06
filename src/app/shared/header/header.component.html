@@ -2,43 +2,65 @@
     <div class="flex flex-col shadow w-full lg:w-64 text-white bg-primary-700 flex-shrink-0">
         <div class="border-t-8 border-secondary-500"></div>
         <div class="flex-shrink-0 px-3 py-4 flex flex-row items-center justify-between">
-          <div class="flex items-center">
-            <div class="rounded-full h-14 w-14 flex items-center justify-center mr-3 border-2 border-red-500">
-              <span class="text-secondary-500 text-2xl font-semibold">
+            <div class="flex items-center">
+                <div class="rounded-full h-14 w-14 flex items-center justify-center mr-3 border-2 border-red-500">
+                    <span class="text-secondary-500 text-2xl font-semibold">
                 {{ authService.usuario.apellido.substr(0,1) }}
               </span>
+                </div>
+                <div class="focus:outline-none focus:shadow-outline">
+                    <div>
+                        <h1 class="text-white font-semibold text-xs"> {{ authService.usuario.apellido }} {{ authService.usuario.nombre }} </h1>
+                        <h2 class="text-white text-sm"> {{ authService.usuario.role | rol }} </h2>
+                    </div>
+                </div>
             </div>
-            <div class="focus:outline-none focus:shadow-outline">
-              <div>
-                <h1 class="text-white font-semibold text-xs"> {{ authService.usuario.apellido }} {{ authService.usuario.nombre }} </h1>
-                <h2 class="text-white text-sm"> {{ authService.usuario.role | rol }} </h2>
-              </div>
-            </div>
-          </div>
-          <button (click)="showMenu = !showMenu" class="rounded-lg lg:hidden rounded-lg focus:outline-none focus:shadow-outline">
+            <button (click)="showMenu = !showMenu" class="rounded-lg lg:hidden rounded-lg focus:outline-none focus:shadow-outline">
             <svg [ngClass]="{'rotate-180': showMenu, 'rotate-0': !showMenu}" class="transition-transform duration-200 transform" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
             <i [ngClass]="{'rotate-180': showMenu, 'rotate-0': !showMenu}" class="fas fa-chevron-up text-gray-600 text-3xl transition-transform duration-200 transform"></i>
-          </button>  
+          </button>
         </div>
         <hr>
-        <nav *ngIf="showMenu" class="flex-grow lg:block pb-4 lg:pb-0 mt-2 lg:overflow-y-auto">          
+        <nav *ngIf="showMenu" class="flex-grow lg:block pb-4 lg:pb-0 mt-2 lg:overflow-y-auto">
+
+            <!-- Home -->
             <a routerLinkActive="text-secondary-500 bg-white border-l-4 border-secondary-500" routerLink="home" class="flex cursor-pointer py-2 px-2 w-full text-white">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                 <div>
-                    <span class="ml-2"> Home </span> 
+                    <span class="ml-2"> Home </span>
                 </div>
             </a>
 
+            <!-- Usuarios -->
             <button routerLink="usuarios" routerLinkActive="text-secondary-500 bg-white border-l-4 border-secondary-500" class="flex hover:border-l-4 items-center mt-2 cursor-pointer py-2 px-2 w-full focus:outline-none text-white">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                 <span class="ml-2"> Usuarios </span> 
             </button>
 
+            <!-- Productos -->
+            <button routerLink="productos" routerLinkActive="text-secondary-500 bg-white border-l-4 border-secondary-500" class="flex hover:border-l-4 items-center mt-2 cursor-pointer py-2 px-2 w-full focus:outline-none text-white">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-archive"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="1" y="3" width="22" height="5"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg>
+                <span class="ml-2"> Productos </span> 
+            </button>
+
+            <!-- Unidades de medida -->
+            <button routerLink="unidad_medida" routerLinkActive="text-secondary-500 bg-white border-l-4 border-secondary-500" class="flex hover:border-l-4 items-center mt-2 cursor-pointer py-2 px-2 w-full focus:outline-none text-white">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-underline"><path d="M6 3v7a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3"></path><line x1="4" y1="21" x2="20" y2="21"></line></svg>
+              <span class="ml-2"> Unidades de medida </span> 
+            </button>
+
+            <!-- Proveedores -->
+            <button routerLink="proveedores" routerLinkActive="text-secondary-500 bg-white border-l-4 border-secondary-500" class="flex hover:border-l-4 items-center mt-2 cursor-pointer py-2 px-2 w-full focus:outline-none text-white">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-truck"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                <span class="ml-2"> Proveedores </span> 
+            </button>
+
+            <!-- Cerrar sesion -->
             <button (click)="logout()" class="flex items-center mt-2 cursor-pointer py-2 px-2 w-full focus:outline-none text-white">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out text-secondary-400"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
               <span class="ml-2"> Cerrar sesion </span> 
-          </button>
+            </button>
 
         </nav>
-      </div>
     </div>
+</div>

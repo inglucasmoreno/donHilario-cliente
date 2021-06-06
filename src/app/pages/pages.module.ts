@@ -11,6 +11,15 @@ import { ComponentsModule } from '../components/components.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EditarUsuarioComponent } from './usuarios/editar/editar-usuario.component';
 import { EditarPasswordComponent } from './usuarios/editar/editar-password.component';
+import { UnidadMedidaComponent } from './unidad-medida/unidad-medida.component';
+import { EditarUnidadComponent } from './unidad-medida/editar/editar-unidad.component';
+import { ProductosComponent } from './productos/productos.component';
+import { NuevoProductoComponent } from './productos/nuevo-producto.component';
+import { EditarProductoComponent } from './productos/editar/editar-producto.component';
+import { DetalleProductoComponent } from './productos/detalle-producto.component';
+import { ProveedoresComponent } from './proveedores/proveedores.component';
+import { NuevoProveedorComponent } from './proveedores/nuevo-proveedor.component';
+import { EditarProveedorComponent } from './proveedores/editar/editar-proveedor.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +29,15 @@ import { EditarPasswordComponent } from './usuarios/editar/editar-password.compo
     NuevoUsuarioComponent,
     EditarUsuarioComponent,
     EditarPasswordComponent,
+    UnidadMedidaComponent,
+    EditarUnidadComponent,
+    ProductosComponent,
+    NuevoProductoComponent,
+    EditarProductoComponent,
+    DetalleProductoComponent,
+    ProveedoresComponent,
+    NuevoProveedorComponent,
+    EditarProveedorComponent,
   ],
   imports: [
     CommonModule,

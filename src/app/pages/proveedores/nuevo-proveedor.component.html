@@ -1,0 +1,71 @@
+<app-tarjeta-formulario>
+    <!-- Encabezado de formulario -->
+    <app-encabezado-formulario titulo="Proveedores" subTitulo="Nuevo proveedor" dirRegresar="/dashboard/proveedores"></app-encabezado-formulario>
+
+    <!-- Cuerpo del formulario -->
+    <form [formGroup]="proveedorForm" class="px-5 pb-5">
+        <div class="flex flex-col lg:flex-row">
+            <div class="w-full mx-2 flex-1 svelte-1l8159u">
+                <div class="font-bold mt-3 text-gray-600 text-sm"> <span class="text-red-500"> * </span> Razón Social </div>
+                <div class="bg-white my-2 p-1 flex border border-gray-300 rounded shadow">
+                    <input placeholder="Ej. Equinoccio Technology" formControlName="razon_social" class="p-1 px-2 appearance-none outline-none w-full text-gray-800 text-sm"></div>
+            </div>
+            <div class="w-full mx-2 flex-1 svelte-1l8159u">
+                <div class="font-bold mt-3 text-gray-600 text-sm"> <span class="text-red-500"> * </span> CUIT </div>
+                <div class="bg-white my-2 p-1 flex border border-gray-300 rounded shadow">
+                    <input placeholder="Ej. 24340603989" formControlName="cuit" class="p-1 px-2 appearance-none outline-none w-full text-gray-800 text-sm"></div>
+            </div>
+        </div>
+        <div class="flex flex-col lg:flex-row">
+            <div class="w-full mx-2 flex-1 svelte-1l8159u">
+                <div class="font-bold mt-3 text-gray-600 text-sm"> Domicilio comercial </div>
+                <div class="bg-white my-2 p-1 flex border border-gray-300 rounded shadow">
+                    <input placeholder="No es obligatorio" formControlName="domicilio" class="p-1 px-2 appearance-none outline-none w-full text-gray-800 text-sm"></div>
+            </div>
+        </div>
+        <div class="flex flex-col lg:flex-row">
+            <div class="w-full mx-2 flex-1">
+                <div class="font-bold mt-3 text-gray-600 text-sm"> <span class="text-red-500"> * </span> Condición frente al IVA </div>
+                <div class="bg-white my-2 flex">
+                    <select formControlName="condicion_iva" class="border rounded p-1 py-2 w-full shadow text-sm">
+                        <option value="IVA Responsable Inscripto"> IVA Responsable Inscripto </option>
+                        <option value="IVA Responsable no Inscripto"> IVA Responsable no Inscripto </option>
+                        <option value="IVA no Responsable"> IVA no Responsable </option>
+                        <option value="IVA Sujeto Exento"> IVA Sujeto Exento </option>
+                        <option value="Consumidor Final"> Consumidor Final </option>
+                        <option value="Responsable Monotributo"> Responsable Monotributo </option>
+                        <option value="Sujeto no Categorizado"> Sujeto no Categorizado </option>
+                        <option value="Proveedor del Exterior"> Proveedor del Exterior </option>
+                        <option value="Cliente del Exterior"> Cliente del Exterior </option>
+                        <option value="IVA Liberado"> IVA Liberado </option>
+                        <option value="IVA Responsable Inscripto – Agente de Percepción"> IVA Responsable Inscripto – Agente de Percepción </option>
+                        <option value="Pequeño Contribuyente Eventual"> Pequeño Contribuyente Eventual </option>
+                        <option value="Monotributista Social"> Monotributista Social </option>
+                        <option value="Pequeño Contribuyente Eventual Social"> Pequeño Contribuyente Eventual Social </option>
+                    </select>
+                </div>
+            </div>
+            <div class="w-full mx-2 flex-1">
+                <div class="font-bold mt-3 text-gray-600 text-sm"> <span class="text-red-500"> * </span> Estado </div>
+                <div class="bg-white my-2 flex">
+                    <select formControlName="activo" class="border rounded p-1 py-2 w-full shadow text-sm">
+                        <option value=true> Activo </option>
+                        <option value=false> Inactivo </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col lg:flex-row mt-2">
+            <div class="w-full mx-2 flex-1">
+                <app-boton-formulario (click)="crearProveedor()">
+                    Crear proveedor
+                </app-boton-formulario>
+            </div>
+            <div class="w-full mx-2 flex-1">
+                <app-boton-formulario routerLink="/dashboard/proveedores">
+                    Regresar
+                </app-boton-formulario>
+            </div>
+        </div>
+    </form>
+</app-tarjeta-formulario>

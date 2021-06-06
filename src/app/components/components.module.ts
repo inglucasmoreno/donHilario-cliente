@@ -10,6 +10,8 @@ import { BotonGenericoComponent } from './boton-generico/boton-generico.componen
 import { BotonFormularioComponent } from './boton-formulario/boton-formulario.component';
 import { BotonReportesComponent } from './boton-reportes/boton-reportes.component';
 import { BotonTablaComponent } from './boton-tabla/boton-tabla.component';
+import { TarjetaMiniComponent } from './tarjeta-mini/tarjeta-mini.component';
+import { BotonIconoComponent } from './boton-icono/boton-icono.component';
 
 
 
@@ -23,7 +25,9 @@ import { BotonTablaComponent } from './boton-tabla/boton-tabla.component';
     BotonGenericoComponent,
     BotonFormularioComponent,
     BotonReportesComponent,
-    BotonTablaComponent
+    BotonTablaComponent,
+    TarjetaMiniComponent,
+    BotonIconoComponent,
   ],
   imports: [
     CommonModule,
@@ -38,7 +42,9 @@ import { BotonTablaComponent } from './boton-tabla/boton-tabla.component';
     BotonGenericoComponent,
     BotonFormularioComponent,
     BotonReportesComponent,
-    BotonTablaComponent
+    BotonTablaComponent,
+    TarjetaMiniComponent,
+    BotonIconoComponent
   ]
 })
 export class ComponentsModule { }

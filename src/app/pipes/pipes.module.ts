@@ -2,20 +2,26 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FechaPipe } from './fecha.pipe';
 import { RolPipe } from './rol.pipe';
+import { AlertaStockPipe } from './alerta-stock.pipe';
+import { MonedaPipe } from './moneda.pipe';
 
 
 
 @NgModule({
   declarations: [
     FechaPipe,
-    RolPipe
+    RolPipe,
+    AlertaStockPipe,
+    MonedaPipe
   ],
   imports: [
     CommonModule
   ],
   exports: [
     FechaPipe,
-    RolPipe
+    RolPipe,
+    AlertaStockPipe,
+    MonedaPipe
   ]
 })
 export class PipesModule { }
