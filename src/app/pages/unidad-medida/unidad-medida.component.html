@@ -3,7 +3,7 @@
         <h1 class="text-gray-700">
             <div class="flex flex-col ml-2">
                 <span class="ml-2 text-xl text-gray-600"> Unidades de medida </span>
-                <span class="text-xs mt-1 ml-1 w-max font-semibold border border-gray-200 py-1 px-2 rounded text-gray-600 bg-secondary-100">
+                <span class="text-xs mt-1 ml-1 w-max font-semibold border border-gray-200 py-1 px-2 rounded text-white bg-secondary-800">
                     Nueva unidad
                 </span>
             </div>
@@ -15,7 +15,7 @@
             <div class="bg-white my-2 p-1 flex border border-gray-300 rounded shadow">
                 <input #txtUnidad placeholder="Ej. bolsas" (keyup.enter)="nuevaUnidad(txtUnidad)" class="p-1 px-2 appearance-none outline-none w-full text-sm text-gray-800"></div>
         </div>
-        <button class="p-2 focus:outline-none text-gray-600 border bg-gray-100 hover:bg-secondary-100 border-gray-300 w-full mt-2 rounded shadow mb-2" (click)="nuevaUnidad(txtUnidad)">
+        <button class="p-2 focus:outline-none text-gray-600 border bg-gray-100 hover:text-secondary-800 border-gray-300 w-full mt-2 rounded shadow mb-2" (click)="nuevaUnidad(txtUnidad)">
             <span class="font-semibold text-sm"> 
                 Crear unidad 
             </span> 
@@ -116,7 +116,7 @@
                                     </td>
                                     <td class="px-5 py-2 border-b border-gray-200 text-sm text-center">
                                         <app-boton-tabla title="Editar unidad" [routerLink]="['/dashboard/unidad_medida/editar', unidad._id]">
-                                            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 text-gray-600"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+                                            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
                                         </app-boton-tabla>
                                     </td>
                                 </tr>
@@ -127,10 +127,10 @@
                                 Mostrando {{ total > 0 ? paginacion.desde + 1 : 0 }} - {{ paginacion.hasta < total ? paginacion.hasta : total }} de {{ total }} unidades
                             </span>
                             <div class="inline-flex mt-2 xs:mt-0">
-                                <button (click)="actualizarDesdeHasta('anterior')" class="text-sm hover:bg-secondary-100 bg-gray-200 border focus:outline-none border-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-l">
+                                <button (click)="actualizarDesdeHasta('anterior')" class="text-sm hover:bg-gray-300 bg-gray-200 border focus:outline-none border-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-l">
                                     Anterior
                                 </button>
-                                <button (click)="actualizarDesdeHasta('siguiente')" class="text-sm hover:bg-secondary-100 bg-gray-200 border focus:outline-none border-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-r">
+                                <button (click)="actualizarDesdeHasta('siguiente')" class="text-sm hover:bg-gray-300 bg-gray-200 border focus:outline-none border-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-r">
                                     Proximo
                                 </button>
                             </div>

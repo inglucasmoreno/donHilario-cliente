@@ -22,7 +22,7 @@ module.exports = {
             blue: colors.blue,
             background: colors.gray,
             primary: colors.gray,
-            secondary: colors.red
+            secondary: colors.red,
         },
     },
     variants: {

@@ -123,7 +123,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr [ngClass]="{'bg-red-100 border': (producto.stock_minimo | alertaStock : producto.cantidad : producto.cantidad_minima) && usuarioLogin.role === 'ADMIN_ROLE' }" (click)="detalleProducto(producto._id)" class="animate__animated animate__fadeIn hover:bg-secondary-100 cursor-pointer"
+                                <tr [ngClass]="{'bg-red-100 border': (producto.stock_minimo | alertaStock : producto.cantidad : producto.cantidad_minima) && usuarioLogin.role === 'ADMIN_ROLE' }" (click)="detalleProducto(producto._id)" class="animate__animated animate__fadeIn hover:bg-gray-100 cursor-pointer"
                                     *ngFor="let producto of productos">
                                     <!-- Codigo -->
                                     <td class="px-5 py-2 border-b border-gray-200 text-sm">
@@ -167,10 +167,10 @@
                                 Mostrando {{ total > 0 ? paginacion.desde + 1 : 0 }} - {{ paginacion.hasta < total ? paginacion.hasta : total }} de {{ total }} productos
                             </span>
                             <div class="inline-flex mt-2 xs:mt-0">
-                                <button (click)="actualizarDesdeHasta('anterior')" class="focus:outline-none text-sm bg-gray-200 hover:bg-secondary-100 border border-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-l">
+                                <button (click)="actualizarDesdeHasta('anterior')" class="focus:outline-none text-sm bg-gray-200 hover:bg-gray-300 border border-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-l">
                                     Anterior
                                 </button>
-                                <button (click)="actualizarDesdeHasta('siguiente')" class="focus:outline-none text-sm bg-gray-200 hover:bg-secondary-100 border border-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-r">
+                                <button (click)="actualizarDesdeHasta('siguiente')" class="focus:outline-none text-sm bg-gray-200 hover:bg-gray-300 border border-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-r">
                                     Proximo
                                 </button>
                             </div>
