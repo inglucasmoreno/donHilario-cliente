@@ -15,6 +15,9 @@ export class NuevoProductoComponent implements OnInit {
 
   public stockMinimo = false;
   public unidades = [];
+  public digitos = 30;
+  public digitosBalanza = 7;
+  public tipo = 'Normal';
 
   public productoForm = this.fb.group({
     codigo: ['', Validators.required],
@@ -40,6 +43,12 @@ export class NuevoProductoComponent implements OnInit {
     this.obtenerUnidades();
   }
   
+  // Cambio de tipo de productos
+  cambioTipo(tipo): void {
+    this.digitos = tipo === 'Balanza' ? this.digitosBalanza : 30;
+    this.tipo = tipo;
+  }
+
   // Se crea el nuevo producto
   crearProducto(): void {
   
@@ -62,6 +71,7 @@ export class NuevoProductoComponent implements OnInit {
     if(formularioValido){
       this.alertService.loading();
       const data = this.productoForm.value;
+      data.tipo = this.tipo;
       if(!this.stockMinimo) data['cantidad_minima'] = 0;
       this.productosService.nuevoProducto(data).subscribe( () => {
         this.alertService.success('Producto creado correctamente');

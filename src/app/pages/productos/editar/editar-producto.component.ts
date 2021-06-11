@@ -15,12 +15,17 @@ import { DataService } from '../../../services/data.service';
 })
 export class EditarProductoComponent implements OnInit {
 
+  // Variables de producto
   public unidades = [];
   public productoId = '';
   public stockMinimo = true;
-  public producto: Producto = {
+  public digitos = 30;            // Maxima longitud de digitos para producto normal
+  public digitosBalanza = 7;      // Maxima longitud de digitos para producto de balanza
+  public tipo = 'Normal';         // Tipo: Normal o Balanza 
+  public producto: Producto = {   // Objeto: producto
     _id: '',
     codigo: '',
+    tipo: 'Normal',
     descripcion: '',
     unidad_medida: '',
     cantidad: 0,
@@ -29,9 +34,11 @@ export class EditarProductoComponent implements OnInit {
     precio: 0,
     activo: true  
   };
-
+  
+  // Formulario Reactivo
   public productoForm = this.fb.group({
     codigo: ['', Validators.required],
+    tipo: ['Normal', Validators.required],
     descripcion: ['', Validators.required],
     unidad_medida: ['', Validators.required],
     stock_minimo: [false, Validators.required],
@@ -55,6 +62,12 @@ export class EditarProductoComponent implements OnInit {
       this.productoId = id;
       this.obtenerUnidades();
     })
+  }
+
+  // Cambio de tipo de productos
+  cambioTipo(tipo): void {
+    this.digitos = tipo === 'Balanza' ? this.digitosBalanza : 30;
+    this.tipo = tipo;
   }
 
   // Editando producto
@@ -105,8 +118,10 @@ export class EditarProductoComponent implements OnInit {
     this.productosService.getProducto(id).subscribe(({producto})=>{
       this.producto = producto;
       this.stockMinimo = producto.stock_minimo;
+      this.cambioTipo(producto.tipo);
       this.productoForm.setValue({
         codigo: producto.codigo,
+        tipo: producto.tipo,
         descripcion: producto.descripcion,
         unidad_medida: producto.unidad_medida,
         stock_minimo: producto.stock_minimo,

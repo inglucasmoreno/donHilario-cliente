@@ -2,6 +2,7 @@ export class Producto {
     constructor(
         public _id: string,
         public codigo: string,
+        public tipo: string,
         public descripcion: string,
         public unidad_medida: string,
         public stock_minimo: boolean,
