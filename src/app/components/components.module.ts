@@ -12,6 +12,7 @@ import { BotonReportesComponent } from './boton-reportes/boton-reportes.componen
 import { BotonTablaComponent } from './boton-tabla/boton-tabla.component';
 import { TarjetaMiniComponent } from './tarjeta-mini/tarjeta-mini.component';
 import { BotonIconoComponent } from './boton-icono/boton-icono.component';
+import { PastillaPendienteCompletadoComponent } from './pastilla-pendiente-completado/pastilla-pendiente-completado.component';
 
 
 
@@ -28,6 +29,7 @@ import { BotonIconoComponent } from './boton-icono/boton-icono.component';
     BotonTablaComponent,
     TarjetaMiniComponent,
     BotonIconoComponent,
+    PastillaPendienteCompletadoComponent,
   ],
   imports: [
     CommonModule,
@@ -44,7 +46,8 @@ import { BotonIconoComponent } from './boton-icono/boton-icono.component';
     BotonReportesComponent,
     BotonTablaComponent,
     TarjetaMiniComponent,
-    BotonIconoComponent
+    BotonIconoComponent,
+    PastillaPendienteCompletadoComponent
   ]
 })
 export class ComponentsModule { }

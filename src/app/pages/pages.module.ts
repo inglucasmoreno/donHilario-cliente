@@ -20,6 +20,7 @@ import { DetalleProductoComponent } from './productos/detalle-producto.component
 import { ProveedoresComponent } from './proveedores/proveedores.component';
 import { NuevoProveedorComponent } from './proveedores/nuevo-proveedor.component';
 import { EditarProveedorComponent } from './proveedores/editar/editar-proveedor.component';
+import { IngresosComponent } from './ingresos/ingresos.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { EditarProveedorComponent } from './proveedores/editar/editar-proveedor.
     ProveedoresComponent,
     NuevoProveedorComponent,
     EditarProveedorComponent,
+    IngresosComponent,
   ],
   imports: [
     CommonModule,

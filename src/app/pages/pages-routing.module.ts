@@ -19,6 +19,7 @@ import { DetalleProductoComponent } from './productos/detalle-producto.component
 import { ProveedoresComponent } from './proveedores/proveedores.component';
 import { NuevoProveedorComponent } from './proveedores/nuevo-proveedor.component';
 import { EditarProveedorComponent } from './proveedores/editar/editar-proveedor.component';
+import { IngresosComponent } from './ingresos/ingresos.component';
 
 const routes: Routes = [
     {
@@ -35,17 +36,20 @@ const routes: Routes = [
             { path: 'usuarios/nuevo', component: NuevoUsuarioComponent },
             { path: 'usuarios/editar/:id', component: EditarUsuarioComponent },
             { path: 'usuarios/password/:id', component: EditarPasswordComponent },
-            
-            // Unidad de medida
-            { path: 'unidad_medida', component: UnidadMedidaComponent},
-            { path: 'unidad_medida/editar/:id', component: EditarUnidadComponent},
-            
+                        
             // Productos
             { path: 'productos', component: ProductosComponent},
             { path: 'productos/nuevo', component: NuevoProductoComponent},
             { path: 'productos/detalle/:id', component: DetalleProductoComponent},
             { path: 'productos/editar/:id', component: EditarProductoComponent},
         
+            // Ingresos
+            { path: 'ingresos', component: IngresosComponent},
+
+            // Unidad de medida
+            { path: 'unidad_medida', component: UnidadMedidaComponent},
+            { path: 'unidad_medida/editar/:id', component: EditarUnidadComponent},
+
             // Proveedores
             { path: 'proveedores', component: ProveedoresComponent},
             { path: 'proveedores/nuevo', component: NuevoProveedorComponent},
