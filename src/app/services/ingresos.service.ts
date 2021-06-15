@@ -30,6 +30,7 @@ export class IngresosService {
   listarIngresos(
     limit = 0,
     desde = 0,
+    codigo = '',
     descripcion = '',
     direccion = 1,
     columna = 'createdAt',
@@ -39,6 +40,7 @@ export class IngresosService {
       params: {
         limit: String(limit),
         desde: String(desde),
+        codigo: String(codigo),
         descripcion,
         direccion,
         columna,

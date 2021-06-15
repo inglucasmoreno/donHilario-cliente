@@ -3,7 +3,6 @@ import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 
 import { IngresosService } from 'src/app/services/ingresos.service';
-import { Ingreso } from '../../models/ingreso.model';
 import { AlertService } from '../../services/alert.service';
 import { DataService } from 'src/app/services/data.service';
 import { ProveedoresService } from 'src/app/services/proveedores.service';
@@ -30,6 +29,7 @@ export class IngresosComponent implements OnInit {
 
   // Filtrado
   public filtro = {
+    codigo: '',
     descripcion: '',
     activo: 'true'
   }
@@ -69,6 +69,7 @@ export class IngresosComponent implements OnInit {
     this.ingresosService.listarIngresos(
       this.paginacion.hasta,
       this.paginacion.desde,
+      this.filtro.codigo,
       this.filtro.descripcion,
       this.ordenar.direccion,
       this.ordenar.columna,
@@ -124,7 +125,7 @@ export class IngresosComponent implements OnInit {
     this.paginacion.limit = 10;    
   }
 
-  // Filtro por estado
+  // Filtro por activo
    filtrarActivos(activo: string): void{
     this.alertService.loading();
     this.filtro.activo = activo;
@@ -132,7 +133,15 @@ export class IngresosComponent implements OnInit {
     this.listarIngresos();
   }
 
-  // Filtrar por parametro
+   // Filtrar por codigo
+   filtrarCodigo(codigo: string): void{
+    this.alertService.loading();
+    this.filtro.codigo = codigo;
+    this.reiniciarPaginacion();
+    this.listarIngresos();
+  }
+
+  // Filtrar por proveedor
   filtrarDescripcion(descripcion: string): void{
     this.alertService.loading();
     this.filtro.descripcion= descripcion;
