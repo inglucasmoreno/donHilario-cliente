@@ -20,6 +20,7 @@ import { ProveedoresComponent } from './proveedores/proveedores.component';
 import { NuevoProveedorComponent } from './proveedores/nuevo-proveedor.component';
 import { EditarProveedorComponent } from './proveedores/editar/editar-proveedor.component';
 import { IngresosComponent } from './ingresos/ingresos.component';
+import { IngresoDetallesComponent } from './ingresos/ingreso-detalles.component';
 
 const routes: Routes = [
     {
@@ -45,6 +46,7 @@ const routes: Routes = [
         
             // Ingresos
             { path: 'ingresos', component: IngresosComponent},
+            { path: 'ingresos/detalles/:id', component: IngresoDetallesComponent},
 
             // Unidad de medida
             { path: 'unidad_medida', component: UnidadMedidaComponent},

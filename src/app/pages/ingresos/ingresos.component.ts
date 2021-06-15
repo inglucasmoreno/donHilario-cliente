@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 import { IngresosService } from 'src/app/services/ingresos.service';
 import { Ingreso } from '../../models/ingreso.model';
 import { AlertService } from '../../services/alert.service';
 import { DataService } from 'src/app/services/data.service';
+import { ProveedoresService } from 'src/app/services/proveedores.service';
 
 @Component({
   selector: 'app-ingresos',
@@ -15,6 +18,8 @@ export class IngresosComponent implements OnInit {
 
   public total = 0;
   public ingresos: any[] = [];
+
+  public proveedores: any = {};
 
   // Paginación
   public paginacion = {
@@ -35,17 +40,29 @@ export class IngresosComponent implements OnInit {
     columna: 'createdAt'
   }
   constructor(private ingresosService: IngresosService,
+              private proveedoresService: ProveedoresService,
               private dataService: DataService,
-              private alertService: AlertService) { }
+              private alertService: AlertService,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.dataService.ubicacionActual = 'Dashboard - Ingresos';
     this.alertService.loading();
     this.listarIngresos();
+    this.listarProveedores();
   }
 
   // Generar reporte de ingresos
   generarReporte(){}
+
+  // Listar proveedores
+  listarProveedores(): void {
+    this.proveedoresService.listarProveedores().subscribe(({proveedores}) => {
+      proveedores.map( ({_id, razon_social}) => {
+        this.proveedores[_id] = razon_social;
+      })
+    });
+  }
 
   // Listar ingresos
   listarIngresos(): void {
@@ -65,6 +82,42 @@ export class IngresosComponent implements OnInit {
     });
   }
 
+  // Nuevo ingreso
+  async modalNuevoIngreso(){
+    const { value: proveedor } = await Swal.fire({
+      title: 'Nuevo ingreso',
+      input: 'select',
+      inputPlaceholder: 'Seleccione un proveedor',
+      inputOptions: this.proveedores,
+      showCancelButton: true,
+      confirmButtonText: 'Crear',
+      cancelButtonText: 'Cancelar',
+      inputValidator: (proveedor) => {      
+        return new Promise((resolve) => {
+          if(proveedor === '') resolve('Debes seleccionar un proveedor');
+          else resolve('');
+        })
+      }
+    }); 
+    
+    // Se redirecciona 
+    if(proveedor) this.nuevoIngreso(proveedor);  
+    
+  }
+
+  // Crear nuevo ingreso
+  nuevoIngreso(proveedor: string): void {
+    this.alertService.loading();
+    const data = { proveedor };
+    this.ingresosService.nuevoIngreso(data).subscribe(({ ingreso }) => {
+      this.alertService.close();
+      this.router.navigateByUrl(`dashboard/ingresos/detalles/${ingreso._id}`);
+    },(({error}) => {
+      this.alertService.errorApi(error.msg);
+    })); 
+  }
+
+  // Reiniciar paginacion
   reiniciarPaginacion(): void {
     this.paginacion.desde = 0;
     this.paginacion.hasta = 10;
