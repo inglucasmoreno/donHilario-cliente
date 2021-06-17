@@ -13,6 +13,7 @@ import { BotonTablaComponent } from './boton-tabla/boton-tabla.component';
 import { TarjetaMiniComponent } from './tarjeta-mini/tarjeta-mini.component';
 import { BotonIconoComponent } from './boton-icono/boton-icono.component';
 import { PastillaPendienteCompletadoComponent } from './pastilla-pendiente-completado/pastilla-pendiente-completado.component';
+import { ModalComponent } from './modal/modal.component';
 
 
 
@@ -30,6 +31,7 @@ import { PastillaPendienteCompletadoComponent } from './pastilla-pendiente-compl
     TarjetaMiniComponent,
     BotonIconoComponent,
     PastillaPendienteCompletadoComponent,
+    ModalComponent,
   ],
   imports: [
     CommonModule,
@@ -47,7 +49,8 @@ import { PastillaPendienteCompletadoComponent } from './pastilla-pendiente-compl
     BotonTablaComponent,
     TarjetaMiniComponent,
     BotonIconoComponent,
-    PastillaPendienteCompletadoComponent
+    PastillaPendienteCompletadoComponent,
+    ModalComponent
   ]
 })
 export class ComponentsModule { }

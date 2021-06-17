@@ -121,7 +121,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="animate__animated animate__fadeIn" *ngFor="let usuario of usuarios">
+                            <tr class="animate__animated animate__fadeIn" *ngFor="let usuario of usuarios | paginate: {itemsPerPage: 10, currentPage: pageActual}">
                                 <td class="px-5 py-2 border-b border-gray-200 text-xs">
                                     <p class="text-gray-900 whitespace-no-wrap">
                                         {{ usuario.apellido }}
@@ -164,18 +164,7 @@
                         </tbody>
                     </table>
                     <div class="px-5 py-5 bg-white border-t flex shadow flex-col xs:flex-row items-center xs:justify-between          ">
-
-                        <span class="text-xs xs:text-sm text-gray-900">
-                            Mostrando {{ total > 0 ? paginacion.desde + 1 : 0 }} - {{ paginacion.hasta < total ? paginacion.hasta : total }} de {{ total }} usuarios
-                        </span>
-                        <div class="inline-flex mt-2 xs:mt-0 border border-gray-300 rounded">
-                            <button (click)="actualizarDesdeHasta('anterior')" class="text-sm bg-gray-200 focus:outline-none hover:bg-gray-300 border-r border-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-l">
-                                Anterior
-                            </button>
-                            <button (click)="actualizarDesdeHasta('siguiente')" class="text-sm bg-gray-200 focus:outline-none hover:bg-gray-300 border border-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-r">
-                                Proximo
-                            </button>
-                        </div>
+                        <pagination-controls nextLabel="Siguiente" previousLabel="Anterior" (pageChange)="pageActual = $event"></pagination-controls>
                     </div>
                 </div>
             </div>

@@ -5,6 +5,35 @@
     </div>
 </div> -->
 
+<!-- Modal -->
+<app-modal [showModal]="showModal">
+    <div class="p-4">
+        <!-- Header -->
+        <div class="mb-3">
+            <h1 class="text-2xl font-semibold text-gray-700"> Creando ingreso </h1>
+            <p> Debe seleccionar un proveedor </p>
+        </div>
+
+        <!-- Body -->
+        <select #txtProveedor (change)="proveedor = txtProveedor.value" class="w-full p-2 border mb-3 focus:outline-none hover:border-gray-300">
+            <option *ngFor="let proveedor of proveedores" [value]="proveedor._id"> {{ proveedor.razon_social }} </option>
+        </select>
+
+        <!-- Footer -->
+        <div class="flex">
+            <button class="bg-secondary-800 text-white p-1 rounded shadow w-full focus:outline-none hover:bg-secondary-400" (click)="nuevoIngreso()"> Crear </button>
+            <button class="bg-gray-500 text-white p-1 rounded shadow w-full ml-4 focus:outline-none hover:bg-gray-400" (click)="showModal = false"> Cancelar </button>
+        </div>
+    </div>
+</app-modal>
+
+<!-- Modal -->
+<!-- <app-modal [showModal]="showModal">
+    <div class="p-2">
+        <h1 class="font-semibold text-2xl"> Nuevo ingreso </h1>
+    </div>
+</app-modal> -->
+
 <app-tarjeta-lista>
     <div class="antialiased font-sans bg-white">
         <div class="container mx-auto px-4 sm:px-8">
@@ -40,7 +69,8 @@
                                             </path>
                                         </svg>
                                     </span>
-                                    <input #txtCodigo placeholder="Código" (change)="filtrarCodigo(txtCodigo.value)"  class="appearance-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none"/>
+                                    <input #txtCodigo placeholder="Código" (change)="filtrarCodigo(txtCodigo.value)" class="appearance-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none"
+                                    />
                                 </div>
                             </div>
                             <div class="flex items-center">
@@ -52,7 +82,8 @@
                                             </path>
                                         </svg>
                                     </span>
-                                    <input #txtDescripcion placeholder="Proveedor" (change)="filtrarDescripcion(txtDescripcion.value)" class="appearance-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none"/>
+                                    <input #txtDescripcion placeholder="Proveedor" (change)="filtrarDescripcion(txtDescripcion.value)" class="appearance-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none"
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -61,7 +92,7 @@
                         <div>
                             <app-boton-reportes (click)="generarReporte()"></app-boton-reportes>
                         </div>
-                        <app-boton-generico (click)="modalNuevoIngreso()">
+                        <app-boton-generico (click)="showModal = true">
                             Nuevo ingreso
                         </app-boton-generico>
                     </div>

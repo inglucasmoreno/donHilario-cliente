@@ -30,8 +30,6 @@ export class UsuariosService {
 
   // Listar usuarios
   listarUsuarios(
-    limit = 0,
-    desde = 0,
     activo: any = '',
     parametro: string = '',
     direccion : number = 1,
@@ -39,8 +37,6 @@ export class UsuariosService {
   ): Observable<any>{
     return this.http.get(`${base_url}/usuarios`, {
       params: {
-        limit: String(limit),
-        desde: String(desde),
         activo,
         parametro,
         direccion: String(direccion),

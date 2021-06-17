@@ -22,6 +22,7 @@ import { NuevoProveedorComponent } from './proveedores/nuevo-proveedor.component
 import { EditarProveedorComponent } from './proveedores/editar/editar-proveedor.component';
 import { IngresosComponent } from './ingresos/ingresos.component';
 import { IngresoDetallesComponent } from './ingresos/ingreso-detalles.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { IngresoDetallesComponent } from './ingresos/ingreso-detalles.component'
     SharedModule,
     PipesModule,
     ComponentsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxPaginationModule
   ]
 })
 export class PagesModule { }

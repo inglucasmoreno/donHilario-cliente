@@ -15,10 +15,13 @@ import { ProveedoresService } from 'src/app/services/proveedores.service';
 })
 export class IngresosComponent implements OnInit {
 
+  public showModal = false;
+
   public total = 0;
   public ingresos: any[] = [];
 
-  public proveedores: any = {};
+  public proveedor: string = '';
+  public proveedores: any = [];
 
   // Paginación
   public paginacion = {
@@ -39,6 +42,7 @@ export class IngresosComponent implements OnInit {
     direccion: -1,  // Asc (1) | Desc (-1)
     columna: 'createdAt'
   }
+
   constructor(private ingresosService: IngresosService,
               private proveedoresService: ProveedoresService,
               private dataService: DataService,
@@ -57,10 +61,9 @@ export class IngresosComponent implements OnInit {
 
   // Listar proveedores
   listarProveedores(): void {
-    this.proveedoresService.listarProveedores().subscribe(({proveedores}) => {
-      proveedores.map( ({_id, razon_social}) => {
-        this.proveedores[_id] = razon_social;
-      })
+    this.proveedoresService.listarProveedores(0,0, true).subscribe(({proveedores}) => {
+      this.proveedores = proveedores;
+      this.proveedor = proveedores[0]._id;
     });
   }
 
@@ -83,33 +86,11 @@ export class IngresosComponent implements OnInit {
     });
   }
 
-  // Nuevo ingreso
-  async modalNuevoIngreso(){
-    const { value: proveedor } = await Swal.fire({
-      title: 'Nuevo ingreso',
-      input: 'select',
-      inputPlaceholder: 'Seleccione un proveedor',
-      inputOptions: this.proveedores,
-      showCancelButton: true,
-      confirmButtonText: 'Crear',
-      cancelButtonText: 'Cancelar',
-      inputValidator: (proveedor) => {      
-        return new Promise((resolve) => {
-          if(proveedor === '') resolve('Debes seleccionar un proveedor');
-          else resolve('');
-        })
-      }
-    }); 
-    
-    // Se redirecciona 
-    if(proveedor) this.nuevoIngreso(proveedor);  
-    
-  }
-
   // Crear nuevo ingreso
-  nuevoIngreso(proveedor: string): void {
+  nuevoIngreso(): void {
+    this.showModal = false
     this.alertService.loading();
-    const data = { proveedor };
+    const data = { proveedor: this.proveedor };
     this.ingresosService.nuevoIngreso(data).subscribe(({ ingreso }) => {
       this.alertService.close();
       this.router.navigateByUrl(`dashboard/ingresos/detalles/${ingreso._id}`);

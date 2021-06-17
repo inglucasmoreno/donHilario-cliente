@@ -16,7 +16,8 @@ export class AlertService {
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: buttonText,
-      cancelButtonText: 'Cancelar'  
+      cancelButtonText: 'Cancelar', 
+      confirmButtonColor: '#991b1b'
     });
   }
 
@@ -37,7 +38,8 @@ export class AlertService {
       icon: 'info',
       title: 'Información',
       text: msg,
-      confirmButtonText: 'Entendido'
+      confirmButtonText: 'Entendido',
+      confirmButtonColor: '#991b1b'
     });  
   }
 
@@ -47,7 +49,8 @@ export class AlertService {
         icon: 'info',
         title: 'Información',
         text: 'Formulario Inválido',
-        confirmButtonText: 'Entendido'
+        confirmButtonText: 'Entendido',
+        confirmButtonColor: '#991b1b'
       });    
   }   
 
@@ -57,7 +60,8 @@ export class AlertService {
       icon: 'error',
       title: 'Error',
       text: msg,
-      confirmButtonText: 'Entendido'
+      confirmButtonText: 'Entendido',
+      confirmButtonColor: '#991b1b'
     });    
   }
 

@@ -8,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class IngresoDetallesComponent implements OnInit {
 
+  public showModal = false;
+
   constructor() { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
+
+  // Control de modal
+  openModal(): void { this.showModal = true }
+  closeModal(): void { this.showModal = false }
+
 
 }

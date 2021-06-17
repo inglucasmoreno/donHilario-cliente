@@ -22,11 +22,7 @@ export class UsuariosComponent implements OnInit {
   public total = 0;
 
   // Paginacion
-  public paginacion = { 
-    limit: 10,
-    desde: 0,
-    hasta: 10
-  };
+  public pageActual: number = 1;
 
   // Filtrado
   public filtro = {
@@ -66,9 +62,7 @@ export class UsuariosComponent implements OnInit {
 
   // Listar usuarios
   listarUsuarios(): void {
-    this.usuariosService.listarUsuarios(
-      this.paginacion.limit, 
-      this.paginacion.desde, 
+    this.usuariosService.listarUsuarios( 
       this.filtro.activo, 
       this.filtro.parametro,
       this.ordenar.direccion,
@@ -102,41 +96,11 @@ export class UsuariosComponent implements OnInit {
             }
           });
   }
-
-  // Funcion de paginación
-  actualizarDesdeHasta(selector): void {
-    this.loading = true;
-
-    if (selector === 'siguiente'){ // Incrementar
-      if (this.paginacion.hasta < this.total){
-        this.paginacion.desde += this.paginacion.limit;
-        this.paginacion.hasta += this.paginacion.limit;
-      }
-    }else{                         // Decrementar
-      this.paginacion.desde -= this.paginacion.limit;
-      if (this.paginacion.desde < 0){
-        this.paginacion.desde = 0;
-      }else{
-        this.paginacion.hasta -= this.paginacion.limit;
-      }
-    }
-    this.alertService.loading();
-    this.listarUsuarios();
-
-  }
   
-  // Reiniciar paginacion
-  reiniciarPaginacion(): void {
-    this.paginacion.desde = 0;
-    this.paginacion.hasta = 10;
-    this.paginacion.limit = 10;
-  }
-
   // Filtrar Activo/Inactivo
   filtrarActivos(activo: any): void{
     this.loading = true;
     this.filtro.activo = activo;
-    this.reiniciarPaginacion();
     this.alertService.loading();
     this.listarUsuarios();
   }
@@ -145,7 +109,6 @@ export class UsuariosComponent implements OnInit {
   filtrarParametro(parametro: string): void{
     this.loading = true;
     this.filtro.parametro = parametro;
-    this.reiniciarPaginacion();
     this.alertService.loading();
     this.listarUsuarios();
   }
