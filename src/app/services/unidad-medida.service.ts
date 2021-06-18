@@ -32,19 +32,11 @@ export class UnidadMedidaService {
 
   // Listar unidades de medida
   listarUnidades(
-    limit = 0, 
-    desde = 0, 
-    activo: any = '', 
-    descripcion: string = '',
     direccion: number = 1,
     columna: string = 'descripcion'  
   ): Observable<any> {
     return this.http.get(`${base_url}/unidad_medida`, {
       params: {
-        limit: String(limit),
-        desde: String(desde),
-        activo,
-        descripcion,
         direccion: String(direccion),
         columna
       },

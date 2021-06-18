@@ -13,20 +13,19 @@ import { AlertService } from 'src/app/services/alert.service';
 })
 export class UnidadMedidaComponent implements OnInit {
 
+  public showModal = false;
+
   public total = 0;
   public unidades: UnidadMedida[] = [];
 
   // Paginación
-  public paginacion = {
-    limit: 10,
-    desde: 0,
-    hasta: 10
-  };
+  public paginaActual = 1;
+  public cantidadItems = 10;
 
   // Filtrado
   public filtro = {
-    descripcion: '',
-    activo: true
+    parametro: '',
+    activo: 'true'
   }
 
   // Ordenar
@@ -61,8 +60,10 @@ export class UnidadMedidaComponent implements OnInit {
     this.unidadMedidaService.nuevaUnidad({ descripcion }).subscribe( () => {  
       this.alertService.success('Unidad creada correctamente');
       this.alertService.close();
+      this.showModal = false;
       this.listarUnidades();
     },(({error}) => {
+      this.showModal = false;
       this.alertService.errorApi(error.msg);
     }));
   }
@@ -71,10 +72,6 @@ export class UnidadMedidaComponent implements OnInit {
   listarUnidades(): void {
     this.alertService.loading();
     this.unidadMedidaService.listarUnidades(
-      this.paginacion.limit,
-      this.paginacion.desde,
-      this.filtro.activo,
-      this.filtro.descripcion,
       this.ordenar.direccion,
       this.ordenar.columna
     ).subscribe( ({ total, unidades }) => {
@@ -103,49 +100,14 @@ export class UnidadMedidaComponent implements OnInit {
     );     
   }
   
-  // Reiniciar paginacion
-  reiniciarPaginacion(): void {
-    this.paginacion.desde = 0;
-    this.paginacion.hasta = 10;
-    this.paginacion.limit = 10;
-  }
-
   // Filtrar Activo/Inactivo
   filtrarActivos(activo: any): void{
-    this.alertService.loading();
     this.filtro.activo = activo;
-    this.reiniciarPaginacion();
-    this.listarUnidades();
   }
 
   // Filtrar por parametro
-  filtrarDescripcion(descripcion: string): void{
-    this.alertService.loading();
-    this.filtro.descripcion= descripcion;
-    this.reiniciarPaginacion();
-    this.listarUnidades();
-  }
-
-  // Funcion de paginación
-  actualizarDesdeHasta(selector): void {
-    this.alertService.loading();
-  
-    if (selector === 'siguiente'){ // Incrementar
-      if (this.paginacion.hasta < this.total){
-        this.paginacion.desde += this.paginacion.limit;
-        this.paginacion.hasta += this.paginacion.limit;
-      }
-    }else{                         // Decrementar
-      this.paginacion.desde -= this.paginacion.limit;
-      if (this.paginacion.desde < 0){
-        this.paginacion.desde = 0;
-      }else{
-        this.paginacion.hasta -= this.paginacion.limit;
-      }
-    }
-  
-    this.listarUnidades();
-
+  filtrarDescripcion(parametro: string): void{
+    this.filtro.parametro= parametro;
   }
 
   // Ordenar por columna

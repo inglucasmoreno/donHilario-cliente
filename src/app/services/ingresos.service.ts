@@ -28,24 +28,11 @@ export class IngresosService {
 
   // Listar ingresos
   listarIngresos(
-    limit = 0,
-    desde = 0,
-    codigo = '',
-    descripcion = '',
     direccion = 1,
     columna = 'createdAt',
-    activo
   ): Observable<any> {
     return this.http.get(`${base_url}/ingresos`,{
-      params: {
-        limit: String(limit),
-        desde: String(desde),
-        codigo: String(codigo),
-        descripcion,
-        direccion,
-        columna,
-        activo: String(activo)
-      },
+      params: { direccion, columna },
       headers: {'x-token': localStorage.getItem('token')}
     });
   };

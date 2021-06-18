@@ -86,7 +86,7 @@ export class NuevoProductoComponent implements OnInit {
   }
 
   obtenerUnidades(): void {
-    this.unidadMedidaService.listarUnidades(0, 0, true).subscribe( ({ unidades }) => {
+    this.unidadMedidaService.listarUnidades().subscribe( ({ unidades }) => {
       this.unidades= unidades;      
       if(unidades) this.reiniciarFormulario();
       this.alertService.close();
@@ -101,7 +101,7 @@ export class NuevoProductoComponent implements OnInit {
     this.productoForm.setValue({
       codigo: '',
       descripcion: '',
-      unidad_medida: this.unidades[0]._id,
+      unidad_medida: '',
       cantidad: 0,
       stock_minimo: false,
       cantidad_minima: 0,

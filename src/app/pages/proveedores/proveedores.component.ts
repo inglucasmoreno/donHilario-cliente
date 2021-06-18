@@ -16,16 +16,13 @@ export class ProveedoresComponent implements OnInit {
   public proveedores: Proveedor[] = [];
 
   // Paginación
-  public paginacion = {
-    limit: 10,
-    desde: 0,
-    hasta: 10
-  };
+  public paginaActual = 1;
+  public cantidadItems = 10;
 
   // Filtrado
   public filtro = {
-    descripcion: '',
-    activo: true
+    activo: 'true',
+    parametro: ''
   }
 
   // Ordenar
@@ -50,10 +47,6 @@ export class ProveedoresComponent implements OnInit {
   // Listar Proveedores
   listarProveedores(): void {
     this.proveedoresService.listarProveedores(
-      this.paginacion.limit,
-      this.paginacion.desde,
-      this.filtro.activo,
-      this.filtro.descripcion,
       this.ordenar.direccion,
       this.ordenar.columna
     ).subscribe(({proveedores, total}) => {
@@ -80,49 +73,14 @@ export class ProveedoresComponent implements OnInit {
                      }) 
   }
 
-  // Reiniciar paginacion
-  reiniciarPaginacion(): void {
-    this.paginacion.desde = 0;
-    this.paginacion.hasta = 10;
-    this.paginacion.limit = 10;
-  }
-
   // Filtrar Activo/Inactivo
    filtrarActivos(activo: any): void{
-    this.alertService.loading();
     this.filtro.activo = activo;
-    this.reiniciarPaginacion();
-    this.listarProveedores();
   }
 
   // Filtrar por parametro
-  filtrarDescripcion(descripcion: string): void{
-    this.alertService.loading();
-    this.filtro.descripcion= descripcion;
-    this.reiniciarPaginacion();
-    this.listarProveedores();
-  }
-
-  // Funcion de paginación
-  actualizarDesdeHasta(selector): void {
-    this.alertService.loading();
-    
-    if (selector === 'siguiente'){ // Incrementar
-      if (this.paginacion.hasta < this.total){
-        this.paginacion.desde += this.paginacion.limit;
-        this.paginacion.hasta += this.paginacion.limit;
-      }
-    }else{                         // Decrementar
-      this.paginacion.desde -= this.paginacion.limit;
-      if (this.paginacion.desde < 0){
-        this.paginacion.desde = 0;
-      }else{
-        this.paginacion.hasta -= this.paginacion.limit;
-      }
-    }
-  
-    this.listarProveedores();
-
+  filtrarDescripcion(parametro: string): void{
+    this.filtro.parametro= parametro;
   }
 
   // Ordenar por columna

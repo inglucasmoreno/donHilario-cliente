@@ -29,16 +29,9 @@ export class UsuariosService {
   } 
 
   // Listar usuarios
-  listarUsuarios(
-    activo: any = '',
-    parametro: string = '',
-    direccion : number = 1,
-    columna: string = 'apellido',
-  ): Observable<any>{
+  listarUsuarios( direccion : number = 1, columna: string = 'apellido' ): Observable<any>{
     return this.http.get(`${base_url}/usuarios`, {
       params: {
-        activo,
-        parametro,
         direccion: String(direccion),
         columna              
       },
@@ -65,6 +58,5 @@ export class UsuariosService {
       }  
     })
   }
-
 
 }

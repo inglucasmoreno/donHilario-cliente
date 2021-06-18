@@ -24,17 +24,13 @@ export class IngresosComponent implements OnInit {
   public proveedores: any = [];
 
   // Paginación
-  public paginacion = {
-    limit: 10,
-    desde: 0,
-    hasta: 10
-  };
+  public paginaActual = 1;
+  public cantidadItems = 10;
 
   // Filtrado
   public filtro = {
-    codigo: '',
-    descripcion: '',
-    activo: 'true'
+    activo: 'true',
+    parametro: ''
   }
 
   // Ordenar
@@ -61,7 +57,7 @@ export class IngresosComponent implements OnInit {
 
   // Listar proveedores
   listarProveedores(): void {
-    this.proveedoresService.listarProveedores(0,0, true).subscribe(({proveedores}) => {
+    this.proveedoresService.listarProveedores().subscribe(({proveedores}) => {
       this.proveedores = proveedores;
       this.proveedor = proveedores[0]._id;
     });
@@ -70,13 +66,8 @@ export class IngresosComponent implements OnInit {
   // Listar ingresos
   listarIngresos(): void {
     this.ingresosService.listarIngresos(
-      this.paginacion.hasta,
-      this.paginacion.desde,
-      this.filtro.codigo,
-      this.filtro.descripcion,
       this.ordenar.direccion,
-      this.ordenar.columna,
-      this.filtro.activo
+      this.ordenar.columna
     ).subscribe( ({ ingresos, total }) => {
       this.ingresos = ingresos;
       this.total = total;
@@ -99,56 +90,14 @@ export class IngresosComponent implements OnInit {
     })); 
   }
 
-  // Reiniciar paginacion
-  reiniciarPaginacion(): void {
-    this.paginacion.desde = 0;
-    this.paginacion.hasta = 10;
-    this.paginacion.limit = 10;    
-  }
-
   // Filtro por activo
    filtrarActivos(activo: string): void{
-    this.alertService.loading();
     this.filtro.activo = activo;
-    this.reiniciarPaginacion();
-    this.listarIngresos();
   }
 
-   // Filtrar por codigo
-   filtrarCodigo(codigo: string): void{
-    this.alertService.loading();
-    this.filtro.codigo = codigo;
-    this.reiniciarPaginacion();
-    this.listarIngresos();
-  }
-
-  // Filtrar por proveedor
-  filtrarDescripcion(descripcion: string): void{
-    this.alertService.loading();
-    this.filtro.descripcion= descripcion;
-    this.reiniciarPaginacion();
-    this.listarIngresos();
-  }
-
-  // Funcion de paginación
-  actualizarDesdeHasta(selector): void {
-    this.alertService.loading();  
-    if (selector === 'siguiente'){ // Incrementar
-      if (this.paginacion.hasta < this.total){
-        this.paginacion.desde += this.paginacion.limit;
-        this.paginacion.hasta += this.paginacion.limit;
-      }
-    }else{                         // Decrementar
-      this.paginacion.desde -= this.paginacion.limit;
-      if (this.paginacion.desde < 0){
-        this.paginacion.desde = 0;
-      }else{
-        this.paginacion.hasta -= this.paginacion.limit;
-      }
-    }
-  
-    this.listarIngresos();
-
+  // Filtrar parametro
+  filtrarParametro(parametro: string): void{
+    this.filtro.parametro = parametro;
   }
 
   // Ordenar por columna

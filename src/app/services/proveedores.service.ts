@@ -21,19 +21,11 @@ export class ProveedoresService {
 
   // Listar proveedores
   listarProveedores(
-    limit = 0, 
-    desde = 0, 
-    activo: any = '', 
-    descripcion: string = '',
     direccion: number = 1,
     columna: string = 'razon_social'
   ): Observable<any>{
     return this.http.get(`${base_url}/proveedores`,{
       params:{
-        limit: String(limit),
-        desde: String(desde),
-        activo,
-        descripcion,
         direccion: String(direccion),
         columna
       },

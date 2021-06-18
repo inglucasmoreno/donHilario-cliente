@@ -23,16 +23,13 @@ export class ProductosComponent implements OnInit {
   public productos = [];
 
   // Paginación
-  public paginacion = {
-    limit: 10,
-    desde: 0,
-    hasta: 10
-  };
+  public paginaActual = 1;
+  public cantidadItems = 10;
 
   // Filtrado
   public filtro = {
-    descripcion: '',
-    activo: true
+    activo: 'true',
+    parametro: ''
   }
 
   // Ordenar
@@ -60,10 +57,6 @@ export class ProductosComponent implements OnInit {
   // Listar productos
   listarProductos() {
     this.productosService.listarProductos(
-      this.paginacion.hasta, 
-      this.paginacion.desde, 
-      this.filtro.activo, 
-      this.filtro.descripcion,
       this.ordenar.direccion,
       this.ordenar.columna
     ).subscribe( ({productos, total}) => {
@@ -88,16 +81,8 @@ export class ProductosComponent implements OnInit {
                           }, ({error}) => {
                             this.alertService.errorApi(error.msg);
                           });
-                        }                   
-                     })
-    
-  }
-
-  // Reiniciar paginación
-  reiniciarPaginacion(): void {
-    this.paginacion.desde = 0;
-    this.paginacion.hasta = 10;
-    this.paginacion.limit = 10;
+                        };                   
+                     });  
   }
 
   detalleProducto(id): void {
@@ -110,43 +95,14 @@ export class ProductosComponent implements OnInit {
 
   // Filtrar Activo/Inactivo
   filtrarActivos(activo: any): void{
-    this.alertService.loading();
     this.filtro.activo = activo;
-    this.reiniciarPaginacion();
-    this.listarProductos();
   }
 
   // Filtrar por parametro
-  filtrarDescripcion(descripcion: string): void{
-    this.alertService.loading();
-    this.filtro.descripcion= descripcion;
-    this.reiniciarPaginacion();
-    this.listarProductos();
+  filtrarDescripcion(parametro: string): void{
+    this.filtro.parametro = parametro;
   }
-
-  // Funcion de paginación
-  actualizarDesdeHasta(selector): void {
-    
-    this.alertService.loading();
-    
-    if (selector === 'siguiente'){ // Incrementar
-      if (this.paginacion.hasta < this.total){
-        this.paginacion.desde += this.paginacion.limit;
-        this.paginacion.hasta += this.paginacion.limit;
-      }
-    }else{                         // Decrementar
-      this.paginacion.desde -= this.paginacion.limit;
-      if (this.paginacion.desde < 0){
-        this.paginacion.desde = 0;
-      }else{
-        this.paginacion.hasta -= this.paginacion.limit;
-      }
-    }
-    
-    this.listarProductos();
-  
-  }
-  
+ 
   // Ordenar por columna
   ordenarPorColumna(columna: string){
     this.alertService.loading();

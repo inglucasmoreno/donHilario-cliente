@@ -22,11 +22,12 @@ export class UsuariosComponent implements OnInit {
   public total = 0;
 
   // Paginacion
-  public pageActual: number = 1;
+  public paginaActual: number = 1;
+  public cantidadItems: number = 10;
 
   // Filtrado
   public filtro = {
-    activo: true,
+    activo: 'true',
     parametro: ''
   }
 
@@ -35,8 +36,6 @@ export class UsuariosComponent implements OnInit {
     direccion: 1,  // Asc (1) | Desc (-1)
     columna: 'apellido'
   }
-
-  public loading = true;
 
   // Para reportes
   public totalReporte = 0;
@@ -63,8 +62,6 @@ export class UsuariosComponent implements OnInit {
   // Listar usuarios
   listarUsuarios(): void {
     this.usuariosService.listarUsuarios( 
-      this.filtro.activo, 
-      this.filtro.parametro,
       this.ordenar.direccion,
       this.ordenar.columna
       )
@@ -99,23 +96,16 @@ export class UsuariosComponent implements OnInit {
   
   // Filtrar Activo/Inactivo
   filtrarActivos(activo: any): void{
-    this.loading = true;
     this.filtro.activo = activo;
-    this.alertService.loading();
-    this.listarUsuarios();
   }
 
   // Filtrar por Parametro
   filtrarParametro(parametro: string): void{
-    this.loading = true;
     this.filtro.parametro = parametro;
-    this.alertService.loading();
-    this.listarUsuarios();
   }
   
   // Ordenar por columna
   ordenarPorColumna(columna: string){
-    this.loading = true;
     this.ordenar.columna = columna;
     this.ordenar.direccion = this.ordenar.direccion == 1 ? -1 : 1; 
     this.alertService.loading();

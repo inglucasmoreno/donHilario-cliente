@@ -105,7 +105,7 @@ export class EditarProductoComponent implements OnInit {
 
   // Obtener unidades
   obtenerUnidades(): void {
-    this.unidadMedidaService.listarUnidades(0, 0, true).subscribe( ({ unidades }) => {
+    this.unidadMedidaService.listarUnidades().subscribe( ({ unidades }) => {
       this.unidades= unidades;
       this.obtenerProducto(this.productoId);
     },({error}) => {

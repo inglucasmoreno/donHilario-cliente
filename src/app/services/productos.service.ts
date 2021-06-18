@@ -24,19 +24,11 @@ export class ProductosService {
 
   // Listar productos
   listarProductos(
-    limit = 0, 
-    desde = 0, 
-    activo: any = '', 
-    descripcion: string = '',
     direccion: number = 1,
     columna: string = 'descripcion'
   ): Observable<any> {
     return this.http.get(`${base_url}/productos`,{
       params: {
-        limit: String(limit),
-        desde: String(desde),
-        activo,
-        descripcion,
         direccion: String(direccion),
         columna
       },

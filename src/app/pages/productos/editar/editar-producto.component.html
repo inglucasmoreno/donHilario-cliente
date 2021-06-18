@@ -41,7 +41,7 @@
                     <div class="font-semibold mt-3 text-gray-600 text-sm"> Unidad de medida </div>
                     <div class="bg-white my-2 flex">
                         <select class="border rounded p-1 py-2 w-full shadow text-sm">
-                            <option *ngFor="let unidad of unidades" [value]="unidad._id"> {{ unidad.descripcion }} </option>
+                            <option *ngFor="let unidad of unidades | filtroUnidadMedida:'':'true'" [value]="unidad._id"> {{ unidad.descripcion }} </option>
                         </select>
                     </div>
                 </div>

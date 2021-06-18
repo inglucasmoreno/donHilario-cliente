@@ -13,8 +13,8 @@
                         <div class="flex flex-row mb-1 sm:mb-0">
                             <div class="relative" *ngIf="usuarioLogin.role === 'ADMIN_ROLE'">
                                 <select #txtActivo (change)="filtrarActivos(txtActivo.value)" class="h-full rounded-r border-t border-l rounded-l sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
-                                    <option value=true> Activos </option>
-                                    <option value=false> Inactivos </option>
+                                    <option value='true'> Activos </option>
+                                    <option value='false'> Inactivos </option>
                                     <option value=''> Todos </option>
                                 </select>
                                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -33,7 +33,7 @@
                                         </path>
                                     </svg>
                                 </span>
-                                <input #txtDescripcion placeholder="Codigo o Descripción" (change)="filtrarDescripcion(txtDescripcion.value)" class="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none"
+                                <input #txtDescripcion placeholder="Codigo o Descripción" (keyup)="filtrarDescripcion(txtDescripcion.value)" class="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none"
                                 />
                             </div>
                         </div>
@@ -124,7 +124,7 @@
                             </thead>
                             <tbody>
                                 <tr [ngClass]="{'bg-red-100 border': (producto.stock_minimo | alertaStock : producto.cantidad : producto.cantidad_minima) && usuarioLogin.role === 'ADMIN_ROLE' }" (click)="detalleProducto(producto._id)" class="animate__animated animate__fadeIn hover:bg-gray-100 cursor-pointer"
-                                    *ngFor="let producto of productos">
+                                    *ngFor="let producto of productos | filtroProductos:filtro.parametro:filtro.activo | paginate: {itemsPerPage: cantidadItems, currentPage: paginaActual}">
                                     <!-- Codigo -->
                                     <td class="px-5 py-2 border-b border-gray-200 text-sm">
                                         <p class="text-gray-700  whitespace-no-wrap font-semibold tracking-wider">
@@ -163,17 +163,7 @@
                             </tbody>
                         </table>
                         <div class="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
-                            <span class="text-xs xs:text-sm text-gray-900">
-                                Mostrando {{ total > 0 ? paginacion.desde + 1 : 0 }} - {{ paginacion.hasta < total ? paginacion.hasta : total }} de {{ total }} productos
-                            </span>
-                            <div class="inline-flex mt-2 xs:mt-0">
-                                <button (click)="actualizarDesdeHasta('anterior')" class="focus:outline-none text-sm bg-gray-200 hover:bg-gray-300 border border-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-l">
-                                    Anterior
-                                </button>
-                                <button (click)="actualizarDesdeHasta('siguiente')" class="focus:outline-none text-sm bg-gray-200 hover:bg-gray-300 border border-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-r">
-                                    Proximo
-                                </button>
-                            </div>
+                            <pagination-controls nextLabel="Siguiente" previousLabel="Anterior" (pageChange)="paginaActual = $event"></pagination-controls>
                         </div>
                     </div>
                 </div>
