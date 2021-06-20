@@ -8,7 +8,7 @@ import { UsuariosComponent } from './usuarios/usuarios.component';
 import { NuevoUsuarioComponent } from './usuarios/nuevo-usuario.component';
 import { PipesModule } from '../pipes/pipes.module';
 import { ComponentsModule } from '../components/components.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditarUsuarioComponent } from './usuarios/editar/editar-usuario.component';
 import { EditarPasswordComponent } from './usuarios/editar/editar-password.component';
 import { UnidadMedidaComponent } from './unidad-medida/unidad-medida.component';
@@ -51,7 +51,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     PipesModule,
     ComponentsModule,
     ReactiveFormsModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    FormsModule
   ]
 })
 export class PagesModule { }

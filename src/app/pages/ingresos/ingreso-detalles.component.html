@@ -1,9 +1,74 @@
-<div>
-    <button (click)="showModal = !showModal" class="bg-secondary-500 hover:bg-secondary-600 focus:outline-none rounded-md px-6 py-3 mx-auto block text-white transition duration-500 ease-in-out"> Open modal </button>
-</div>
-<app-modal [showModal]="showModal">
-    <div class="p-3">
-        <h1 class="font-semibold text-2xl mb-2"> Nuevo ingreso </h1>
-        <button (click)="showModal = false" class="bg-secondary-500 text-white p-2 rounded hover:bg-secondary-400"> Cancelar </button>
+<app-modal *ngIf="proveedores" class="p-4" [showModal]="showModal">
+    <div class="p-4">
+        <!-- Header -->
+        <h1 class="text-xl font-semibold text-gray-700"> Editando ingreso </h1>
+        <p> Puede seleccionar un nuevo proveedor </p>
+
+        <!-- Body -->
+        <select #txtProveedor (change)="proveedorSeleccionado = txtProveedor.value" [(ngModel)]="proveedorSeleccionado" class="w-full p-2 text-sm border mb-3 focus:outline-none hover:border-gray-300 mt-2">
+            <option *ngFor="let proveedor of proveedores | filtroProveedores:'':'true'" [value]="proveedor._id"> {{ proveedor.razon_social }} </option>
+        </select>
+
+        <!-- Footer -->
+        <div class="flex">
+            <button class="bg-secondary-800 text-white p-2 rounded shadow w-full focus:outline-none hover:bg-secondary-400" (click)="editarIngreso()"> Editar </button>
+            <button class="bg-gray-500 text-white p-2 rounded shadow w-full ml-4 focus:outline-none hover:bg-gray-400" (click)="showModal = false"> Cancelar </button>
+        </div>
     </div>
 </app-modal>
+
+<app-tarjeta-lista *ngIf="ingreso">
+
+    <!-- Encabezado -->
+    <div class="flex items-center justify-between">
+        <div class="px-4 pt-2 pb-1">
+            <h1 class="flex items-center text-gray-700">
+                <button routerLink="/dashboard/ingresos" title="Regresar" class="border border-gray-300 focus:outline-none p-2 rounded bg-gray-100 shadow hover:text-secondary-800">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                </button>
+                <div class="flex flex-col ml-2">
+                    <span class="ml-2 text-xl text-gray-600"> Detalles de ingreso </span>
+                    <span [ngClass]="{'bg-yellow-100 text-yellow-600 border-yellow-200': ingreso.activo === true, 'bg-green-100 border-green-200 text-green-600': ingreso.activo === false}" class="text-xs mt-1 ml-1 w-max border font-semibold border-gray-200 py-1 px-2 rounded text-yellow-600 bg-yellow-100"> 
+                        {{ ingreso.activo === true ? 'Pendiente' : 'Completado' }}
+                    </span>
+                </div>
+            </h1>
+        </div>
+        <app-boton-generico (click)="showModal = !showModal" class="hidden md:block p-5"> Editar ingreso </app-boton-generico>
+        <app-boton-icono (click)="showModal = !showModal" title="Editar ingreso" class="mr-5 md:hidden"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>            </app-boton-icono>
+    </div>
+
+    <!--  Sub-Encabezado -->
+    <div class="p-4 text-sm bg-gray-100 m-2 shadow border rounded text-gray-700">
+        <p> <span class="font-semibold"> Codigo de ingreso: </span> {{ ingreso.codigo }} </p>
+        <p> <span class="font-semibold"> Fecha de creación: </span> {{ ingreso.createdAt | fecha }} </p>
+        <p> <span class="font-semibold"> Proveedor: </span> {{ ingreso.proveedor.razon_social }} </p>
+        <p> <span class="font-semibold"> Usuario creador: </span> {{ ingreso.usuario_creacion }} </p>
+    </div>
+
+    <div class="flex items-center p-4 border rounded m-2">
+        <div>
+            <h1 class="font-semibold text-lg mb-2 text-gray-700"> Ingresar producto </h1>
+            <input type="text" placeholder="Ingresar codigo" class="p-2 border rounded focus:outline-none">
+        </div>
+        <div class="ml-4 p-2 border rounded text-sm text-gray-700 bg-gray-100">
+            <h1 class="font-semibold"> Producto ingresado </h1>
+            <p> Carne molida </p>
+        </div>
+    </div>
+
+    <!-- Body -->
+    <div class="p-4">
+        <div>
+            <h1 class="text-xl font-semibold"> Listado de productos </h1>
+            <p> Cantidad total: 8 </p>
+        </div>
+        <div>
+            ..............................................................
+            <h1> Tabla de productos </h1>
+        </div>
+
+    </div>
+
+
+</app-tarjeta-lista>

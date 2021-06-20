@@ -15,7 +15,7 @@
         </div>
 
         <!-- Body -->
-        <select #txtProveedor (change)="proveedor = txtProveedor.value" class="w-full p-2 border mb-3 focus:outline-none hover:border-gray-300">
+        <select #txtProveedor (change)="proveedor = txtProveedor.value" class="w-full text-sm p-2 border mb-3 focus:outline-none hover:border-gray-300">
             <option *ngFor="let proveedor of proveedores | filtroProveedores:'':'true'" [value]="proveedor._id"> {{ proveedor.razon_social }} </option>
         </select>
 
