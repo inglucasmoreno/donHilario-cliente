@@ -4,7 +4,7 @@ export class Producto {
         public codigo: string,
         public tipo: string,
         public descripcion: string,
-        public unidad_medida: string,
+        public unidad_medida: any,
         public stock_minimo: boolean,
         public cantidad_minima: number,
         public precio: number,

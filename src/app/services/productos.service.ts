@@ -22,6 +22,15 @@ export class ProductosService {
     })
   }
 
+  // Producto por Codigo
+  productoPorCodigo(codigo: string): Observable<any> {
+    return this.http.get(`${base_url}/productos/codigo/${codigo}`, {
+      headers: {
+        'x-token': localStorage.getItem('token')
+      }
+    })
+  }
+
   // Listar productos
   listarProductos(
     direccion: number = 1,

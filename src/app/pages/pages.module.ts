@@ -23,6 +23,7 @@ import { EditarProveedorComponent } from './proveedores/editar/editar-proveedor.
 import { IngresosComponent } from './ingresos/ingresos.component';
 import { IngresoDetallesComponent } from './ingresos/ingreso-detalles.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { VentasComponent } from './ventas/ventas.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     EditarProveedorComponent,
     IngresosComponent,
     IngresoDetallesComponent,
+    VentasComponent
   ],
   imports: [
     CommonModule,

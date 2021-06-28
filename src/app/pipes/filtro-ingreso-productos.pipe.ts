@@ -1,11 +1,11 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'filtroProductos'
+  name: 'filtroIngresoProductos'
 })
-export class FiltroProductosPipe implements PipeTransform {
+export class FiltroIngresoProductosPipe implements PipeTransform {
 
-  transform(valores: any[], parametro: string, activo: string): any {
+  transform(valores: any[], parametro: string, activo = 'true'): any {
     
     // Trabajando con activo boolean
     let boolActivo: boolean;
@@ -25,19 +25,19 @@ export class FiltroProductosPipe implements PipeTransform {
       filtrados = valores; 
     }
     
-    // Filtrado por parametro (Codigo - Descripcion)
+    // Filtrado por parametro
     parametro = parametro.toLocaleLowerCase();
     const codigoBalanza = parametro.slice(0,7);
-    
+
     if(parametro.length !== 0){
       return filtrados.filter( valor => { 
-        return  valor.codigo.toLocaleLowerCase().includes(parametro) ||
-                valor.codigo.toLocaleLowerCase().includes(codigoBalanza) ||
-                valor.descripcion.toLocaleLowerCase().includes(parametro)
-        });
+        return valor.producto.codigo.toLocaleLowerCase().includes(parametro) ||
+               valor.producto.codigo.toLocaleLowerCase().includes(codigoBalanza) ||
+               valor.producto.descripcion.toLocaleLowerCase().includes(parametro)
+      });
     }else{
       return filtrados;
     }
-
+  
   }
 }

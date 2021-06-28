@@ -1,0 +1,80 @@
+<app-modal [showModal]="showModal">
+    <div>
+        <h1 class="bg-secondary-800 text-white p-2 rounded-t text-xl"> Operaciones sobre precio </h1>
+        <div class="p-2">
+            <!-- Body -->
+            <p class="font-semibold bg-gray-100 p-2 border border-gray-300 text-gray-700 shadow"> Calculadora de vuelto </p>
+            <div class="flex items-center mt-2">
+                <div class="w-1/2">
+                    <p class="font-semibold text-gray-700 mb-2"> Pago de cliente </p>
+                    <input type="number" #txtPago (keyup.enter)="calcularVuelto(txtPago)" class="border p-2 w-full focus:outline-none shadow" placeholder="Paga con...">
+                </div>
+                <div class="w-1/2 ml-4">
+                    <p class="font-semibold text-gray-700 mb-2"> Debes devolver </p>
+                    <div class="border bg-gray-100 p-2 w-full border-gray-300 text-gray-700"> {{ vuelto === 0 ? "Calcular vuelto" : '$' + (vuelto | moneda) }} </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="flex mt-4">
+                <button (click)="calcularVuelto(txtPago)" class="bg-secondary-800 text-white p-2 rounded shadow w-full focus:outline-none hover:bg-secondary-400"> Calcular </button>
+                <button (click)="cerrarModal(txtPago)" class="bg-gray-500 text-white p-2 rounded shadow w-full ml-4 focus:outline-none hover:bg-gray-400"> Cancelar </button>
+            </div>
+        </div>
+    </div>
+</app-modal>
+
+<div class="pt-5 md:px-10">
+    <div class='bg-secondary-800 flex items-center justify-between border shadow w-full p-2'>
+        <div *ngIf="productos.length <= 0" class="text-white text-xl p-1">
+            Carniceria Don Hilario
+        </div>
+        <div *ngIf="productos.length > 0">
+            <button (click)="completarVenta()" class="p-2 focus:outline-none shadow border rounded hover:bg-green-700 bg-gray-800 text-white "> 
+                Completar 
+            </button>
+            <button (click)="modalReiniciarVenta()" class="p-2 shadow border rounded hover:bg-yellow-700 focus:outline-none bg-gray-800 text-white ml-2"> Reiniciar </button>
+        </div>
+        <button (click)="showModal = !showModal" *ngIf="precioTotal > 0" class="border p-2 focus:outline-none bg-gray-800 text-white rounded cursor-pointer hover:bg-gray-600">
+            Total: ${{ precioTotal | moneda }}
+        </button>
+    </div>
+</div>
+<div class="px-10 pt-2 md:flex">
+    <div class="w-full md:w-1/2">
+        <div class="border shadow bg-white">
+            <h1 class="font-semibold mb-2 text-lg bg-secondary-800 text-white p-2 rounded-t"> Ingresar producto </h1>
+            <div class="p-2 flex items-center">
+                <input type="text" id="codigo" (keyup.enter)="buscarProducto()" [(ngModel)]="codigo" placeholder="Codigo de producto" class="border w-1/2 bg-white shadow rounded p-2 outline-none">
+                <button (click)="buscarProducto()" class="ml-2 font-semibold focus:outline-none border rounded shadow hover:text-secondary-800 text-gray-700 bg-gray-100 border-gray-300 p-2 w-1/2"> Cargar producto </button>
+            </div>
+        </div>
+        <div class="bg-white rounded-t shadow mt-4">
+            <p *ngIf="!productoActual && productos.length <= 0" class="text-gray-600 p-2"> Debe ingresar un producto </p>
+            <div *ngIf="productoActual && productoVenta && productos.length > 0">
+                <h1 class="font-semibold text-lg rounded-t bg-secondary-800 text-white py-1 px-2"> Detalle de producto </h1>
+                <div class="p-2">
+                    <p class="text-lg font-semibold border-b-2 mb-2 pb-1"> {{ productoActual.descripcion }} </p>
+                    <ul>
+                        <li> Precio: <span class="font-semibold"> ${{ productoVenta.precio_total | moneda }} </span> </li>
+                        <li> Unidad de medida: <span class="font-semibold"> {{ productoActual.unidad_medida.descripcion }} </span> </li>
+                        <li> Cantidad: <span class="font-semibold"> {{ productoVenta.cantidad }} </span> </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="productos.length > 0" class="w-full md:w-1/2 border bg-white shadow rounded-t mt-4 md:mt-0 md:ml-4 h-full">
+        <h1 class="font-semibold text-lg text-white bg-secondary-800 rounded-t p-2"> Detalle de venta </h1>
+        <div *ngFor="let producto of productos" class="p-2 cursor-pointer">
+            <div (click)="eliminarProducto(producto)" class="flex items-center justify-between bg-yellow-100 border hover:bg-red-100 hover:border-red-300 border-yellow-300">
+                <div class="p-2 text-sm">
+                    <p class="font-semibold"> {{ producto.descripcion }} </p>
+                    <p> Cantidad: {{ producto.cantidad }} ({{ producto.unidad_medida }}) </p>
+                    <p> Precio: ${{ producto.precio_unitario }} </p>
+                </div>
+                <p class="font-semibold p-2"> ${{ producto.precio_total | moneda }} </p>
+            </div>
+        </div>
+    </div>
+</div>
