@@ -22,6 +22,8 @@ import { EditarProveedorComponent } from './proveedores/editar/editar-proveedor.
 import { IngresosComponent } from './ingresos/ingresos.component';
 import { IngresoDetallesComponent } from './ingresos/ingreso-detalles.component';
 import { VentasComponent } from './ventas/ventas.component';
+import { VentasHistorialComponent } from './ventas/ventas-historial.component';
+import { VentasDetallesComponent } from './ventas/ventas-detalles.component';
 
 const routes: Routes = [
     {
@@ -35,6 +37,8 @@ const routes: Routes = [
             
             // Ventas
             { path: 'ventas', component: VentasComponent },
+            { path: 'ventas/historial', component: VentasHistorialComponent },
+            { path: 'ventas/detalles/:id', component: VentasDetallesComponent },
 
             // Usuarios
             { path: 'usuarios', component: UsuariosComponent },

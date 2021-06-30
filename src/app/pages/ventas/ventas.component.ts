@@ -4,6 +4,7 @@ import { ProductosService } from '../../services/productos.service';
 import { Producto } from '../../models/producto.model';
 import { AlertService } from '../../services/alert.service';
 import { VentasService } from '../../services/ventas.service';
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-ventas',
@@ -130,7 +131,10 @@ export class VentasComponent implements OnInit {
                      .then((result)=>{
                        if(result.isConfirmed){
                          this.alertService.loading();
-                         const data = { precio_total: this.precioTotal }
+                         const data = { 
+                           precio_total: this.precioTotal,
+                           productos: this.productos 
+                          };
                          this.ventasService.nuevaVenta(data).subscribe( (resp) => {
                            this.reiniciarVenta();
                            this.alertService.success('Venta completada');
@@ -143,6 +147,9 @@ export class VentasComponent implements OnInit {
                        document.getElementById('codigo').focus();
                      });  
   }
+
+  // Modal - Calcular vuelto
+  modalCalcularVuelto(): void { this.showModal = !this.showModal; }
 
   // Modal - Reiniciar venta
   modalReiniciarVenta(): void {

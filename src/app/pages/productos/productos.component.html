@@ -146,7 +146,7 @@
                                     <!-- Cantidad - Stock actual -->
                                     <td class="px-5 py-2 border-b border-gray-200 text-sm" [ngClass]="{'text-red-500 font-semibold' : producto.cantidad < 0, 'text-gray-900' : producto.cantidad >= 0}">
                                         <p class="whitespace-no-wrap tracking-wider font-semibold">
-                                            {{ producto.cantidad }}
+                                            {{ producto.tipo === 'Normal' ? producto.cantidad : producto.cantidad.toFixed(2) }}
                                         </p>
                                     </td>
                                     <!-- Precio -->

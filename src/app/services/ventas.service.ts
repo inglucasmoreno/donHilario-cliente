@@ -19,4 +19,19 @@ export class VentasService {
     });
   }
 
+  // Listar ventas
+  listarVentas(
+    direccion: number = -1,
+    columna: string = 'codigo'  
+  ): Observable<any> {
+    return this.http.get(`${base_url}/ventas`, {
+      params: {
+        direccion: String(direccion),
+        columna
+      },
+      headers: { 'x-token': localStorage.getItem('token') }
+    });
+  }
+
+
 }

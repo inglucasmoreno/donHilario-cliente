@@ -76,13 +76,13 @@
                     <div class="flex">
                         <div class="border bg-green-100 border-green-300 rounded shadow py-2 px-3">
                             <span class="text-gray-600 text-sm"> Stock actual: </span>
-                            <span class="rounded font-semibold text-md" [ngClass]="{ 'text-red-500' : producto.cantidad < 0, 'text-gray-900' : producto.cantidad >= 0}"> {{ producto.cantidad }} </span>
+                            <span class="rounded font-semibold text-md" [ngClass]="{ 'text-red-500' : producto.cantidad < 0, 'text-gray-900' : producto.cantidad >= 0}"> {{ producto.tipo === 'Normal' ? producto.cantidad : producto.cantidad.toFixed(2) }} </span>
                         </div>
                     </div>
                     <div class="flex">
                         <div *ngIf="producto.stock_minimo" class="border bg-orange-100 border-orange-300 mt-2 lg:mt-0 rounded shadow py-2 px-3 lg:ml-4">
                             <span class="text-gray-600 text-sm"> Stock minimo: </span>
-                            <span class="ml1 rounded font-semibold text-md"> {{ producto.cantidad_minima }} </span>
+                            <span class="ml1 rounded font-semibold text-md"> {{ producto.tipo === 'Normal' ? producto.cantidad_minima : producto.cantidad_minima.toFixed(2) }} </span>
                         </div>
                     </div>
                 </div>

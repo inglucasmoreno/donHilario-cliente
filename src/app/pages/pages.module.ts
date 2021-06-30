@@ -24,6 +24,8 @@ import { IngresosComponent } from './ingresos/ingresos.component';
 import { IngresoDetallesComponent } from './ingresos/ingreso-detalles.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { VentasComponent } from './ventas/ventas.component';
+import { VentasHistorialComponent } from './ventas/ventas-historial.component';
+import { VentasDetallesComponent } from './ventas/ventas-detalles.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,9 @@ import { VentasComponent } from './ventas/ventas.component';
     EditarProveedorComponent,
     IngresosComponent,
     IngresoDetallesComponent,
-    VentasComponent
+    VentasComponent,
+    VentasHistorialComponent,
+    VentasDetallesComponent
   ],
   imports: [
     CommonModule,

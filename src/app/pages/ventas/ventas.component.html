@@ -26,16 +26,19 @@
 
 <div class="pt-5 md:px-10">
     <div class='bg-secondary-800 flex items-center justify-between border shadow w-full p-2'>
-        <div *ngIf="productos.length <= 0" class="text-white text-xl p-1">
-            Carniceria Don Hilario
+        <div *ngIf="productos.length <= 0" class="text-white text-xl flex items-center justify-between p-1">
+            <div> Carniceria Don Hilario </div>
         </div>
+        <button routerLink="/dashboard/ventas/historial" class="border p-2 focus:outline-none rounded bg-gray-800 hover:bg-gray-700 text-white" *ngIf="productos.length <= 0">
+            Historal de ventas  
+        </button>
         <div *ngIf="productos.length > 0">
             <button (click)="completarVenta()" class="p-2 focus:outline-none shadow border rounded hover:bg-green-700 bg-gray-800 text-white "> 
                 Completar 
             </button>
             <button (click)="modalReiniciarVenta()" class="p-2 shadow border rounded hover:bg-yellow-700 focus:outline-none bg-gray-800 text-white ml-2"> Reiniciar </button>
         </div>
-        <button (click)="showModal = !showModal" *ngIf="precioTotal > 0" class="border p-2 focus:outline-none bg-gray-800 text-white rounded cursor-pointer hover:bg-gray-600">
+        <button (click)="modalCalcularVuelto()" *ngIf="precioTotal > 0" class="border p-2 focus:outline-none bg-gray-800 text-white rounded cursor-pointer hover:bg-gray-600">
             Total: ${{ precioTotal | moneda }}
         </button>
     </div>

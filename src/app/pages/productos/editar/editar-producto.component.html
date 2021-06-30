@@ -50,7 +50,7 @@
                         Stock actual
                     </div>
                     <div class="bg-gray-100 my-2 px-3 py-2 flex border border-gray-300 rounded shadow text-sm">
-                        {{ producto.cantidad }}
+                        {{ producto.tipo === 'Normal' ? producto.cantidad : producto.cantidad.toFixed(2) }}
                     </div>
                 </div>
             </div>
