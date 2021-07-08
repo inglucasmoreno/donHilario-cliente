@@ -31,6 +31,7 @@ export class VentasHistorialComponent implements OnInit {
   }
 
   public ventas: any[] = [];
+  public montoTotal : number = 0;
 
   constructor(private alertService: AlertService,
               private dataService: DataService,
@@ -42,6 +43,15 @@ export class VentasHistorialComponent implements OnInit {
     this.listarVentas();
   }
 
+  // Calculo de monto total
+  calculoMontoTotal(): void {
+    this.montoTotal = 0;
+    this.ventas.forEach( ({ precio_total }) => {
+      this.montoTotal += precio_total;  
+    });
+  }
+  
+  // Listado de ventas activas
   listarVentas(): void {
     this.ventasService.listarVentas(
       this.ordenar.direccion,
@@ -49,6 +59,7 @@ export class VentasHistorialComponent implements OnInit {
     ).subscribe(({ ventas }) => {
       this.alertService.close();
       this.ventas = ventas;
+      this.calculoMontoTotal();
     });
   }
 

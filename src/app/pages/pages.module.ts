@@ -26,6 +26,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { VentasComponent } from './ventas/ventas.component';
 import { VentasHistorialComponent } from './ventas/ventas-historial.component';
 import { VentasDetallesComponent } from './ventas/ventas-detalles.component';
+import { CajasComponent } from './cajas/cajas.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { VentasDetallesComponent } from './ventas/ventas-detalles.component';
     IngresoDetallesComponent,
     VentasComponent,
     VentasHistorialComponent,
-    VentasDetallesComponent
+    VentasDetallesComponent,
+    CajasComponent
   ],
   imports: [
     CommonModule,

@@ -24,6 +24,7 @@ import { IngresoDetallesComponent } from './ingresos/ingreso-detalles.component'
 import { VentasComponent } from './ventas/ventas.component';
 import { VentasHistorialComponent } from './ventas/ventas-historial.component';
 import { VentasDetallesComponent } from './ventas/ventas-detalles.component';
+import { CajasComponent } from './cajas/cajas.component';
 
 const routes: Routes = [
     {
@@ -64,6 +65,9 @@ const routes: Routes = [
             { path: 'proveedores', component: ProveedoresComponent},
             { path: 'proveedores/nuevo', component: NuevoProveedorComponent},
             { path: 'proveedores/editar/:id', component: EditarProveedorComponent},
+
+            // Cajas
+            { path: 'cajas', component: CajasComponent},
 
         ]
     }

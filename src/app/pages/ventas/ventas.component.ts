@@ -19,23 +19,32 @@ export class VentasComponent implements OnInit {
                private alertService: AlertService,
                private ventasService: VentasService) { }
 
+
+  // Venta
+  public codigo: string = '';
+  public vuelto = 0;
+  public pago = null;
+  public precioTotal = 0;
+  public totalBalanza = 0;
+  public totalMercaderia = 0;
+  
+  // Productos
+  public productos: any[] = [];
+  public productoActual: Producto;
   public productoVenta = { 
     descripcion: '',
     producto: '', 
     precio_unitario: 0, 
     precio_total: 0, 
     unidad_medida: '',
-    cantidad: 0 
+    cantidad: 0,
+    tipo: ''
   };
-
-  public showModal = false;
-  public productoActual: Producto;
-  public codigo: string = '';
-  public cantidad: number;
-  public productos: any[] = [];
-  public precioTotal = 0;
-  public vuelto = 0;
-
+  
+  // Descuentos y Beneficios + Forma de pago 
+  public descuento_porcentual = 1;
+  public forma_pago = 'Efectivo';
+  
   ngOnInit(): void {
     document.getElementById('codigo').focus();
     this.dataService.ubicacionActual = 'Dashboard - Ventas';
@@ -55,6 +64,7 @@ export class VentasComponent implements OnInit {
       this.productoVenta.unidad_medida = producto.unidad_medida.descripcion;
       this.productoVenta.producto = producto._id;
       this.productoVenta.precio_unitario = producto.precio;
+      this.productoVenta.tipo = producto.tipo;
       if(producto.tipo === 'Balanza') {
         this.productoVenta.cantidad = Number(this.codigo.slice(7,this.codigo.length - 1)) / 1000;
         this.productoVenta.precio_total = this.productoVenta.cantidad * producto.precio;
@@ -96,7 +106,8 @@ export class VentasComponent implements OnInit {
         producto: this.productoVenta.producto, 
         precio_unitario: this.productoVenta.precio_unitario, 
         precio_total: this.productoVenta.precio_total, 
-        cantidad: this.productoVenta.cantidad
+        cantidad: this.productoVenta.cantidad,
+        tipo: this.productoVenta.tipo
       });
     }
   
@@ -118,11 +129,34 @@ export class VentasComponent implements OnInit {
   
   // Calcular precio total
   calculoPrecioTotal(): void {
-    let precioTemp = 0;
+
+    let precioTempTotal = 0;
+    let balanzaTempTotal = 0;
+    let mercaderiaTempTotal = 0;
+
+    // Precio total sin descuentos ni beneficios
     this.productos.forEach(elemento => {
-      precioTemp += elemento.precio_total;
+      precioTempTotal += elemento.precio_total;
+      elemento.tipo === 'Normal' ? mercaderiaTempTotal += elemento.precio_total : balanzaTempTotal += elemento.precio_total;
     });
-    this.precioTotal = precioTemp;
+    
+    // Se aplica beneficio del 10% por Tarjeta de credito
+    if(this.forma_pago === 'Credito'){
+      precioTempTotal = precioTempTotal * 1.10;
+    }
+    
+    // Se aplica descuento porcentual
+    if(this.descuento_porcentual != 1){
+      const descuento = 1 - this.descuento_porcentual;
+      precioTempTotal = precioTempTotal * descuento;
+    }
+
+    this.precioTotal = precioTempTotal;
+    this.totalBalanza = balanzaTempTotal;
+    this.totalMercaderia = mercaderiaTempTotal;
+
+    this.calcularVuelto();
+
   }
 
   // Completar venta
@@ -132,6 +166,10 @@ export class VentasComponent implements OnInit {
                        if(result.isConfirmed){
                          this.alertService.loading();
                          const data = { 
+                           forma_pago: this.forma_pago,
+                           total_balanza: this.totalBalanza,
+                           total_mercaderia: this.totalMercaderia,
+                           descuento_porcentual: this.descuento_porcentual,
                            precio_total: this.precioTotal,
                            productos: this.productos 
                           };
@@ -147,18 +185,6 @@ export class VentasComponent implements OnInit {
                        document.getElementById('codigo').focus();
                      });  
   }
-
-  // Modal - Calcular vuelto
-  modalCalcularVuelto(): void { this.showModal = !this.showModal; }
-
-  // Modal - Reiniciar venta
-  modalReiniciarVenta(): void {
-    this.alertService.question({msg:'¿Quieres reiniciar la venta?', buttonText: 'Reiniciar'})
-                     .then((result)=>{
-                        if(result.isConfirmed){ this.reiniciarVenta(); }
-                        document.getElementById('codigo').focus();
-                      });  
-  }
   
   // Reiniciar venta
   reiniciarVenta(): void {
@@ -168,31 +194,24 @@ export class VentasComponent implements OnInit {
       precio_unitario: 0, 
       precio_total: 0, 
       unidad_medida: '',
-      cantidad: 0 
+      cantidad: 0,
+      tipo: ''
     };
     this.productos = [];  
     this.precioTotal = 0;
+    this.totalBalanza = 0;
+    this.totalMercaderia = 0;
     this.productoActual = null;
+    this.pago = null;
+    this.vuelto = 0;
+    this.forma_pago = 'Efectivo';
+    this.descuento_porcentual = 1;
     document.getElementById('codigo').focus();
   }
 
   // Calcular vuelto
-  calcularVuelto(pago: any): void{
-    if(pago.value.trim() === '') {
-      this.alertService.info('Formulario inválido');
-      pago.value = '';
-      return;
-    };
-    const pagoNumber = Number(pago.value);
-    this.vuelto = pagoNumber - this.precioTotal;      
-  }
-
-  // Cerrar modal
-  cerrarModal(txtPago: any): void {
-    this.showModal = false;
-    document.getElementById('codigo').focus();
-    this.vuelto = 0;
-    txtPago.value = '';
+  calcularVuelto(): void{
+    this.vuelto = this.pago - this.precioTotal;      
   }
 
 }

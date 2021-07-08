@@ -12,6 +12,13 @@ export class VentasService {
 
   constructor(private http: HttpClient) { }
 
+  // Venta por ID
+  getVenta(id: string): Observable<any> {
+    return this.http.get(`${base_url}/ventas/${id}`, {
+      headers: { 'x-token': localStorage.getItem('token') }
+    });
+  }
+
   // Crear nueva venta
   nuevaVenta(data: any): Observable<any> {
     return this.http.post(`${base_url}/ventas`, data, {
