@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from '../guards/auth.guard';
+import { AdminGuard } from '../guards/admin.guard';
 
 // Componentes
 import { PagesComponent } from './pages.component';
@@ -25,6 +26,7 @@ import { VentasComponent } from './ventas/ventas.component';
 import { VentasHistorialComponent } from './ventas/ventas-historial.component';
 import { VentasDetallesComponent } from './ventas/ventas-detalles.component';
 import { CajasComponent } from './cajas/cajas.component';
+import { CajasHistorialComponent } from './cajas/cajas-historial.component';
 
 const routes: Routes = [
     {
@@ -38,36 +40,37 @@ const routes: Routes = [
             
             // Ventas
             { path: 'ventas', component: VentasComponent },
-            { path: 'ventas/historial', component: VentasHistorialComponent },
-            { path: 'ventas/detalles/:id', component: VentasDetallesComponent },
+            { path: 'ventas/historial', canActivate: [AdminGuard], component: VentasHistorialComponent },
+            { path: 'ventas/detalles/:id', canActivate: [AdminGuard], component: VentasDetallesComponent },
 
             // Usuarios
-            { path: 'usuarios', component: UsuariosComponent },
-            { path: 'usuarios/nuevo', component: NuevoUsuarioComponent },
-            { path: 'usuarios/editar/:id', component: EditarUsuarioComponent },
-            { path: 'usuarios/password/:id', component: EditarPasswordComponent },
+            { path: 'usuarios', canActivate: [AdminGuard], component: UsuariosComponent },
+            { path: 'usuarios/nuevo', canActivate: [AdminGuard], component: NuevoUsuarioComponent },
+            { path: 'usuarios/editar/:id', canActivate: [AdminGuard], component: EditarUsuarioComponent },
+            { path: 'usuarios/password/:id', canActivate: [AdminGuard], component: EditarPasswordComponent },
                         
             // Productos
-            { path: 'productos', component: ProductosComponent},
-            { path: 'productos/nuevo', component: NuevoProductoComponent},
-            { path: 'productos/detalle/:id', component: DetalleProductoComponent},
-            { path: 'productos/editar/:id', component: EditarProductoComponent},
+            { path: 'productos', canActivate: [AdminGuard], component: ProductosComponent},
+            { path: 'productos/nuevo', canActivate: [AdminGuard], component: NuevoProductoComponent},
+            { path: 'productos/detalle/:id', canActivate: [AdminGuard], component: DetalleProductoComponent},
+            { path: 'productos/editar/:id', canActivate: [AdminGuard], component: EditarProductoComponent},
         
             // Ingresos
-            { path: 'ingresos', component: IngresosComponent},
-            { path: 'ingresos/detalles/:id', component: IngresoDetallesComponent},
+            { path: 'ingresos', canActivate: [AdminGuard], component: IngresosComponent},
+            { path: 'ingresos/detalles/:id', canActivate: [AdminGuard], component: IngresoDetallesComponent},
 
             // Unidad de medida
-            { path: 'unidad_medida', component: UnidadMedidaComponent},
-            { path: 'unidad_medida/editar/:id', component: EditarUnidadComponent},
+            { path: 'unidad_medida', canActivate: [AdminGuard], component: UnidadMedidaComponent},
+            { path: 'unidad_medida/editar/:id', canActivate: [AdminGuard], component: EditarUnidadComponent},
 
             // Proveedores
-            { path: 'proveedores', component: ProveedoresComponent},
-            { path: 'proveedores/nuevo', component: NuevoProveedorComponent},
-            { path: 'proveedores/editar/:id', component: EditarProveedorComponent},
+            { path: 'proveedores', canActivate: [AdminGuard], component: ProveedoresComponent},
+            { path: 'proveedores/nuevo', canActivate: [AdminGuard], component: NuevoProveedorComponent},
+            { path: 'proveedores/editar/:id', canActivate: [AdminGuard], component: EditarProveedorComponent},
 
             // Cajas
             { path: 'cajas', component: CajasComponent},
+            { path: 'cajas/historial', canActivate: [AdminGuard], component: CajasHistorialComponent},
 
         ]
     }

@@ -12,6 +12,8 @@ export class CajasService {
 
   constructor(private http: HttpClient) { }
 
+  // ---- | Saldo inicial | ----
+
   // Obtener saldo inicial de caja
   getSaldoInicial():Observable<any> {
     return this.http.get(`${base_url}/cajas/saldo_inicial`, {
@@ -22,6 +24,29 @@ export class CajasService {
   // Creacion o actualizacion de saldo inicial de caja
   actualizarSaldoInicial(data: any): Observable<any> {
     return this.http.put(`${base_url}/cajas/saldo_inicial`, data, {
+      headers: { 'x-token': localStorage.getItem('token')}
+    });
+  }
+
+  // ---- | Cajas | ----
+
+  // Obtener caja por ID
+  getCaja(id: string): Observable<any> {
+    return this.http.get(`${base_url}/cajas/${ id }`, {
+      headers: { 'x-token': localStorage.getItem('token')}
+    });
+  }
+
+  // Listar cajas
+  listarCajas(
+    direccion: number = -1,
+    columna: string = 'createdAt'
+  ): Observable<any> {
+    return this.http.get(`${base_url}/cajas`, {
+      params: {
+        direccion: String(direccion),
+        columna
+      },
       headers: { 'x-token': localStorage.getItem('token')}
     });
   }

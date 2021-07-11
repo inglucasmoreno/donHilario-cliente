@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
 import { DataService } from 'src/app/services/data.service';
 import { VentasService } from 'src/app/services/ventas.service';
 import { AlertService } from '../../services/alert.service';
@@ -59,6 +60,10 @@ export class CajasComponent implements OnInit {
     
     // Total global
     total_ventas: 0,
+
+    // Otros
+    total_descuento: 0,
+    total_adicional_credito: 0,
     
     // Por tipo de producto
     total_balanza: 0,
@@ -69,11 +74,12 @@ export class CajasComponent implements OnInit {
     total_postnet: 0,
 
     // Monto total
-    efectivo_en_caja: 0
+    efectivo_en_caja: 0,
     
   }
 
   constructor(private dataService: DataService,
+              public authService: AuthService,
               private alertService: AlertService,
               private ventasService: VentasService,
               private cajasService: CajasService) { }
@@ -145,6 +151,7 @@ export class CajasComponent implements OnInit {
           saldo_inicial: this.data.saldo_inicial,
           total_balanza: this.data.total_balanza,
           total_mercaderia: this.data.total_mercaderia,
+          total_descuentos: this.data.total_descuento,
           total_efectivo: this.data.efectivo_en_caja,
           total_efectivo_real: this.billetes.total_billetes,
           diferencia: this.billetes.diferencia,
@@ -216,7 +223,6 @@ export class CajasComponent implements OnInit {
 
   // Eliminar Ingreso/Gasto
   eliminarIngresoGasto(elemento: any): void {
-    console.log(elemento);
     this.alertService.question({ msg: '¿Quieres eliminar este elemento?', buttonText: 'Eliminar' })
           .then(({isConfirmed}) => {  
             if (isConfirmed) {
@@ -237,13 +243,13 @@ export class CajasComponent implements OnInit {
 
     if(this.elementoActual.tipo === 'Ingreso'){
       this.ingresos.push({
-        descripcion: this.elementoActual.descripcion,
+        descripcion: this.elementoActual.descripcion.toUpperCase(),
         monto: this.elementoActual.monto,
         tipo: this.elementoActual.tipo
       });    
     }else if(this.elementoActual.tipo === 'Gasto'){
       this.gastos.push({
-        descripcion: this.elementoActual.descripcion,
+        descripcion: this.elementoActual.descripcion.toUpperCase(),
         monto: this.elementoActual.monto,
         tipo: this.elementoActual.tipo
       });      
@@ -270,12 +276,20 @@ export class CajasComponent implements OnInit {
     let total_balanza_tmp = 0;
     let total_efectivo_tmp = 0;
     let total_postnet_tmp = 0;
+    let total_descuentos_tmp = 0;
+    let total_adicional_credito_tmp = 0;
 
     this.ventas.forEach( venta => {
       total_ventas_tmp += venta.precio_total;
       total_mercaderia_tmp += venta.total_mercaderia;
       total_balanza_tmp += venta.total_balanza;
-      venta.forma_pago === 'Efectivo' ? total_efectivo_tmp += venta.precio_total : total_postnet_tmp += venta.precio_total;
+      if(venta.forma_pago === 'Efectivo'){
+        total_efectivo_tmp += venta.precio_total
+      }else{
+        total_postnet_tmp += venta.precio_total - venta.total_descuento;
+      };
+      total_descuentos_tmp += venta.total_descuento;
+      total_adicional_credito_tmp += venta.total_adicional_credito;
     });
     
     // Montos finales
@@ -284,15 +298,16 @@ export class CajasComponent implements OnInit {
     this.data.total_balanza = total_balanza_tmp;
     this.data.total_efectivo = total_efectivo_tmp;
     this.data.total_postnet = total_postnet_tmp;
-    
-    this.calculo_monto_total();
-    this.calculo_billetes();
+    this.data.total_adicional_credito = total_adicional_credito_tmp;
+    this.data.total_descuento = total_descuentos_tmp;
 
+    this.calculo_monto_total();
+    
   }
 
   // Ingresos - Gastos
   calculo_monto_total() {
-    this.data.efectivo_en_caja = this.data.total_ventas +
+    this.data.efectivo_en_caja = (this.data.total_ventas - this.data.total_descuento) +
                                  this.data.saldo_inicial - 
                                  this.totalOtrosGastos +
                                  this.totalOtrosIngresos - 

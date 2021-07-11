@@ -27,6 +27,7 @@ import { VentasComponent } from './ventas/ventas.component';
 import { VentasHistorialComponent } from './ventas/ventas-historial.component';
 import { VentasDetallesComponent } from './ventas/ventas-detalles.component';
 import { CajasComponent } from './cajas/cajas.component';
+import { CajasHistorialComponent } from './cajas/cajas-historial.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { CajasComponent } from './cajas/cajas.component';
     VentasComponent,
     VentasHistorialComponent,
     VentasDetallesComponent,
-    CajasComponent
+    CajasComponent,
+    CajasHistorialComponent
   ],
   imports: [
     CommonModule,

@@ -10,7 +10,7 @@ export class RolPipe implements PipeTransform {
       case 'ADMIN_ROLE':
         return 'Administrador'
       case 'USER_ROLE':
-        return 'Estandar'
+        return 'Cajero'
       default:
         break;
     }

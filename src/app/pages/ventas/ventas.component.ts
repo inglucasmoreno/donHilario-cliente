@@ -5,6 +5,7 @@ import { Producto } from '../../models/producto.model';
 import { AlertService } from '../../services/alert.service';
 import { VentasService } from '../../services/ventas.service';
 import { delay } from 'rxjs/operators';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-ventas',
@@ -15,6 +16,7 @@ import { delay } from 'rxjs/operators';
 export class VentasComponent implements OnInit {
 
   constructor( private dataService: DataService,
+               public authService: AuthService,
                private productosService: ProductosService,
                private alertService: AlertService,
                private ventasService: VentasService) { }
@@ -27,6 +29,8 @@ export class VentasComponent implements OnInit {
   public precioTotal = 0;
   public totalBalanza = 0;
   public totalMercaderia = 0;
+  public totalDescuentos = 0;
+  public totalAdicionalPorCredito = 0;
   
   // Productos
   public productos: any[] = [];
@@ -133,6 +137,8 @@ export class VentasComponent implements OnInit {
     let precioTempTotal = 0;
     let balanzaTempTotal = 0;
     let mercaderiaTempTotal = 0;
+    this.totalAdicionalPorCredito = 0;
+    this.totalDescuentos = 0;
 
     // Precio total sin descuentos ni beneficios
     this.productos.forEach(elemento => {
@@ -142,13 +148,15 @@ export class VentasComponent implements OnInit {
     
     // Se aplica beneficio del 10% por Tarjeta de credito
     if(this.forma_pago === 'Credito'){
-      precioTempTotal = precioTempTotal * 1.10;
+      // precioTempTotal = precioTempTotal * 1.10;
+      this.totalAdicionalPorCredito = precioTempTotal * 0.10;
     }
     
     // Se aplica descuento porcentual
     if(this.descuento_porcentual != 1){
-      const descuento = 1 - this.descuento_porcentual;
-      precioTempTotal = precioTempTotal * descuento;
+      // const descuento = 1 - this.descuento_porcentual
+      // precioTempTotal = precioTempTotal * descuento;
+      this.totalDescuentos = (precioTempTotal + this.totalAdicionalPorCredito) * this.descuento_porcentual; 
     }
 
     this.precioTotal = precioTempTotal;
@@ -169,6 +177,8 @@ export class VentasComponent implements OnInit {
                            forma_pago: this.forma_pago,
                            total_balanza: this.totalBalanza,
                            total_mercaderia: this.totalMercaderia,
+                           total_adicional_credito: this.totalAdicionalPorCredito,
+                           total_descuento: this.totalDescuentos,
                            descuento_porcentual: this.descuento_porcentual,
                            precio_total: this.precioTotal,
                            productos: this.productos 
@@ -201,6 +211,8 @@ export class VentasComponent implements OnInit {
     this.precioTotal = 0;
     this.totalBalanza = 0;
     this.totalMercaderia = 0;
+    this.totalAdicionalPorCredito = 0;
+    this.totalDescuentos = 0;
     this.productoActual = null;
     this.pago = null;
     this.vuelto = 0;
@@ -211,7 +223,7 @@ export class VentasComponent implements OnInit {
 
   // Calcular vuelto
   calcularVuelto(): void{
-    this.vuelto = this.pago - this.precioTotal;      
+    this.vuelto = this.pago - (this.precioTotal + this.totalAdicionalPorCredito - this.totalDescuentos);      
   }
 
 }

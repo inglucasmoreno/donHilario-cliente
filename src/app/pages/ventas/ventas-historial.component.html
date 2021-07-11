@@ -12,16 +12,6 @@
                         <table class="min-w-full leading-normal">
                             <thead>
                                 <tr>
-                                    <th (click)="ordenarPorColumna('codigo')" class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                        <div class="cursor-pointer flex items-center focus:outline-none">
-                                            <span> Código </span>
-                                            <span class="ml-1">
-                                                <svg *ngIf="ordenar.columna == 'codigo' && ordenar.direccion == 1" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>                                   
-                                                <svg *ngIf="ordenar.columna == 'codigo' && ordenar.direccion == -1" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
-                                                <svg *ngIf="ordenar.columna != 'codigo'" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                                            </span>
-                                        </div>
-                                    </th>
                                     <th (click)="ordenarPorColumna('createdAt')" class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                         <div class="cursor-pointer flex items-center focus:outline-none">
                                             <span>
@@ -69,11 +59,6 @@
                             <tbody>
                                 <tr [routerLink]="['/dashboard/ventas/detalles', venta._id]" class="animate__animated animate__fadeIn hover:bg-gray-100 cursor-pointer" *ngFor="let venta of ventas | paginate: {itemsPerPage: cantidadItems, currentPage: paginaActual}">
                                     <td class="px-5 py-2 border-b border-gray-200">
-                                        <p class="text-gray-900 whitespace-no-wformulario text-sm">
-                                            {{ venta.codigo }}
-                                        </p>
-                                    </td>
-                                    <td class="px-5 py-2 border-b border-gray-200">
                                         <p class="text-gray-900 whitespace-no-wrap text-sm">
                                             {{ venta.createdAt | fecha }}
                                         </p>
@@ -85,7 +70,7 @@
                                     </td>
                                     <td class="px-5 py-2 border-b border-gray-200">
                                         <p class="text-gray-900 whitespace-no-wrap text-sm">
-                                            ${{ venta.precio_total | moneda }}
+                                            ${{ venta.precio_total - venta.total_descuento | moneda }}
                                         </p>
                                     </td>
                                     <td class="px-5 py-2 border-b border-gray-200">
