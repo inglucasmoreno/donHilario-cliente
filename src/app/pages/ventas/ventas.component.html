@@ -16,7 +16,7 @@
             <!-- <button (click)="modalReiniciarVenta()" class="p-2 shadow border rounded hover:bg-yellow-700 focus:outline-none bg-gray-800 text-white ml-2"> Reiniciar </button> -->
         </div>
         <div *ngIf="precioTotal > 0" class="border-2 border-gray-800 p-2 focus:outline-none bg-gray-100 text-gray-700 rounded">
-            Total: ${{ precioTotal | moneda }}
+            Total: ${{ precioTotal + totalAdicionalPorCredito - totalDescuentos | moneda }}
         </div>
     </div>
 </div>

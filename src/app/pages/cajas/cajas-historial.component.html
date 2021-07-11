@@ -97,13 +97,13 @@
                     </span>
                     <span> ${{ cajaSeleccionada.saldo_inicial | moneda}} </span>
                 </p>
-                <p *ngIf="cajaSeleccionada.total_mercaderia > 0" class="font-semibold p-2 border-b flex items-center justify-between">
+                <p class="font-semibold p-2 border-b flex items-center justify-between">
                     <span>
-                        <span class="text-green-500"> (+) </span> Total balanaza
+                        <span class="text-green-500"> (+) </span> Total balanza
                     </span>
                     <span class="font-normal"> ${{ cajaSeleccionada.total_balanza | moneda}} </span>
                 </p>
-                <p *ngIf="cajaSeleccionada.total_balanza > 0" class="font-semibold p-2 border-b flex items-center justify-between">
+                <p class="font-semibold p-2 border-b flex items-center justify-between">
                     <span>
                         <span class="text-green-500"> (+) </span> Total mercaderia
                     </span>
@@ -121,29 +121,29 @@
                         <span class="font-normal text-sm"> ${{ ingreso.monto | moneda}} </span>
                     </p>
                 </div>
-                <p *ngIf="cajaSeleccionada.total_descuentos > 0" class="font-semibold p-2 border-b flex items-center justify-between">
+                <p class="font-semibold p-2 border-b flex items-center justify-between">
                     <span>
                         <span class="text-red-500"> (-) </span> Total por descuentos
                     </span>
-                    <span class="font-normal"> ${{ cajaSeleccionada.total_descuentos | moneda}} </span>
+                    <span class="font-normal text-red-500"> -${{ cajaSeleccionada.total_descuentos | moneda}} </span>
                 </p>
                 <p (click)="showGastos = !showGastos" *ngIf="cajaSeleccionada.otros_gastos > 0" class="font-semibold p-2 border-b hover:text-red-500 flex cursor-pointer items-center justify-between">
                     <span>
                         <span class="text-red-500"> (-) </span> Otros gastos
                     </span>
-                    <span class="font-normal"> ${{ cajaSeleccionada.otros_gastos | moneda}} </span>
+                    <span class="font-normal text-red-500"> -${{ cajaSeleccionada.otros_gastos | moneda}} </span>
                 </p>
                 <div *ngIf="showGastos && otrosGastos.length > 0">
                     <p *ngFor="let gasto of otrosGastos" class="font-semibold pl-7 pr-2 py-2 bg-red-100 text-red-600 border border-red-200 flex items-center text-xs justify-between">
                         <span> {{ gasto.descripcion }} </span>
-                        <span class="font-normal text-sm"> ${{ gasto.monto | moneda}} </span>
+                        <span class="font-normal text-sm text-red-500"> -${{ gasto.monto | moneda}} </span>
                     </p>
                 </div>
-                <p *ngIf="cajaSeleccionada.total_postnet > 0" class="font-semibold p-2 border-b flex items-center justify-between">
+                <p class="font-semibold p-2 border-b flex items-center justify-between">
                     <span>
                         <span class="text-red-500"> (-) </span> Total postnet
                     </span>
-                    <span class="font-normal"> ${{ cajaSeleccionada.total_postnet | moneda}} </span>
+                    <span class="font-normal text-red-500"> -${{ cajaSeleccionada.total_postnet | moneda}} </span>
                 </p>
                 <p class="font-semibold p-2 border-b flex items-center justify-between bg-gray-100">
                     <span> Efectivo en caja </span>

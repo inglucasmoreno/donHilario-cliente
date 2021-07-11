@@ -270,6 +270,8 @@ export class CajasComponent implements OnInit {
   // Calculo de montos
   calculos(): void {
     
+    this.billetes;
+
     // Montos temporales
     let total_ventas_tmp = 0;
     let total_mercaderia_tmp = 0;
