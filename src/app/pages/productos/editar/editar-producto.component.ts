@@ -6,6 +6,7 @@ import { UnidadMedidaService } from 'src/app/services/unidad-medida.service';
 import { Producto } from '../../../models/producto.model';
 import { AlertService } from '../../../services/alert.service';
 import { DataService } from '../../../services/data.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-editar-producto',
@@ -17,12 +18,14 @@ export class EditarProductoComponent implements OnInit {
 
   // Variables de producto
   public unidades = [];
+  private porcentajeVenta = environment.porcentajeVenta;
+  public precio_venta = 0;
   public productoId = '';
   public stockMinimo = true;
   public digitos = 30;            // Maxima longitud de digitos para producto normal
   public digitosBalanza = 7;      // Maxima longitud de digitos para producto de balanza
   public tipo = 'Normal';         // Tipo: Normal o Balanza 
-  public producto: Producto = {   // Objeto: producto
+  public producto: any = {   // Objeto: producto
     _id: '',
     codigo: '',
     tipo: 'Normal',
@@ -31,9 +34,10 @@ export class EditarProductoComponent implements OnInit {
     cantidad: 0,
     stock_minimo: false,
     cantidad_minima: 0,
-    precio: 0,
+    precio_costo: 0,
     activo: true  
   };
+
   
   // Formulario Reactivo
   public productoForm = this.fb.group({
@@ -43,7 +47,7 @@ export class EditarProductoComponent implements OnInit {
     unidad_medida: ['', Validators.required],
     stock_minimo: [false, Validators.required],
     cantidad_minima: [0, Validators.required],
-    precio: [0, Validators.required],
+    precio_costo: [0, Validators.required],
     activo: [true, Validators.required]
   });
 
@@ -64,6 +68,13 @@ export class EditarProductoComponent implements OnInit {
     })
   }
 
+  // Actualizar precio de venta
+  actualizarPrecioVenta(): void {
+    let precio_venta_tmp = 0;   
+    this.productoForm.value.precio_venta === null ? precio_venta_tmp = 0 : precio_venta_tmp = this.productoForm.value.precio_costo * (this.porcentajeVenta/100 + 1);
+    this.precio_venta = Number(precio_venta_tmp.toFixed(2));
+  }
+
   // Cambio de tipo de productos
   cambioTipo(tipo): void {
     this.digitos = tipo === 'Balanza' ? this.digitosBalanza : 30;
@@ -73,7 +84,7 @@ export class EditarProductoComponent implements OnInit {
   // Editando producto
   editarProducto(): void {
 
-    const {codigo, descripcion, stock_minimo, cantidad_minima, precio} = this.productoForm.value;   
+    const {codigo, descripcion, stock_minimo, cantidad_minima, precio_costo} = this.productoForm.value;   
     
     const cantidadMinimaValida = stock_minimo && Number(cantidad_minima) < 0;
 
@@ -85,14 +96,16 @@ export class EditarProductoComponent implements OnInit {
     const formularioValido = this.productoForm.valid && 
                              codigo.trim() !== '' && 
                              descripcion.trim() !== '' && 
-                             Number(precio) >= 0 
+                             Number(precio_costo) >= 0 
 
     if(formularioValido){ 
         this.alertService.loading();
         const data = this.productoForm.value;
+        data.precio = this.precio_venta;
         if(!this.stockMinimo) data.cantidad_minima = 0;
         this.productosService.actualizarProducto(this.producto._id, data).subscribe(()=>{
           this.alertService.success('Producto actualizado correctamente');
+          this.dataService.detectarStockMinimo();
           this.alertService.close();
           this.router.navigateByUrl(`/dashboard/productos`);
         },({error}) =>{
@@ -118,15 +131,16 @@ export class EditarProductoComponent implements OnInit {
     this.productosService.getProducto(id).subscribe(({producto})=>{
       this.producto = producto;
       this.stockMinimo = producto.stock_minimo;
+      this.precio_venta = producto.precio;
       this.cambioTipo(producto.tipo);
       this.productoForm.setValue({
         codigo: producto.codigo,
         tipo: producto.tipo,
         descripcion: producto.descripcion,
-        unidad_medida: producto.unidad_medida,
+        unidad_medida: producto.unidad_medida._id,
         stock_minimo: producto.stock_minimo,
         cantidad_minima: producto.cantidad_minima,
-        precio: producto.precio,
+        precio_costo: producto.precio_costo,
         activo: producto.activo        
       });
       this.alertService.close(); 

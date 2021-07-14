@@ -10,6 +10,8 @@ import { FiltroIngresosPipe } from './filtro-ingresos.pipe';
 import { FiltroUnidadMedidaPipe } from './filtro-unidad-medida.pipe';
 import { FiltroProveedoresPipe } from './filtro-proveedores.pipe';
 import { FiltroIngresoProductosPipe } from './filtro-ingreso-productos.pipe';
+import { FiltroPromocionesPipe } from './filtro-promociones.pipe';
+import { FiltroStockMinimoPipe } from './filtro-stock-minimo.pipe';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { FiltroIngresoProductosPipe } from './filtro-ingreso-productos.pipe';
     FiltroIngresosPipe,
     FiltroUnidadMedidaPipe,
     FiltroProveedoresPipe,
-    FiltroIngresoProductosPipe
+    FiltroIngresoProductosPipe,
+    FiltroPromocionesPipe,
+    FiltroStockMinimoPipe,
   ],
   imports: [
     CommonModule
@@ -37,7 +41,9 @@ import { FiltroIngresoProductosPipe } from './filtro-ingreso-productos.pipe';
     FiltroIngresosPipe,
     FiltroUnidadMedidaPipe,
     FiltroProveedoresPipe,
-    FiltroIngresoProductosPipe
+    FiltroIngresoProductosPipe,
+    FiltroPromocionesPipe,
+    FiltroStockMinimoPipe,
   ]
 })
 export class PipesModule { }

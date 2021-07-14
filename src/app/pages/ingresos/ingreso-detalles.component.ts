@@ -12,6 +12,7 @@ import { Producto } from 'src/app/models/producto.model';
 import { Ingreso } from 'src/app/models/ingreso.model';
 import { IngresosProductosService } from '../../services/ingresos-productos.service';
 import { ProductosService } from 'src/app/services/productos.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-ingreso-detalles',
@@ -21,12 +22,18 @@ import { ProductosService } from 'src/app/services/productos.service';
 })
 export class IngresoDetallesComponent implements OnInit {
   
+  public showActualizar = false;
+
   // Data
   public data = {
     ingreso: '',
     codigo: '',
     cantidad: 0
   };
+
+  // Actualizacion de precio
+  public nuevoPrecio = null;
+  private porcentajeVenta = environment.porcentajeVenta;
 
   // Ingreso
   public idIngreso: string;
@@ -35,6 +42,7 @@ export class IngresoDetallesComponent implements OnInit {
   // Producto
   public productoSeleccionado: Producto;
   public productos: any[];
+  public nuevoStock = 0;
 
   // Modal
   public showModal = false;
@@ -78,9 +86,45 @@ export class IngresoDetallesComponent implements OnInit {
     })
   }
 
+  // Actualizar precio de producto
+  actualizarPrecio(): void {
+    
+    let precio_venta_tmp = 0;
+
+    if(this.nuevoPrecio < 0 || this.nuevoPrecio === null){
+      this.alertService.info('Formulario inválido');
+      return;
+    }    
+    
+    precio_venta_tmp = this.nuevoPrecio * (this.porcentajeVenta/100 + 1);
+    
+    const data: any = { 
+      precio_costo: this.nuevoPrecio,
+      precio: Number(precio_venta_tmp.toFixed(2))
+    };  
+    
+    this.productosService.actualizarProducto(this.productoSeleccionado._id, data).subscribe(()=>{
+      const codigo = { value: this.productoSeleccionado.codigo };
+      this.modalNuevoProducto(codigo);
+      this.alertService.success('Precio actualizado');
+      this.nuevoPrecio = null;
+    },({error})=>{
+      this.alertService.errorApi(error);
+      this.nuevoPrecio = null;
+    });
+
+  }
+
+  // Calculo de nuevo stock
+  calculoNuevoStock(): void{
+    this.nuevoStock = this.productoSeleccionado.cantidad + this.data.cantidad;
+  }
+
   // Modal: Ingresar producto
   modalNuevoProducto(codigo: any){
     
+    this.data.cantidad = 0;
+
     // Si no se escribe codigo, no hacer nada
     if(codigo.value.trim() === '') return;
     
@@ -93,10 +137,14 @@ export class IngresoDetallesComponent implements OnInit {
       this.productoSeleccionado = producto;
       this.showModalIngresar = true;
       
+      this.showActualizar = false;
       codigo.value = '';
+
+      this.calculoNuevoStock();
 
     },({error}) => {
       codigo.value = '';
+      this.showActualizar = false;
       this.alertService.errorApi(error.msg);
     });
   }
@@ -110,9 +158,12 @@ export class IngresoDetallesComponent implements OnInit {
     this.showModalIngresar = false;
     this.ingresosProductosService.nuevoProducto(this.data).subscribe( ({ producto }) => {
       this.obtenerProductos();
+      this.nuevoPrecio = null;
+      this.showActualizar = false;
     },({error}) => {
       this.alertService.close();
       this.alertService.errorApi(error.msg);
+      this.showActualizar = false;
     });   
 
     this.data.cantidad = 0;
@@ -189,6 +240,7 @@ export class IngresoDetallesComponent implements OnInit {
       if (isConfirmed) {
         this.alertService.loading();
         this.ingresosService.actualizarIngreso(this.idIngreso, {activo: false}).subscribe(() => {
+          this.dataService.detectarStockMinimo();
           this.alertService.close();
           this.router.navigateByUrl('/dashboard/ingresos');  
         },({error})=>{

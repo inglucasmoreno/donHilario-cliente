@@ -28,6 +28,8 @@ import { VentasHistorialComponent } from './ventas/ventas-historial.component';
 import { VentasDetallesComponent } from './ventas/ventas-detalles.component';
 import { CajasComponent } from './cajas/cajas.component';
 import { CajasHistorialComponent } from './cajas/cajas-historial.component';
+import { PromocionesComponent } from './productos/promociones.component';
+import { AlertaStockComponent } from './productos/alerta-stock.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +54,9 @@ import { CajasHistorialComponent } from './cajas/cajas-historial.component';
     VentasHistorialComponent,
     VentasDetallesComponent,
     CajasComponent,
-    CajasHistorialComponent
+    CajasHistorialComponent,
+    PromocionesComponent,
+    AlertaStockComponent,
   ],
   imports: [
     CommonModule,

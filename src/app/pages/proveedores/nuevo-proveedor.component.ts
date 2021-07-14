@@ -17,6 +17,7 @@ export class NuevoProveedorComponent implements OnInit {
     razon_social: ['', Validators.required],
     cuit: ['', Validators.required],
     domicilio: '',
+    telefono: '',
     condicion_iva: 'IVA Responsable Inscripto',
     activo: true
   });
@@ -34,7 +35,7 @@ export class NuevoProveedorComponent implements OnInit {
   // Nuevo proveedor
   crearProveedor(): void {
     
-    const {razon_social, cuit, domicilio, condicion_iva, activo} = this.proveedorForm.value;
+    const {razon_social, cuit, domicilio, telefono, condicion_iva, activo} = this.proveedorForm.value;
     
     const formularioValido = razon_social.trim() !== '' &&
                              cuit.trim() !== '' &&
@@ -43,6 +44,7 @@ export class NuevoProveedorComponent implements OnInit {
     if(formularioValido){
       let data = { razon_social, cuit, condicion_iva, activo };
       if(domicilio.trim() != '') data['domicilio'] = domicilio;
+      if(telefono.trim() != '') data['telefono'] = telefono;
       this.alertService.loading();
       this.proveedorService.nuevoProveedor(data).subscribe(()=>{
         this.alertService.close();

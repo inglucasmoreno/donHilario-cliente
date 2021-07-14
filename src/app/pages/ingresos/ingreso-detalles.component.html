@@ -22,17 +22,43 @@
 <app-modal [showModal]="showModalIngresar">
     <div class="p-4" *ngIf="productoSeleccionado">
 
-        <h1 class="text-xl mb-2 font-semibold p-2 bg-secondary-700 text-white rounded"> Agregando producto </h1>
+        <h1 class="text-xl mb-2 font-semibold p-2 bg-secondary-800 text-white rounded"> Agregando producto </h1>
 
-        <div class="border rounded p-2 bg-gray-100">
-            <p> <span class="font-semibold"> Descripción: </span> {{ productoSeleccionado.descripcion }} </p>
-            <p> <span class="font-semibold"> Unidad de medida: </span> {{ productoSeleccionado.unidad_medida.descripcion }} </p>
-            <p> <span class="font-semibold"> Stock actual: </span> {{ productoSeleccionado.cantidad }} </p>
+        <div class="p-2">
+            <p class="font-semibold text-xl mb-1"> {{ productoSeleccionado.descripcion }} </p>
+            <hr>
+            <div class="mt-2">
+                <div class="flex items-center text-sm">
+                    <p class="border py-1 px-2 rounded w-max mt-1 bg-yellow-100"> <span class="font-semibold"> Unidad de medida: </span> {{ productoSeleccionado.unidad_medida.descripcion }} </p>
+                    <p class="border py-1 px-2 rounded w-max mt-1 bg-yellow-100 ml-2"> <span class="font-semibold"> Stock actual: </span> {{ productoSeleccionado.tipo === 'Balanza' ? (productoSeleccionado.cantidad | moneda) : productoSeleccionado.cantidad}} </p>
+                </div>
+                <div class="flex items-center text-sm">
+                    <p class="border py-1 px-2 rounded w-max mt-1 bg-yellow-100"> <span class="font-semibold"> Precio de costo: </span> ${{ productoSeleccionado.precio_costo | moneda }} </p>
+                    <p class="border py-1 px-2 rounded w-max mt-1 bg-yellow-100 ml-2"> <span class="font-semibold"> Precio de venta: </span> ${{ productoSeleccionado.precio | moneda }} </p>
+                </div>
+            </div>
         </div>
 
+        <div class="p-2">
+            <div (click)="showActualizar = !showActualizar" class="text-sm bg-gray-100 px-2 py-1 font-semibold border text-center border-gray-200 cursor-pointer shadow rounded text-gray-700"> Actualizar precio de costo </div>
+            <div *ngIf="showActualizar" class="flex items-center justify-center p-2 mt-2 rounded border border-gray-200 shadow">
+                <input (keyup.enter)="actualizarPrecio()" [(ngModel)]="nuevoPrecio" type="number" placeholder="Nuevo precio" class="rounded py-1 px-2 focus:outline-none border border-gray-200 shadow">
+                <button (click)="actualizarPrecio()" class="border rounded bg-gray-100 py-1 px-2 hover:text-secondary-800 shadow ml-2 text-gray-700 focus:outline-none"> Actualizar </button>
+            </div>
+        </div>
 
-        <p class="font-semibold mt-2"> Cantidad a ingresar </p>
-        <input type="number" [(ngModel)]="data.cantidad" class="p-2 mt-2 mb-3 border rounded full focus:outline-none" placeholder="Cantidad">
+        <div class="p-2 flex items-center">
+            <div class="w-1/2">
+                <p class="font-semibold"> Cantidad a ingresar </p>
+                <input type="number" min=0 (keyup.enter)="nuevoProducto()" (keyup)="calculoNuevoStock()" (change)="calculoNuevoStock()" [(ngModel)]="data.cantidad" class="p-2 mt-2 mb-3 border rounded full focus:outline-none" placeholder="Cantidad">
+            </div>
+            <div class="ml-2 w-1/2">
+                <p class="font-semibold text-center"> Nuevo stock </p>
+                <div class="p-2 mt-2 mb-3 border bg-gray-100 font-semibold text-gray-700 rounded full text-center focus:outline-none">
+                    {{ productoSeleccionado.tipo === 'Balanza' ? (nuevoStock | moneda) : nuevoStock}}
+                </div>
+            </div>
+        </div>
 
         <!-- Footer -->
         <div class="flex">
@@ -95,7 +121,7 @@
             <span class="ml-1"> Agregar producto </span>
         </h1>
         <div class="p-2">
-            <input type="text" #txtCodigo (keyup.enter)="modalNuevoProducto(txtCodigo)" placeholder="Codigo" class="py-1 px-2 border w-full rounded focus:outline-none">
+            <input type="text" #txtCodigo (keyup.enter)="modalNuevoProducto(txtCodigo)" placeholder="Codigo" class="py-1 px-2 border border-gray-300 w-full rounded focus:outline-none">
         </div>
     </div>
 
@@ -190,8 +216,8 @@
                                             {{ producto.producto.unidad_medida.descripcion }}
                                         </p>
                                     </td>
-                                    <td class="px-5 py-2 border-b border-gray-200 text-xs">
-                                        <p class="text-gray-900 whitespace-no-wrap">
+                                    <td class="px-5 py-2 border-b border-gray-200 text-sm">
+                                        <p class="text-gray-900 whitespace-no-wrap font-semibold">
                                             {{ producto.cantidad }}
                                         </p>
                                     </td>

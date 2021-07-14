@@ -13,6 +13,9 @@ export class StatebarComponent implements OnInit {
 
   constructor(public dataService: DataService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.dataService.detectarPromociones();
+    this.dataService.detectarStockMinimo();
+  }
 
 }

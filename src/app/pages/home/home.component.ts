@@ -12,7 +12,7 @@ export class HomeComponent implements OnInit {
   constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
-    this.dataService.ubicacionActual = 'Dashboard - Home'
+    this.dataService.ubicacionActual = 'Dashboard - Home';
   }
 
 }

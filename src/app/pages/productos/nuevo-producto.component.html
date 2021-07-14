@@ -10,13 +10,21 @@
                 <div class="w-full mx-2 flex-1">
                     <div class="font-semibold mt-3 text-gray-600 text-sm"> <span class="text-red-500"> * </span> Tipo de producto </div>
                     <div class="bg-white my-2 flex">
-                        <select #txtTipo (change)="cambioTipo(txtTipo.value)" class="border rounded p-1 py-2 w-full shadow text-sm">
-                            <option value="Normal"> Normal </option>
+                        <select #txtTipo (change)="cambioTipo(txtTipo.value)" class="border border-gray-300 rounded p-1 py-2 w-full shadow text-sm">
+                            <option value="Normal"> Mercaderia </option>
                             <option value="Balanza"> Balanza </option>
                         </select>
                     </div>
                 </div>
-                <div class="w-full mx-2 flex-1 svelte-1l8159u"></div>
+                <div class="w-full mx-2 flex-1 svelte-1l8159u">
+                    <div class="font-semibold mt-3 text-gray-600 text-sm"> <span class="text-red-500"> * </span> Estado </div>
+                    <div class="bg-white my-2 flex">
+                        <select formControlName="activo" class="border border-gray-300 rounded p-1 py-2 w-full shadow text-sm">
+                            <option value=true> Activo </option>
+                            <option value=false> Inactivo </option>
+                        </select>
+                    </div>
+                </div>
             </div>
             <div class="flex flex-col lg:flex-row">
                 <div class="w-full mx-2 flex-1 svelte-1l8159u">
@@ -69,17 +77,17 @@
             </div>
             <div class="flex flex-col lg:flex-row">
                 <div class="w-full mx-2 flex-1 svelte-1l8159u">
-                    <div class="font-semibold mt-3 text-gray-600 text-sm"> <span class="text-red-500"> * </span> Precio ($) </div>
+                    <div class="font-semibold mt-3 text-gray-600 text-sm"> <span class="text-red-500"> * </span> Precio de costo ($) </div>
                     <div class="bg-white my-2 p-1 flex border border-gray-300 rounded shadow">
-                        <input type="number" placeholder="Ej. 2500" formControlName="precio" step="0.01" class="p-1 px-2 appearance-none outline-none w-full text-gray-800 text-sm"></div>
+                        <input (change)="actualizarPrecioVenta()" (keyup)="actualizarPrecioVenta()" type="number" placeholder="Ej. 2500" formControlName="precio_costo" step="1" class="p-1 px-2 appearance-none outline-none w-full text-gray-800 text-sm"></div>
                 </div>
                 <div class="w-full mx-2 flex-1">
-                    <div class="font-semibold mt-3 text-gray-600 text-sm"> <span class="text-red-500"> * </span> Estado </div>
-                    <div class="bg-white my-2 flex">
-                        <select class="border rounded p-1 py-2 w-full shadow text-sm">
-                            <option value=true> Activo </option>
-                            <option value=false> Inactivo </option>
-                        </select>
+                    <div class="w-full flex-1 svelte-1l8159u">
+                        <div class="font-semibold mt-3 text-gray-600 text-sm"> Precio de venta ($) </div>
+                        <div class="my-2 p-1 flex border border-gray-300 rounded shadow bg-gray-100">
+                            <div class="text-sm p-1 font-semibold text-gray-700"> ${{ precio_venta | moneda }} </div>
+                            <!-- <input type="number" placeholder="Ej. 2500" formControlName="precio" step="0.01" class="p-1 px-2 appearance-none outline-none w-full text-gray-800 text-sm"> -->
+                        </div>
                     </div>
                 </div>
             </div>

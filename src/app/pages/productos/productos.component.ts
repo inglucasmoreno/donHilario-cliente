@@ -7,6 +7,7 @@ import { ProductosService } from 'src/app/services/productos.service';
 import { AlertService } from '../../services/alert.service';
 
 import { Producto } from '../../models/producto.model';
+import { renderFlagCheckIfStmt } from '@angular/compiler/src/render3/view/template';
 
 
 @Component({
@@ -40,13 +41,15 @@ export class ProductosComponent implements OnInit {
 
   constructor(private productosService: ProductosService,
               private alertService: AlertService,
-              private dataService: DataService,
+              public dataService: DataService,
               private authService: AuthService,
               private router: Router) {}
 
   ngOnInit(): void {
     this.dataService.ubicacionActual = 'Dashboard - Productos';
     this.alertService.loading();
+    this.dataService.detectarPromociones();  // Se detectan promociones activas
+    this.dataService.detectarStockMinimo();  // Se detectan si hay stock minimo
     this.usuarioLogin = this.authService.usuario;
     this.listarProductos();
   }

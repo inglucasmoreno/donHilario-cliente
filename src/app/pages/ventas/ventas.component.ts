@@ -4,7 +4,6 @@ import { ProductosService } from '../../services/productos.service';
 import { Producto } from '../../models/producto.model';
 import { AlertService } from '../../services/alert.service';
 import { VentasService } from '../../services/ventas.service';
-import { delay } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -21,6 +20,8 @@ export class VentasComponent implements OnInit {
                private alertService: AlertService,
                private ventasService: VentasService) { }
 
+  // Modal
+  public showModal = false;
 
   // Venta
   public codigo: string = '';
@@ -41,6 +42,7 @@ export class VentasComponent implements OnInit {
     precio_unitario: 0, 
     precio_total: 0, 
     unidad_medida: '',
+    promocion: false,
     cantidad: 0,
     tipo: ''
   };
@@ -52,6 +54,12 @@ export class VentasComponent implements OnInit {
   ngOnInit(): void {
     document.getElementById('codigo').focus();
     this.dataService.ubicacionActual = 'Dashboard - Ventas';
+  }
+
+  // Abrir modal
+  abrirModal(): void {
+    this.pago = null;
+    this.showModal = true;  
   }
 
   // Se busca el producto a partir del codigo
@@ -67,15 +75,18 @@ export class VentasComponent implements OnInit {
       this.productoVenta.descripcion = producto.descripcion;
       this.productoVenta.unidad_medida = producto.unidad_medida.descripcion;
       this.productoVenta.producto = producto._id;
-      this.productoVenta.precio_unitario = producto.precio;
+      this.productoVenta.promocion = producto.promocion;
+      producto.promocion === true ? this.productoVenta.precio_unitario = producto.precio_promocion : this.productoVenta.precio_unitario = producto.precio;
       this.productoVenta.tipo = producto.tipo;
       if(producto.tipo === 'Balanza') {
         this.productoVenta.cantidad = Number(this.codigo.slice(7,this.codigo.length - 1)) / 1000;
-        this.productoVenta.precio_total = this.productoVenta.cantidad * producto.precio;
+        producto.promocion === true ? this.productoVenta.precio_total = (producto.precio_promocion * this.productoVenta.cantidad) : this.productoVenta.precio_total = (producto.precio * this.productoVenta.cantidad);
+        // this.productoVenta.precio_total = this.productoVenta.cantidad * producto.precio;
       }
       else {
         this.productoVenta.cantidad = 1;
-        this.productoVenta.precio_total = producto.precio;
+        producto.promocion === true ? this.productoVenta.precio_total = producto.precio_promocion : this.productoVenta.precio_total = producto.precio;
+        // this.productoVenta.precio_total = producto.precio;
       }
       this.agregarProducto();
       this.codigo = '';
@@ -110,6 +121,7 @@ export class VentasComponent implements OnInit {
         producto: this.productoVenta.producto, 
         precio_unitario: this.productoVenta.precio_unitario, 
         precio_total: this.productoVenta.precio_total, 
+        promocion: this.productoVenta.promocion, 
         cantidad: this.productoVenta.cantidad,
         tipo: this.productoVenta.tipo
       });
@@ -175,20 +187,25 @@ export class VentasComponent implements OnInit {
                          this.alertService.loading();
                          const data = { 
                            forma_pago: this.forma_pago,
-                           total_balanza: this.totalBalanza,
-                           total_mercaderia: this.totalMercaderia,
-                           total_adicional_credito: this.totalAdicionalPorCredito,
-                           total_descuento: this.totalDescuentos,
+                           total_balanza: Number(this.totalBalanza.toFixed(2)),
+                           total_mercaderia: Number(this.totalMercaderia.toFixed(2)),
+                           total_adicional_credito: Number(this.totalAdicionalPorCredito.toFixed(2)),
+                           total_descuento: Number(this.totalDescuentos.toFixed(2)),
                            descuento_porcentual: this.descuento_porcentual,
-                           precio_total: this.precioTotal,
+                           precio_total: Number(this.precioTotal.toFixed(2)),
                            productos: this.productos 
                           };
                          this.ventasService.nuevaVenta(data).subscribe( (resp) => {
+                           this.dataService.detectarStockMinimo();
                            this.reiniciarVenta();
                            this.alertService.success('Venta completada');
+                           this.showModal = false;
+                           this.pago = null;
                            document.getElementById('codigo').focus();      
                          },({error}) => {
                            this.alertService.errorApi(error.msg);
+                           this.showModal = false;
+                           this.pago = null;
                            document.getElementById('codigo').focus();      
                          });
                        }
@@ -204,6 +221,7 @@ export class VentasComponent implements OnInit {
       precio_unitario: 0, 
       precio_total: 0, 
       unidad_medida: '',
+      promocion: false,
       cantidad: 0,
       tipo: ''
     };

@@ -3,28 +3,28 @@
         <app-encabezado-formulario titulo="Ventas" subTitulo="Detalles de venta" dirRegresar="/dashboard/ventas/historial"></app-encabezado-formulario>
         <div class='p-2' *ngIf="venta">
             <h1 class="border text-white bg-secondary-800 border-gray-200 font-semibold rounded-t p-2"> Datos de venta </h1>
-            <div class="p-2 border border-gray-200 text-gray-700">
-                <p class="py-1 px-2"> <span class="font-semibold"> Fecha de creación: </span> {{ venta.createdAt | fecha }} </p>
-                <p class="py-1 px-2"> <span class="font-semibold"> Usuario creador: </span> {{ venta.usuario_creacion }} </p>
-                <p class="py-1 px-2"> <span class="font-semibold"> Forma de pago: </span> {{ venta.forma_pago }} </p>
-                <p class="py-1 px-2"> <span class="font-semibold"> Monto total: </span> ${{ venta.precio_total | moneda }} </p>
-                <p *ngIf="venta.total_descuento > 0" class="py-1 px-2"> <span class="font-semibold"> Descuento por sistema: </span> ${{ venta.total_descuento | moneda }} </p>
-                <p *ngIf="venta.total_descuento > 0" class="py-1 px-2"> <span class="font-semibold"> Monto total con descuento: </span> ${{ venta.precio_total - venta.total_descuento | moneda }} </p>
+            <div class="p-2 border border-gray-200 text-gray-700 text-sm">
+                <p class="py-1 px-2 border bg-gray-100 w-max rounded"> <span class="font-semibold"> Fecha de creación: </span> {{ venta.createdAt | fecha }} </p>
+                <p class="py-1 px-2 border bg-gray-100 w-max rounded mt-1"> <span class="font-semibold"> Usuario creador: </span> {{ venta.usuario_creacion }} </p>
+                <p class="py-1 px-2 border bg-gray-100 w-max rounded mt-1"> <span class="font-semibold"> Forma de pago: </span> {{ venta.forma_pago }} </p>
+                <p class="py-1 px-2 border bg-gray-100 w-max rounded mt-1"> <span class="font-semibold"> Monto total: </span> ${{ (venta.precio_total + venta.total_adicional_credito) | moneda }} </p>
+                <p class="py-1 px-2 border bg-red-100 w-max rounded mt-1" *ngIf="venta.total_descuento > 0"> <span class="font-semibold"> Descuento por sistema: </span> ${{ venta.total_descuento | moneda }} </p>
+                <p class="py-1 px-2 border bg-red-100 w-max rounded mt-1" *ngIf="venta.total_descuento > 0"> <span class="font-semibold"> Monto total con descuento: </span> ${{ (venta.precio_total + venta.total_adicional_credito) - venta.total_descuento | moneda }} </p>
             </div>
         </div>
     </div>
     <div class='w-full md:w-1/2 bg-white border rounded shadow md:ml-2 h-full mt-2 md:mt-0' *ngIf="productos.length !== 0">
         <h1 class=" text-white bg-secondary-800 border-gray-200 font-semibold rounded-t p-2"> Lista de productos ({{ productos.length }}) </h1>
         <div class="p-2 border-gray-200 text-gray-700">
-            <div *ngFor="let producto of productos | paginate: {itemsPerPage: cantidadItems, currentPage: paginaActual}" class="m-1 mt-1 mb-2 p-2 border border-yellow-300 rounded bg-yellow-100 flex items-center justify-between">
+            <div [ngClass]="{'bg-orange-100 border-orange-200' : producto.promocion, 'bg-yellow-100 border-yellow-300' : !producto.promocion}" *ngFor="let producto of productos | paginate: {itemsPerPage: cantidadItems, currentPage: paginaActual}" class="m-1 mt-1 mb-2 p-2 border rounded flex items-center justify-between">
                 <div>
                     <p class="text-sm font-semibold"> {{ producto.producto.descripcion }} </p>
                     <p class="text-xs"> Precio unitario: ${{ producto.precio_unitario | moneda }} </p>
                     <p class="text-xs"> Unidad de medida: {{ producto.producto.unidad_medida.descripcion }} </p>
-                    <p class="text-xs"> Cantidad: {{ producto.cantidad }} </p>
+                    <p class="text-xs"> Cantidad: {{ producto.producto.tipo === 'Balanza' ? (producto.cantidad | moneda) : producto.cantidad }} </p>
                 </div>
                 <div>
-                    <p class="font-semibold text-lg"> ${{ producto.precio_total | moneda }} </p>
+                    <p class="font-semibold text-lg"> ${{ (producto.precio_total) | moneda }} </p>
                 </div>
             </div>
         </div>

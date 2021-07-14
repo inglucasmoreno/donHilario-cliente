@@ -27,6 +27,8 @@ import { VentasHistorialComponent } from './ventas/ventas-historial.component';
 import { VentasDetallesComponent } from './ventas/ventas-detalles.component';
 import { CajasComponent } from './cajas/cajas.component';
 import { CajasHistorialComponent } from './cajas/cajas-historial.component';
+import { PromocionesComponent } from './productos/promociones.component';
+import { AlertaStockComponent } from './productos/alerta-stock.component';
 
 const routes: Routes = [
     {
@@ -54,6 +56,8 @@ const routes: Routes = [
             { path: 'productos/nuevo', canActivate: [AdminGuard], component: NuevoProductoComponent},
             { path: 'productos/detalle/:id', canActivate: [AdminGuard], component: DetalleProductoComponent},
             { path: 'productos/editar/:id', canActivate: [AdminGuard], component: EditarProductoComponent},
+            { path: 'productos/promociones', canActivate: [AdminGuard], component: PromocionesComponent},
+            { path: 'productos/alerta-stock', canActivate: [AdminGuard], component: AlertaStockComponent},
         
             // Ingresos
             { path: 'ingresos', canActivate: [AdminGuard], component: IngresosComponent},

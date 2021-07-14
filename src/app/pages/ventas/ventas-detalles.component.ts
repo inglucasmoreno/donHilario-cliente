@@ -21,14 +21,14 @@ export class VentasDetallesComponent implements OnInit {
 
   constructor(private dataService: DataService,
               private alertService: AlertService,
-              private actiatedRoute: ActivatedRoute,
+              private activatedRoute: ActivatedRoute,
               private ventasService: VentasService,
               private ventasProductosService: VentasProductosService) { }
 
   ngOnInit(): void {
     this.alertService.loading();
     this.dataService.ubicacionActual = "Dashboard - Ventas - Detalle"
-    this.actiatedRoute.params.subscribe( ({ id }) => {
+    this.activatedRoute.params.subscribe( ({ id }) => {
       this.idVenta = id;
       this.getVenta();
     });

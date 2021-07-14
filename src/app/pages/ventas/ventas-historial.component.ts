@@ -27,7 +27,7 @@ export class VentasHistorialComponent implements OnInit {
   // Ordenar
   public ordenar = {
     direccion: -1,  // Asc (1) | Desc (-1)
-    columna: 'codigo'
+    columna: 'createdAt'
   }
 
   public ventas: any[] = [];
@@ -46,8 +46,8 @@ export class VentasHistorialComponent implements OnInit {
   // Calculo de monto total
   calculoMontoTotal(): void {
     this.montoTotal = 0;
-    this.ventas.forEach( ({ precio_total, total_descuento }) => {
-      this.montoTotal += (precio_total - total_descuento) ;  
+    this.ventas.forEach( ({ precio_total, total_descuento, total_adicional_credito }) => {
+      this.montoTotal += (precio_total - total_descuento + total_adicional_credito);  
     });
   }
   

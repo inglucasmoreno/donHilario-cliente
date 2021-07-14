@@ -88,7 +88,6 @@ export class CajasComponent implements OnInit {
     this.alertService.loading();
     this.dataService.ubicacionActual = 'Dashboard - Gestión de cajas';
     this.obtenerSaldoInicial();
-    this.listarVentas();
   }
   
   // ----------------------
@@ -98,7 +97,8 @@ export class CajasComponent implements OnInit {
   // Se obtiene saldo inicial
   obtenerSaldoInicial(): void {
   this.cajasService.getSaldoInicial().subscribe( ({ monto }) => {
-      monto === null ? this.data.saldo_inicial = 0 : this.data.saldo_inicial = monto; 
+      monto === null ? this.data.saldo_inicial = 0 : this.data.saldo_inicial = monto;
+      this.listarVentas(); 
     },({ error }) => {
       this.alertService.errorApi(error.msg);
     });
@@ -141,6 +141,22 @@ export class CajasComponent implements OnInit {
 
   // Crear nueva caja
   nuevaCaja(): void {
+    
+    const billetesValidos = this.billetes.cantidad_monedas !== null &&
+                            this.billetes.cantidad_5 !== null &&
+                            this.billetes.cantidad_10 !== null &&
+                            this.billetes.cantidad_20 !== null &&
+                            this.billetes.cantidad_50 !== null &&
+                            this.billetes.cantidad_100 !== null &&
+                            this.billetes.cantidad_200 !== null &&
+                            this.billetes.cantidad_500 !== null &&
+                            this.billetes.cantidad_1000 !== null
+
+    if(!billetesValidos) {
+      this.alertService.info('Error en formulario de billetes');
+      return;
+    }
+              
     this.alertService.question({ msg: '¿Quieres realizar el cierre de caja?', buttonText: 'Aceptar' })
     .then(({isConfirmed}) => {  
       if (isConfirmed) {
@@ -152,6 +168,7 @@ export class CajasComponent implements OnInit {
           total_balanza: this.data.total_balanza,
           total_mercaderia: this.data.total_mercaderia,
           total_descuentos: this.data.total_descuento,
+          total_adicional_credito: this.data.total_adicional_credito,
           total_efectivo: this.data.efectivo_en_caja,
           total_efectivo_real: this.billetes.total_billetes,
           diferencia: this.billetes.diferencia,
@@ -299,7 +316,7 @@ export class CajasComponent implements OnInit {
     this.data.total_mercaderia = total_mercaderia_tmp;
     this.data.total_balanza = total_balanza_tmp;
     this.data.total_efectivo = total_efectivo_tmp;
-    this.data.total_postnet = total_postnet_tmp;
+    this.data.total_postnet = total_postnet_tmp + total_adicional_credito_tmp;
     this.data.total_adicional_credito = total_adicional_credito_tmp;
     this.data.total_descuento = total_descuentos_tmp;
 
@@ -310,6 +327,7 @@ export class CajasComponent implements OnInit {
   // Ingresos - Gastos
   calculo_monto_total() {
     this.data.efectivo_en_caja = (this.data.total_ventas - this.data.total_descuento) +
+                                 this.data.total_adicional_credito +
                                  this.data.saldo_inicial - 
                                  this.totalOtrosGastos +
                                  this.totalOtrosIngresos - 

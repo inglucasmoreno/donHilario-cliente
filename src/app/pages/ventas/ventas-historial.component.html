@@ -70,7 +70,7 @@
                                     </td>
                                     <td class="px-5 py-2 border-b border-gray-200">
                                         <p class="text-gray-900 whitespace-no-wrap text-sm">
-                                            ${{ venta.precio_total - venta.total_descuento | moneda }}
+                                            ${{ (venta.precio_total - venta.total_descuento + venta.total_adicional_credito) | moneda }}
                                         </p>
                                     </td>
                                     <td class="px-5 py-2 border-b border-gray-200">

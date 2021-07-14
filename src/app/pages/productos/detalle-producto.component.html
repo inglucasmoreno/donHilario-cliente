@@ -1,3 +1,32 @@
+<app-modal [showModal]=true *ngIf="showModal">
+    <div>
+        <h1 class="bg-secondary-800 text-white p-2 rounded-t text-xl"> Promoción de producto </h1>
+        <div *ngIf='producto.promocion === false'>
+            <div class="bg-white flex items-center mt-2 p-2">
+                <h1 class='font-semibold bg-gray-100 w-1/2 rounded border p-2 text-center border-gray-300 text-gray-700'> Precio de venta </h1>
+                <div class="border w-1/2 p-2 ml-2 font-semibold text-center text-gray-700 shadow rounded border-gray-200 focus:outline-none"> ${{ producto.precio | moneda }} </div>
+            </div>
+            <div class="bg-white flex items-center mt-2 p-2">
+                <h1 class='font-semibold bg-gray-100 w-1/2 rounded border p-2 text-center border-gray-300 text-gray-700'> Precio promoción </h1>
+                <input (keyup.enter)="activarPromocion()" [(ngModel)]="precioPromocion" type="number" class="border w-1/2 p-2 ml-2 shadow rounded border-gray-200 focus:outline-none text-center">
+            </div>
+            <!-- Footer -->
+            <div class="flex p-4">
+                <button (click)="activarPromocion()" class="bg-secondary-800 text-white p-2 rounded shadow w-full focus:outline-none hover:bg-secondary-400"> Activar </button>
+                <button class="bg-gray-500 text-white p-2 rounded shadow w-full ml-4 focus:outline-none hover:bg-gray-400" (click)="showModal = false"> Cancelar </button>
+            </div>
+        </div>
+        <div *ngIf="producto.promocion === true" class="px-4 py-2">
+            <p class="bg-gray-100 border border-gray-300 p-2 font-semibold rounded text-gray-700"> Este producto tiene una promoción activa </p>
+            <p class="p-2 bg-orange-100 rounded border border-orange-200 w-max mt-2"> Precio de promoción: <span class="font-semibold"> ${{ producto.precio_promocion | moneda }} </span> </p>
+            <div class="flex mt-4">
+                <button (click)="eliminarPromocion()" class="bg-secondary-800 text-white p-2 rounded shadow w-full focus:outline-none hover:bg-secondary-400"> Eliminar </button>
+                <button class="bg-gray-500 text-white p-2 rounded shadow w-full ml-4 focus:outline-none hover:bg-gray-400" (click)="showModal = false"> Cancelar </button>
+            </div>
+        </div>
+    </div>
+</app-modal>
+
 <app-tarjeta-formulario>
     <div *ngIf="producto">
         <div class="p-4 flex justify-between items-center">
@@ -13,9 +42,14 @@
                     </span>
                 </div>
             </h1>
-            <app-boton-icono title="Editar producto" [routerLink]="['/dashboard/productos/editar', producto._id]">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
-            </app-boton-icono>
+            <div>
+                <app-boton-icono (click)="showModal = true" title="Promoción">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                </app-boton-icono>
+                <app-boton-icono class="ml-2" title="Editar producto" [routerLink]="['/dashboard/productos/editar', producto._id]">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+                </app-boton-icono>
+            </div>
         </div>
 
         <div>
@@ -28,7 +62,7 @@
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-type"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
                     <div class='ml-1'>
                         <span class="text-gray-600 text-sm"> Tipo de producto: </span>
-                        <span class="ml-1 font-semibold text-md"> {{ producto.tipo }} </span>
+                        <span class="ml-1 font-semibold text-md"> {{ producto.tipo === 'Normal' ? 'Mercaderia' : producto.tipo }} </span>
                     </div>
                 </div>
                 <div class="lg:flex lg:items-center">
@@ -39,18 +73,45 @@
                             <span class="ml-1 font-semibold text-md"> {{ producto.codigo }} </span>
                         </div>
                     </div>
-                    <div class="flex items-center border shadow border-gray-300 p-2 rounded mt-2 lg:mt-0 lg:ml-10">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-                        <div>
-                            <span class="text-sm text-gray-600"> Precio: </span>
-                            <span class="ml-1 font-semibold text-md"> ${{ producto.precio | moneda}} </span>
+                </div>
+                <div class="md:flex md:items-center">
+                    <div class="flex items-center border shadow w-max border-gray-300 p-2 rounded mb-3 mt-3">
+                        <div class="flex items-center">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                            <div>
+                                <span class="text-sm text-gray-600"> Precio de costo: </span>
+                                <span class="ml-1 font-semibold text-md"> ${{ producto.precio_costo | moneda}} </span>
+                            </div>
                         </div>
+                    </div>
+                    <div class="flex items-center border shadow w-max border-gray-300 p-2 md:ml-2 rounded mb-3 mt-3">
+                        <div class="flex items-center">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                            <div>
+                                <span class="text-sm text-gray-600"> Precio de venta: </span>
+                                <span class="ml-1 font-semibold text-md"> ${{ producto.precio | moneda}} </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center" *ngIf="producto.promocion">
+                    <div class="flex items-center border shadow w-max bg-orange-100 border-orange-200 p-2 rounded">
+                        <div class="flex items-center">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                            <div>
+                                <span class="text-sm text-gray-600"> Precio de promoción: </span>
+                                <span class="ml-1 font-semibold text-md"> ${{ producto.precio_promocion | moneda}} </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div (click)="eliminarPromocion()" title="Eliminar promoción" class="p-2 bg-gray-100 rounded ml-2 border border-gray-200 shadow hover:text-secondary-700 cursor-pointer">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
                     </div>
                 </div>
                 <div class="mt-4 text-gray-800 border shadow rounded text-sm">
                     <h1 class="font-semibold bg-gray-100 border-b p-2"> Descripción </h1>
                     <div class="p-2">
-                        <span class="text-xs"> {{ producto.descripcion }} </span>
+                        <span class="text-sm"> {{ producto.descripcion }} </span>
                     </div>
                 </div>
             </div>

@@ -108,21 +108,4 @@ export class IngresosComponent implements OnInit {
     this.listarIngresos();
   }
 
-  // ngOnInit(): void {
-  //   document.getElementById("codigo").focus();
-  // }
-
-  // public nuevoProducto(codigo: any): void {
-  //   if(codigo.keyCode == 13){ // Enter
-  //     console.log(codigo);
-  //     codigo.target.value = '';  
-  //     document.getElementById("codigo").focus();
-  //   }
-  // }
-
-  // public mantenerFocus(): void {
-  //   console.log('Se mantiene focus');
-  //   document.getElementById("codigo").focus();
-  // }
-
 }

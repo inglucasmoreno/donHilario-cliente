@@ -20,6 +20,7 @@ export class EditarProveedorComponent implements OnInit {
     razon_social: ['', Validators.required],
     cuit: ['', Validators.required],
     domicilio: '',
+    telefono: '',
     condicion_iva: '',
     activo: true
   });
@@ -47,6 +48,7 @@ export class EditarProveedorComponent implements OnInit {
         razon_social: proveedor.razon_social,
         cuit: proveedor.cuit,
         domicilio: proveedor.domicilio,
+        telefono: proveedor.telefono,
         condicion_iva: proveedor.condicion_iva,
         activo: proveedor.activo
       });
