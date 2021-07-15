@@ -50,9 +50,6 @@
                             </div>
                         </div>
                         <div>
-                            <app-boton-reportes></app-boton-reportes>
-                        </div>
-                        <div>
                             <app-boton-generico *ngIf="usuarioLogin.role === 'ADMIN_ROLE'" routerLink='/dashboard/productos/nuevo'>
                                 Nuevo producto
                             </app-boton-generico>
@@ -161,8 +158,8 @@
                                     </td>
                                     <!-- Precio -->
                                     <td class="px-5 py-2 border-b border-gray-200 text-sm">
-                                        <span class="text-gray-900 whitespace-no-wrap tracking-wider">
-                                            ${{ producto.precio | moneda }}
+                                        <span [ngClass]="{'text-yellow-600 font-semibold': producto.promocion}" class="text-gray-900 whitespace-no-wrap tracking-wider">
+                                            ${{ (producto.promocion ? producto.precio_promocion : producto.precio) | moneda }}
                                         </span>
                                     </td>
                                     <!-- Estado -->

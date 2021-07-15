@@ -14,7 +14,7 @@
                     <input type="number" [(ngModel)]="pago" (change)="calcularVuelto()" (keyup)="calcularVuelto()" class="border text-center text-xl p-2 w-full focus:outline-none shadow" placeholder="El cliente paga con ...">
                 </div>
                 <div class="w-1/2 ml-4">
-                    <div class="border text-xl bg-gray-100 p-2 w-full border-gray-300 text-gray-800 text-center"> {{ pago === null ? "Debes devolver" : '$' + (vuelto | moneda) }} </div>
+                    <div class="border text-xl bg-gray-100 p-2 w-full border-gray-300 text-gray-800 text-center"> {{ pago === null ? "Calculo de vuelto" : '$' + (vuelto | moneda) }} </div>
                 </div>
             </div>
         </div>
