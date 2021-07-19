@@ -34,6 +34,7 @@ export class EditarProductoComponent implements OnInit {
     cantidad: 0,
     stock_minimo: false,
     cantidad_minima: 0,
+    porcentaje_ganancia: 40,
     precio_costo: 0,
     activo: true  
   };
@@ -47,6 +48,7 @@ export class EditarProductoComponent implements OnInit {
     unidad_medida: ['', Validators.required],
     stock_minimo: [false, Validators.required],
     cantidad_minima: [0, Validators.required],
+    porcentaje_ganancia: [40, Validators.required],
     precio_costo: [0, Validators.required],
     activo: [true, Validators.required]
   });
@@ -71,7 +73,11 @@ export class EditarProductoComponent implements OnInit {
   // Actualizar precio de venta
   actualizarPrecioVenta(): void {
     let precio_venta_tmp = 0;   
-    this.productoForm.value.precio_venta === null ? precio_venta_tmp = 0 : precio_venta_tmp = this.productoForm.value.precio_costo * (this.porcentajeVenta/100 + 1);
+    if(this.tipo === 'Balanza'){ 
+      this.productoForm.value.precio_costo === null ? precio_venta_tmp = 0 : precio_venta_tmp = this.productoForm.value.precio_costo; 
+    }else{
+      this.productoForm.value.precio_costo === null ? precio_venta_tmp = 0 : precio_venta_tmp = this.productoForm.value.precio_costo * (this.productoForm.value.porcentaje_ganancia/100 + 1);
+    }
     this.precio_venta = Number(precio_venta_tmp.toFixed(2));
   }
 
@@ -79,6 +85,8 @@ export class EditarProductoComponent implements OnInit {
   cambioTipo(tipo): void {
     this.digitos = tipo === 'Balanza' ? this.digitosBalanza : 30;
     this.tipo = tipo;
+    this.reiniciarFormulario();
+    this.actualizarPrecioVenta();
   }
 
   // Editando producto
@@ -140,12 +148,28 @@ export class EditarProductoComponent implements OnInit {
         unidad_medida: producto.unidad_medida._id,
         stock_minimo: producto.stock_minimo,
         cantidad_minima: producto.cantidad_minima,
+        porcentaje_ganancia: producto.porcentaje_ganancia,
         precio_costo: producto.precio_costo,
         activo: producto.activo        
       });
+      this.actualizarPrecioVenta();
       this.alertService.close(); 
     },({error})=>{
       this.alertService.errorApi(error.msg);
+    });
+  }
+
+  reiniciarFormulario(): void {
+    this.productoForm.setValue({
+      codigo: this.producto.codigo,
+      tipo: this.tipo,
+      descripcion: this.producto.descripcion,
+      unidad_medida: this.producto.unidad_medida._id,
+      stock_minimo: this.producto.stock_minimo,
+      cantidad_minima: this.producto.cantidad_minima,
+      porcentaje_ganancia: this.producto.porcentaje_ganancia,
+      precio_costo: this.producto.precio_costo,
+      activo: this.producto.activo        
     });
   }
 

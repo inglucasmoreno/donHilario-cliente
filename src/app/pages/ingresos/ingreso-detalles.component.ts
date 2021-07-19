@@ -12,7 +12,6 @@ import { Producto } from 'src/app/models/producto.model';
 import { Ingreso } from 'src/app/models/ingreso.model';
 import { IngresosProductosService } from '../../services/ingresos-productos.service';
 import { ProductosService } from 'src/app/services/productos.service';
-import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-ingreso-detalles',
@@ -33,14 +32,14 @@ export class IngresoDetallesComponent implements OnInit {
 
   // Actualizacion de precio
   public nuevoPrecio = null;
-  private porcentajeVenta = environment.porcentajeVenta;
+  public nuevoPorcentaje = 40;
 
   // Ingreso
   public idIngreso: string;
   public ingreso: Ingreso;
   
   // Producto
-  public productoSeleccionado: Producto;
+  public productoSeleccionado: any;
   public productos: any[];
   public nuevoStock = 0;
 
@@ -91,16 +90,18 @@ export class IngresoDetallesComponent implements OnInit {
     
     let precio_venta_tmp = 0;
 
-    if(this.nuevoPrecio < 0 || this.nuevoPrecio === null){
+    if(this.nuevoPrecio < 0 || this.nuevoPrecio === null || this.nuevoPorcentaje <= 0 || this.nuevoPorcentaje == null){
       this.alertService.info('Formulario inválido');
       return;
     }    
     
-    precio_venta_tmp = this.nuevoPrecio * (this.porcentajeVenta/100 + 1);
+    if(this.productoSeleccionado.tipo === 'Normal') precio_venta_tmp = this.nuevoPrecio * (this.nuevoPorcentaje/100 + 1);
+    else precio_venta_tmp = this.nuevoPrecio;
     
     const data: any = { 
       precio_costo: this.nuevoPrecio,
-      precio: Number(precio_venta_tmp.toFixed(2))
+      precio: Number(precio_venta_tmp.toFixed(2)),
+      porcentaje_ganancia: this.nuevoPorcentaje
     };  
     
     this.productosService.actualizarProducto(this.productoSeleccionado._id, data).subscribe(()=>{
@@ -135,6 +136,7 @@ export class IngresoDetallesComponent implements OnInit {
 
       // Se muestra detalle y pregunta cantidad
       this.productoSeleccionado = producto;
+      this.nuevoPorcentaje = producto.porcentaje_ganancia;
       this.showModalIngresar = true;
       
       this.showActualizar = false;

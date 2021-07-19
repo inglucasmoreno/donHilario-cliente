@@ -9,6 +9,7 @@ export class Producto {
         public stock_minimo: boolean,
         public cantidad_minima: number,
         public precio: number,
+        public porcentaje_ganancia: number,
         public promocion: boolean,
         public precio_promocion: number,
         public activo: boolean,

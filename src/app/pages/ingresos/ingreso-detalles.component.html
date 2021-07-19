@@ -33,24 +33,30 @@
                     <p class="border py-1 px-2 rounded w-max mt-1 bg-yellow-100 ml-2"> <span class="font-semibold"> Stock actual: </span> {{ productoSeleccionado.tipo === 'Balanza' ? (productoSeleccionado.cantidad | moneda) : productoSeleccionado.cantidad}} </p>
                 </div>
                 <div class="flex items-center text-sm">
-                    <p class="border py-1 px-2 rounded w-max mt-1 bg-yellow-100"> <span class="font-semibold"> Precio de costo: </span> ${{ productoSeleccionado.precio_costo | moneda }} </p>
-                    <p class="border py-1 px-2 rounded w-max mt-1 bg-yellow-100 ml-2"> <span class="font-semibold"> Precio de venta: </span> ${{ productoSeleccionado.precio | moneda }} </p>
+                    <p *ngIf="productoSeleccionado.tipo === 'Normal'" class="border py-1 px-2 rounded w-max mt-1 bg-yellow-100"> <span class="font-semibold"> Precio de costo: </span> ${{ productoSeleccionado.precio_costo | moneda }} </p>
+                    <p [ngClass]="{'md:ml-2' : productoSeleccionado.tipo === 'Normal'}" class="border py-1 px-2 rounded w-max mt-1 bg-yellow-100 "> <span class="font-semibold"> Precio de venta: </span> ${{ productoSeleccionado.precio | moneda }} </p>
+                </div>
+                <div *ngIf="productoSeleccionado.tipo === 'Normal'" class="flex items-center text-sm">
+                    <p class="border py-1 px-2 rounded w-max mt-1 bg-yellow-100"> <span class="font-semibold"> Porcentaje de ganancia: </span> {{ productoSeleccionado.porcentaje_ganancia | moneda }} % </p>
                 </div>
             </div>
         </div>
 
         <div class="p-2">
-            <div (click)="showActualizar = !showActualizar" class="text-sm bg-gray-100 px-2 py-1 font-semibold border text-center border-gray-200 cursor-pointer shadow rounded text-gray-700"> Actualizar precio de costo </div>
+            <div (click)="showActualizar = !showActualizar" class="text-sm bg-gray-100 px-2 py-1 font-semibold border text-center border-gray-200 cursor-pointer shadow rounded text-gray-700"> Actualización rápida </div>
             <div *ngIf="showActualizar" class="flex items-center justify-center p-2 mt-2 rounded border border-gray-200 shadow">
-                <input (keyup.enter)="actualizarPrecio()" [(ngModel)]="nuevoPrecio" type="number" placeholder="Nuevo precio" class="rounded py-1 px-2 focus:outline-none border border-gray-200 shadow">
-                <button (click)="actualizarPrecio()" class="border rounded bg-gray-100 py-1 px-2 hover:text-secondary-800 shadow ml-2 text-gray-700 focus:outline-none"> Actualizar </button>
+                <div>
+                    <input (keyup.enter)="actualizarPrecio()" [(ngModel)]="nuevoPrecio" type="number" [placeholder]="productoSeleccionado.tipo === 'Normal' ? 'Precio de costo' : 'Precio de venta'" class="rounded text-center py-1 px-2 text-sm focus:outline-none border border-gray-200 shadow">
+                    <input *ngIf="productoSeleccionado.tipo === 'Normal'" (keyup.enter)="actualizarPrecio()" [(ngModel)]="nuevoPorcentaje" type="number" placeholder="Porcentaje" class="rounded py-1 px-2 text-center ml-2 text-sm focus:outline-none border border-gray-200 shadow">
+                </div>
+                <button (click)="actualizarPrecio()" class="border rounded bg-gray-100 py-1 px-2 hover:text-secondary-800 shadow ml-2 text-gray-700 focus:outline-none text-sm"> Actualizar </button>
             </div>
         </div>
 
         <div class="p-2 flex items-center">
             <div class="w-1/2">
-                <p class="font-semibold"> Cantidad a ingresar </p>
-                <input type="number" min=0 (keyup.enter)="nuevoProducto()" (keyup)="calculoNuevoStock()" (change)="calculoNuevoStock()" [(ngModel)]="data.cantidad" class="p-2 mt-2 mb-3 border rounded full focus:outline-none" placeholder="Cantidad">
+                <p class="font-semibold ml-10"> Cantidad a ingresar </p>
+                <input type="number" min=0 (keyup.enter)="nuevoProducto()" (keyup)="calculoNuevoStock()" (change)="calculoNuevoStock()" [(ngModel)]="data.cantidad" class="p-2 mt-2 mb-3 border rounded full focus:outline-none text-center" placeholder="Cantidad">
             </div>
             <div class="ml-2 w-1/2">
                 <p class="font-semibold text-center"> Nuevo stock </p>

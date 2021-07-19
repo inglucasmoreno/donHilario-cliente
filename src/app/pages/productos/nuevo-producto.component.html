@@ -77,19 +77,26 @@
             </div>
             <div class="flex flex-col lg:flex-row">
                 <div class="w-full mx-2 flex-1 svelte-1l8159u">
-                    <div class="font-semibold mt-3 text-gray-600 text-sm"> <span class="text-red-500"> * </span> Precio de costo ($) </div>
+                    <div class="font-semibold mt-3 text-gray-600 text-sm"> <span class="text-red-500"> * </span> {{ tipo === 'Normal' ? 'Precio de costo ($)' : 'Precio de venta ($)' }} </div>
                     <div class="bg-white my-2 p-1 flex border border-gray-300 rounded shadow">
                         <input (change)="actualizarPrecioVenta()" (keyup)="actualizarPrecioVenta()" type="number" placeholder="Ej. 2500" formControlName="precio_costo" step="1" class="p-1 px-2 appearance-none outline-none w-full text-gray-800 text-sm"></div>
                 </div>
                 <div class="w-full mx-2 flex-1">
-                    <div class="w-full flex-1 svelte-1l8159u">
+                    <div *ngIf="tipo === 'Normal'" class="w-full flex-1 svelte-1l8159u">
                         <div class="font-semibold mt-3 text-gray-600 text-sm"> Precio de venta ($) </div>
                         <div class="my-2 p-1 flex border border-gray-300 rounded shadow bg-gray-100">
                             <div class="text-sm p-1 font-semibold text-gray-700"> ${{ precio_venta | moneda }} </div>
-                            <!-- <input type="number" placeholder="Ej. 2500" formControlName="precio" step="0.01" class="p-1 px-2 appearance-none outline-none w-full text-gray-800 text-sm"> -->
                         </div>
                     </div>
                 </div>
+            </div>
+            <div *ngIf="tipo === 'Normal'" class="flex flex-col lg:flex-row">
+                <div class="w-full mx-2 flex-1 svelte-1l8159u">
+                    <div class="font-semibold mt-3 text-gray-600 text-sm"> <span class="text-red-500"> * </span> Porcentaje de ganancia (%) </div>
+                    <div class="bg-white my-2 p-1 flex border border-gray-300 rounded shadow">
+                        <input (change)="actualizarPrecioVenta()" (keyup)="actualizarPrecioVenta()" type="number" placeholder="Ej. 40" formControlName="porcentaje_ganancia" step="1" class="p-1 px-2 appearance-none outline-none w-full text-gray-800 text-sm"></div>
+                </div>
+                <div class="w-full mx-2 flex-1"></div>
             </div>
         </form>
         <div class="flex flex-col px-4 pb-4 lg:flex-row mt-2">

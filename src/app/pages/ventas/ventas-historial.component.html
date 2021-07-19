@@ -4,7 +4,7 @@
         <div class="container mx-auto px-4 sm:px-4">
             <div class="py-2">
                 <div class="flex items-center mt-2">
-                    <p *ngIf="ventas.length != 0" class='text-gray-600 py-1 px-2 border border-gray-200 rounded bg-gray-100'> <span class="font-semibold"> Total de ventas: </span> {{ ventas.length }} </p>
+                    <p *ngIf="ventas.length != 0" class='text-gray-600 py-1 px-2 border border-gray-200 rounded bg-gray-100'> <span class="font-semibold"> Cantidad de ventas </span> {{ ventas.length }} </p>
                     <p *ngIf="montoTotal != 0" class='text-gray-600 ml-2 py-1 px-2 border border-gray-200 rounded bg-gray-100'> <span class="font-semibold"> Monto total:  </span> ${{ montoTotal | moneda }} </p>
                 </div>
                 <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">

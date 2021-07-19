@@ -47,7 +47,7 @@ export class VentasHistorialComponent implements OnInit {
   calculoMontoTotal(): void {
     this.montoTotal = 0;
     this.ventas.forEach( ({ precio_total, total_descuento, total_adicional_credito }) => {
-      this.montoTotal += (precio_total - total_descuento + total_adicional_credito);  
+      this.montoTotal += ((precio_total - total_descuento) + total_adicional_credito);  
     });
   }
   
