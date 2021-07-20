@@ -14,6 +14,8 @@ import { CajasService } from '../../services/cajas.service';
 })
 export class CajasComponent implements OnInit {
 
+  public showFormaPago = false;
+
   // Ingresos y Gastos
   public ingresos: any[] = [];
   public gastos: any[] = [];
@@ -72,6 +74,9 @@ export class CajasComponent implements OnInit {
     // Por forma de pago
     total_efectivo: 0,
     total_postnet: 0,
+    total_credito: 0,
+    total_debito: 0,
+    total_mercadopago: 0,
 
     // Monto total
     efectivo_en_caja: 0,
@@ -171,6 +176,9 @@ export class CajasComponent implements OnInit {
           total_adicional_credito: this.data.total_adicional_credito,
           total_efectivo: this.data.efectivo_en_caja,
           total_efectivo_real: this.billetes.total_billetes,
+          total_credito: this.data.total_credito,
+          total_debito: this.data.total_debito,
+          total_mercadopago: this.data.total_mercadopago,
           diferencia: this.billetes.diferencia,
           total_postnet: this.data.total_postnet,
           total_ventas: this.data.total_ventas,
@@ -298,19 +306,30 @@ export class CajasComponent implements OnInit {
     let total_descuentos_tmp = 0;
     let total_adicional_credito_tmp = 0;
 
+    let total_credito_tmp = 0;
+    let total_debito_tmp = 0;
+    let total_mercadopago_tmp = 0;
+
     this.ventas.forEach( venta => {
       total_ventas_tmp += venta.precio_total;
       total_mercaderia_tmp += venta.total_mercaderia;
       total_balanza_tmp += venta.total_balanza;
+      
+      // Efectivo o Postnet
       if(venta.forma_pago === 'Efectivo'){
         total_efectivo_tmp += venta.precio_total
       }else{
         total_postnet_tmp += venta.precio_total - venta.total_descuento;
+        if(venta.forma_pago === 'Debito') total_debito_tmp += venta.precio_total;
+        else if(venta.forma_pago === 'Credito') total_credito_tmp += venta.precio_total;
+        else if(venta.forma_pago === 'MercadoPago') total_mercadopago_tmp += venta.precio_total;
       };
+          
       total_descuentos_tmp += venta.total_descuento;
       total_adicional_credito_tmp += venta.total_adicional_credito;
+      
     });
-    
+  
     // Montos finales
     this.data.total_ventas = total_ventas_tmp;
     this.data.total_mercaderia = total_mercaderia_tmp;
@@ -319,6 +338,9 @@ export class CajasComponent implements OnInit {
     this.data.total_postnet = total_postnet_tmp + total_adicional_credito_tmp;
     this.data.total_adicional_credito = total_adicional_credito_tmp;
     this.data.total_descuento = total_descuentos_tmp;
+    this.data.total_credito = total_credito_tmp + total_adicional_credito_tmp;
+    this.data.total_debito = total_debito_tmp;
+    this.data.total_mercadopago = total_mercadopago_tmp;
 
     this.calculo_monto_total();
     

@@ -43,7 +43,11 @@
         </div>
 
         <div class="p-2">
-            <div (click)="showActualizar = !showActualizar" class="text-sm bg-gray-100 px-2 py-1 font-semibold border text-center border-gray-200 cursor-pointer shadow rounded text-gray-700"> Actualización rápida </div>
+            <div (click)="showActualizar = !showActualizar" class="flex items-center justify-center text-sm bg-gray-100 px-2 py-1 font-semibold border text-center border-gray-200 cursor-pointer shadow rounded text-gray-700">
+                <span> Actualización rápida </span>
+                <svg *ngIf="showActualizar" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down mt-1 bg-white ml-2 border border-gray-200 text-gray-800"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <svg *ngIf="!showActualizar" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up mt-1 bg-white ml-2 border border-gray-200 text-gray-800"><polyline points="18 15 12 9 6 15"></polyline></svg>
+            </div>
             <div *ngIf="showActualizar" class="flex items-center justify-center p-2 mt-2 rounded border border-gray-200 shadow">
                 <div>
                     <input (keyup.enter)="actualizarPrecio()" [(ngModel)]="nuevoPrecio" type="number" [placeholder]="productoSeleccionado.tipo === 'Normal' ? 'Precio de costo' : 'Precio de venta'" class="rounded text-center py-1 px-2 text-sm focus:outline-none border border-gray-200 shadow">

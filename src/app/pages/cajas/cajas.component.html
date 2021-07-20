@@ -59,10 +59,30 @@
                     <span> Saldo inicial </span>
                     <span> ${{ data.saldo_inicial | moneda }} </span>
                 </p> -->
-                <p class="flex items-center justify-between font-semibold border-b p-2">
-                    <span> <span class="text-xs font-semibold text-red-500"> (-) </span> Total postnet y MP </span>
+                <div (click)="showFormaPago = !showFormaPago" class="flex items-center justify-between font-semibold border-b p-2 hover:text-red-500 cursor-pointer">
+
+                    <div class="flex items-center">
+                        <span> <span class="text-xs font-semibold text-red-500"> (-) </span> Total postnet y MP </span>
+                        <svg *ngIf="showFormaPago" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down mt-1 bg-gray-100 ml-2 border border-gray-200 text-gray-800"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        <svg *ngIf="!showFormaPago" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up mt-1 bg-gray-100 ml-2 border border-gray-200 text-gray-800"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                    </div>
+
                     <span class="font-normal text-red-500"> -${{ data.total_postnet | moneda }} </span>
-                </p>
+                </div>
+                <div *ngIf="showFormaPago" class="font-semibold">
+                    <p class="flex items-center justify-between bg-red-100 text-red-500 border border-red-200 p-2">
+                        <span> Crédito </span>
+                        <span class="font-normal text-red-500"> -${{ data.total_credito | moneda }} </span>
+                    </p>
+                    <p class="flex items-center justify-between bg-red-100 text-red-500 border border-red-200 p-2">
+                        <span> Débito </span>
+                        <span class="font-normal text-red-500"> -${{ data.total_debito | moneda }} </span>
+                    </p>
+                    <p class="flex items-center justify-between bg-red-100 text-red-500 border border-red-200 p-2">
+                        <span> MercadoPago </span>
+                        <span class="font-normal text-red-500"> -${{ data.total_mercadopago | moneda }} </span>
+                    </p>
+                </div>
                 <p class="flex items-center justify-between p-2 border font-semibold bg-gray-100 mb-2 mt-2">
                     <span> Total efectivo en caja </span>
                     <span> ${{ data.efectivo_en_caja | moneda }} </span>

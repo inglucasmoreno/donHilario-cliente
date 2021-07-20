@@ -11,6 +11,8 @@ import { AlertService } from '../../services/alert.service';
 })
 export class CajasHistorialComponent implements OnInit {
 
+  public showFormaPago = false;
+
   // Cajas
   public cajas: any;
   public cajaSeleccionada: any;
