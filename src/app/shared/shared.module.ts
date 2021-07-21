@@ -4,11 +4,13 @@ import { HeaderComponent } from './header/header.component';
 import { AppRoutingModule } from '../app-routing.module';
 import { StatebarComponent } from './statebar/statebar.component';
 import { PipesModule } from '../pipes/pipes.module';
+import { LoaderComponent } from './loader/loader.component';
 
 @NgModule({
   declarations: [
     HeaderComponent,
-    StatebarComponent
+    StatebarComponent,
+    LoaderComponent
   ],
   imports: [
     CommonModule,
@@ -18,6 +20,7 @@ import { PipesModule } from '../pipes/pipes.module';
   exports: [
     HeaderComponent,
     StatebarComponent,
+    LoaderComponent
   ]
 })
 export class SharedModule { }
