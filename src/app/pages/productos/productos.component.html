@@ -130,7 +130,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr [ngClass]="{'bg-red-100 border': (producto.stock_minimo | alertaStock : producto.cantidad : producto.cantidad_minima) && usuarioLogin.role === 'ADMIN_ROLE' }" (click)="detalleProducto(producto._id)" class="animate__animated animate__fadeIn hover:bg-gray-100 cursor-pointer"
+                                <tr [ngClass]="{'bg-red-100 border': (producto.stock_minimo | alertaStock : producto.cantidad : producto.cantidad_minima) && usuarioLogin.role === 'ADMIN_ROLE' }" (click)="detalleProducto(producto._id)" class="animate__animated animate__fadeIn hover:bg-yellow-100 cursor-pointer"
                                     *ngFor="let producto of productos | filtroProductos:filtro.parametro:filtro.activo | paginate: {itemsPerPage: cantidadItems, currentPage: paginaActual}">
                                     <!-- Codigo -->
                                     <td class="px-5 py-2 border-b border-gray-200 text-sm">

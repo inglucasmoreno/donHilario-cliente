@@ -23,7 +23,7 @@ module.exports = {
             yellow: colors.yellow,
             background: colors.gray,
             primary: colors.gray,
-            secondary: colors.red,
+            secondary: colors.green,
         },
     },
     variants: {

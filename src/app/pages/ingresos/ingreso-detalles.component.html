@@ -12,7 +12,7 @@
 
         <!-- Footer -->
         <div class="flex">
-            <button class="bg-secondary-800 text-white p-2 rounded shadow w-full focus:outline-none hover:bg-secondary-400" (click)="editarIngreso()"> Editar </button>
+            <button class="bg-secondary-600 text-white p-2 rounded shadow w-full focus:outline-none hover:bg-secondary-500" (click)="editarIngreso()"> Editar </button>
             <button class="bg-gray-500 text-white p-2 rounded shadow w-full ml-4 focus:outline-none hover:bg-gray-400" (click)="showModal = false"> Cancelar </button>
         </div>
     </div>
@@ -22,7 +22,7 @@
 <app-modal [showModal]="showModalIngresar">
     <div class="p-4" *ngIf="productoSeleccionado">
 
-        <h1 class="text-xl mb-2 font-semibold p-2 bg-secondary-800 text-white rounded"> Agregando producto </h1>
+        <h1 class="text-xl mb-2 font-semibold p-2 bg-primary-800 text-white rounded"> Agregando producto </h1>
 
         <div class="p-2">
             <p class="font-semibold text-xl mb-1"> {{ productoSeleccionado.descripcion }} </p>
@@ -72,7 +72,7 @@
 
         <!-- Footer -->
         <div class="flex">
-            <button class="bg-secondary-800 text-white p-2 rounded shadow w-full focus:outline-none hover:bg-secondary-400" (click)="nuevoProducto()"> Agregar </button>
+            <button class="bg-secondary-600 text-white p-2 rounded shadow w-full focus:outline-none hover:bg-secondary-400" (click)="nuevoProducto()"> Agregar </button>
             <button class="bg-gray-500 text-white p-2 rounded shadow w-full ml-4 focus:outline-none hover:bg-gray-400" (click)="showModalIngresar = false"> Cancelar </button>
         </div>
 
