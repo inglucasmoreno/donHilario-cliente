@@ -87,7 +87,7 @@
                     <span> Total efectivo en caja </span>
                     <span> ${{ data.efectivo_en_caja | moneda }} </span>
                 </p>
-                <button (click)="nuevaCaja()" class="p-2 border border-gray-200 shadow text-md bg-gray-100 text-gray-600 w-full my-2 rounded hover:text-secondary-700 focus:outline-none font-semibold"> 
+                <button (click)="nuevaCaja()" class="p-2 border border-gray-200 shadow text-md bg-gray-100 text-gray-800 w-full my-2 rounded hover:text-secondary-700 focus:outline-none font-semibold"> 
                     Completar
                 </button>
             </div>
@@ -184,7 +184,7 @@
                     <option value="Ingreso"> Ingreso </option>
                 </select>
             </div>
-            <button (click)="nuevoIngresoGasto()" class="p-2 border border-gray-200 shadow bg-gray-100 text-sm text-gray-600 w-full mt-4 rounded hover:text-secondary-700 focus:outline-none font-semibold"> Crear elemento </button>
+            <button (click)="nuevoIngresoGasto()" class="p-2 border border-gray-200 shadow bg-gray-100 text-sm text-gray-800 w-full mt-4 rounded hover:text-secondary-700 focus:outline-none font-semibold"> Crear elemento </button>
         </div>
         <div *ngIf="ingresos.length > 0 || gastos.length > 0" class="mx-2 mb-2 border shadow rounded">
             <h1 class="bg-gray-100 text-gray-700 px-2 py-1 font-semibold"> Listado de elementos </h1>

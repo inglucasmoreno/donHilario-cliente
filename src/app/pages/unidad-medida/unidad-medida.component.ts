@@ -13,6 +13,8 @@ import { AlertService } from 'src/app/services/alert.service';
 })
 export class UnidadMedidaComponent implements OnInit {
 
+  public showModal = false;
+
   public total = 0;
   public unidades: UnidadMedida[] = [];
 
@@ -58,6 +60,7 @@ export class UnidadMedidaComponent implements OnInit {
     this.unidadMedidaService.nuevaUnidad({ descripcion }).subscribe( () => {  
       this.alertService.success('Unidad creada correctamente');
       this.alertService.close();
+      this.showModal = false;
       this.listarUnidades();
     },(({error}) => {
       this.alertService.errorApi(error.msg);

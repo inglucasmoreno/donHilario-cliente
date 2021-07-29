@@ -5,7 +5,7 @@
                 <h2 class="text-2xl font-semibold leading-tight text-gray-600">
                     Listado de usuarios
                 </h2>
-                <p class='text-gray-600'> Total de usuarios: {{ total }} </p>
+                <p class='text-gray-500'> Total de usuarios: {{ total }} </p>
             </div>
             <div class="md:flex md:items-center md:justify-between">
                 <div class="my-2 flex sm:flex-row flex-col">
@@ -45,6 +45,11 @@
                     <table class="min-w-full leading-normal">
                         <thead>
                             <tr>
+                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    <div class="flex items-center focus:outline-none">
+                                        <span> Avatar </span>
+                                    </div>
+                                </th>
                                 <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     <div (click)="ordenarPorColumna('apellido')" class="cursor-pointer flex items-center focus:outline-none">
                                         <span> Apellido </span>
@@ -122,6 +127,12 @@
                         </thead>
                         <tbody *ngIf="usuarios">
                             <tr class="animate__animated animate__fadeIn" *ngFor="let usuario of usuarios | filtroUsuarios:filtro.parametro:filtro.activo | paginate: {itemsPerPage: cantidadItems, currentPage: paginaActual}">
+                                <td class="px-5 py-2 border-b border-gray-200 text-xs">
+                                    <p class="text-gray-900 whitespace-no-wrap">
+                                        <img *ngIf="usuario.role == 'USER_ROLE'" class="rounded-full border shadow w-10" src="assets/img/usuarios/usuario_cajero.png" alt="Avatar">
+                                        <img *ngIf="usuario.role == 'ADMIN_ROLE'" class="rounded-full border shadow w-10" src="assets/img/usuarios/usuario_administrador.png" alt="Avatar">
+                                    </p>
+                                </td>
                                 <td class="px-5 py-2 border-b border-gray-200 text-xs">
                                     <p class="text-gray-900 whitespace-no-wrap">
                                         {{ usuario.apellido }}

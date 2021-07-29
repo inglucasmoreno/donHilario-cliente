@@ -24,8 +24,8 @@ export class NuevoUsuarioComponent implements OnInit {
     email: ['', Validators.required],
     password: ['', Validators.required],
     repetir: ['', Validators.required],
-    role: ['USER_ROLE', Validators.required],
-    activo: [true, Validators.required]
+    role: ['ADMIN_ROLE', Validators.required],
+    activo: ['true', Validators.required]
   });
 
   constructor(private fb: FormBuilder,

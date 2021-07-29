@@ -22,6 +22,7 @@ export class EditarPasswordComponent implements OnInit {
     apellido: '',
     nombre: '',
     email: '',
+    role: ''
   };
   public passwordForm = this.fb.group({
     password: ['', Validators.required],

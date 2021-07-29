@@ -23,7 +23,7 @@ export class EditarUsuarioComponent implements OnInit {
     nombre: ['', Validators.required],
     email: ['', Validators.email],
     role: ['USER_ROLE', Validators.required],
-    activo: [true, Validators.required],
+    activo: ['true', Validators.required],
   });
 
   constructor(private router: Router,
@@ -46,7 +46,7 @@ export class EditarUsuarioComponent implements OnInit {
         nombre,
         email,
         role,
-        activo
+        activo: String(activo)
       });
       this.alertService.close();
     });
