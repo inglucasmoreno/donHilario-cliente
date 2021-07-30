@@ -125,6 +125,7 @@ export class IngresoDetallesComponent implements OnInit {
   modalNuevoProducto(codigo: any){
     
     this.data.cantidad = 0;
+    this.nuevoPrecio = null;
 
     // Si no se escribe codigo, no hacer nada
     if(codigo.value.trim() === '') return;

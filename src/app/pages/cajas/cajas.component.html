@@ -1,11 +1,28 @@
+<app-modal [showModal]="showModal">
+    <div [ngClass]="{'border-red-500':elementoActual.tipo === 'Gasto', 'border-green-500':elementoActual.tipo === 'Ingreso'}" class="bg-white px-4 py-2 pb-4 rounded border-t-8 border-green-600">
+        <h1 class="text-xl text-gray-800"> Agregando un {{ elementoActual.tipo.toLowerCase() }} </h1>
+        <input (keyup.enter)="nuevoIngresoGasto()" type="text" [(ngModel)]="elementoActual.descripcion" placeholder="Descripción" class="py-2 px-2 border shadow rounded focus:outline-none mt-3 w-full">
+        <div class="flex items-center mt-2">
+            <input (keyup.enter)="nuevoIngresoGasto()" [(ngModel)]="elementoActual.monto" type="number" placeholder="Monto" min=0 class="py-2 px-2 border shadow rounded focus:outline-none mt-2 w-1/2">
+            <select [(ngModel)]="elementoActual.tipo" class="p-2 border shadow rounded mt-2 ml-2 w-1/2">
+                <option value="Gasto"> Gasto </option>
+                <option value="Ingreso"> Ingreso </option>
+            </select>
+        </div>
+        <div class="flex items-center">
+            <button (click)="nuevoIngresoGasto()" [ngClass]="{'bg-red-600 hover:bg-red-500':elementoActual.tipo === 'Gasto', 'bg-green-600 hover:bg-green-500':elementoActual.tipo === 'Ingreso'}" class="w-1/2 p-2 mt-3 text-sm font-semibold border shadow rounded text-white"> Agregar </button>
+            <button (click)="showModal = false" class="border w-1/2 text-sm font-semibold p-2 rounded shadow text-white mt-3 bg-gray-600 hover:bg-gray-500"> Cancelar </button>
+        </div>
+    </div>
+</app-modal>
 <div class="md:flex p-4">
 
     <div class="w-full md:w-1/2 ">
         <!-- Cierre de caja -->
         <div class="bg-white border shadow rounded-t">
             <div class="flex items-center p-2 justify-between rounded-t bg-primary-800">
-                <h1 class="font-semibold text-white text-lg"> Cierre de caja </h1>
-                <button *ngIf="authService.usuario.role == 'ADMIN_ROLE'" routerLink="/dashboard/cajas/historial" class="py-1 px-2 flex items-center rounded bg-gray-100 hover:text-secondary-800 shadow text-gray-800 border border-gray-700"> 
+                <h1 class="text-white text-lg"> Cierre de caja </h1>
+                <button *ngIf="authService.usuario.role == 'ADMIN_ROLE'" routerLink="/dashboard/cajas/historial" class="py-1 px-2 flex items-center rounded bg-gray-100 text-sm font-semibold hover:text-secondary-800 shadow text-gray-800 border border-gray-700"> 
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-database"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
                     <span class="ml-1"> Historial de cajas </span>
                 </button>
@@ -96,7 +113,7 @@
         <!-- Control de billetes -->
         <div class="w-full mt-4">
             <div class="bg-white  border shadow rounded-t text-sm">
-                <h1 class="font-semibold p-2 bg-primary-800 text-white rounded-t text-lg"> Control de billetes </h1>
+                <h1 class="p-2 bg-primary-800 text-white rounded-t text-lg"> Control de billetes </h1>
                 <div class="p-2">
                     <table class="w-full">
                         <thead>
@@ -173,24 +190,17 @@
 
     <!-- Gastos e Ingresos -->
     <div class="bg-white w-full md:w-1/2 border shadow md:ml-4 mt-2 md:mt-0 rounded-t h-full">
-        <h1 class="font-semibold p-2 bg-primary-800 text-white rounded-t text-lg"> Gastos e Ingresos </h1>
-        <div class="p-4">
-            <h1 class="font-semibold bg-gray-100 p-2 border border-gray-300 rounded"> Nuevo elemento </h1>
-            <input type="text" [(ngModel)]="elementoActual.descripcion" placeholder="Descripción" class="py-2 px-2 border shadow rounded focus:outline-none mt-2 w-full">
-            <div class="flex items-center mt-1">
-                <input [(ngModel)]="elementoActual.monto" type="number" placeholder="Monto" min=0 class="py-2 px-2 border shadow rounded focus:outline-none mt-2 w-1/2">
-                <select [(ngModel)]="elementoActual.tipo" class="p-2 border shadow rounded mt-2 ml-2 w-1/2">
-                    <option value="Gasto"> Gasto </option>
-                    <option value="Ingreso"> Ingreso </option>
-                </select>
-            </div>
-            <button (click)="nuevoIngresoGasto()" class="p-2 border border-gray-200 shadow bg-gray-100 text-sm text-gray-800 w-full mt-4 rounded hover:text-secondary-700 focus:outline-none font-semibold"> Crear elemento </button>
+        <div class="bg-primary-800 p-2 flex items-center justify-between">
+            <h1 class="text-white rounded-t text-lg"> Gastos e Ingresos </h1>
+            <button (click)="showModal = true" class="bg-gray-100 mr-2 px-2 py-1 shadow rounded text-sm font-semibold hover:text-secondary-700 text-gray-800"> Nuevo elemento </button>
         </div>
-        <div *ngIf="ingresos.length > 0 || gastos.length > 0" class="mx-2 mb-2 border shadow rounded">
-            <h1 class="bg-gray-100 text-gray-700 px-2 py-1 font-semibold"> Listado de elementos </h1>
+        <div class="p-2" *ngIf="ingresos.length <= 0 && gastos.length <= 0">
+            <p class="text-gray-600"> No hay elementos activos </p>
+        </div>
+        <div *ngIf="ingresos.length > 0 || gastos.length > 0" class="mx-2 mb-2">
             <div class="p-4">
                 <div *ngIf="ingresos.length > 0">
-                    <h1 class="py-1 px-3 border text-green-600 border-green-300 rounded bg-green-100 w-full"> Otros ingresos </h1>
+                    <h1 class="py-1 px-3 border text-white text-sm font-semibold rounded bg-green-600 w-full"> Otros ingresos </h1>
                     <div class="p-2">
                         <p (click)="eliminarIngresoGasto(ingreso)" class="flex items-center justify-between p-2 rounded border-b hover:bg-green-100 cursor-pointer text-sm" *ngFor="let ingreso of ingresos">
                             <span> {{ ingreso.descripcion }} </span>
@@ -203,7 +213,7 @@
                     </div>
                 </div>
                 <div *ngIf="gastos.length > 0">
-                    <h1 class="py-1 px-3 border text-red-600 border-red-300 rounded bg-red-100 w-full"> Otros gastos </h1>
+                    <h1 class="py-1 px-3 border text-white rounded bg-red-600 text-sm font-semibold w-full"> Otros gastos </h1>
                     <div class="p-2">
                         <p (click)="eliminarIngresoGasto(gasto)" class="flex items-center justify-between p-2 rounded border-b hover:bg-red-100 cursor-pointer text-sm" *ngFor="let gasto of gastos">
                             <span> {{ gasto.descripcion }} </span>

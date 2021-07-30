@@ -14,6 +14,7 @@ import { CajasService } from '../../services/cajas.service';
 })
 export class CajasComponent implements OnInit {
 
+  public showModal = false;
   public showFormaPago = false;
 
   // Ingresos y Gastos
@@ -281,6 +282,8 @@ export class CajasComponent implements OnInit {
     }
     
     this.calculoGastosIngresos();
+    
+    this.showModal = false;
 
     this.alertService.success('Elemento cargado correctamente');
 
