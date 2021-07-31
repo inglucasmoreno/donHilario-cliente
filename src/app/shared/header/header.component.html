@@ -3,10 +3,12 @@
         <div class="border-t-8 border-secondary-500"></div>
         <div class="flex-shrink-0 px-3 py-4 flex flex-row items-center justify-between">
             <div class="flex items-center">
-                <div class="rounded-full h-14 w-14 flex items-center justify-center mr-3 border-2 border-secondary-500">
-                    <span class="text-secondary-500 text-2xl font-semibold">
-                {{ authService.usuario.apellido.substr(0,1) }}
-              </span>
+                <div [ngClass]="{'bg-green-100 border-green-700':authService.usuario.role === 'ADMIN_ROLE', 'bg-orange-100 border-orange-600':authService.usuario.role === 'USER_ROLE'}" class="rounded-full h-14 w-14 flex items-center justify-center mr-3 border-2">
+                    <img *ngIf="authService.usuario.role === 'ADMIN_ROLE'" src="assets/img/usuarios/usuario_administrador.png" alt="A">
+                    <img *ngIf="authService.usuario.role === 'USER_ROLE'" class="w-10/12" src="assets/img/usuarios/usuario_cajero.png" alt="C">
+                    <!-- <span class="text-secondary-500 text-2xl font-semibold">
+                        {{ authService.usuario.apellido.substr(0,1) }}
+                    </span> -->
                 </div>
                 <div class="focus:outline-none focus:shadow-outline">
                     <div>

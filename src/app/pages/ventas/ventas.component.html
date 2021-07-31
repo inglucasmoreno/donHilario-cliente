@@ -1,6 +1,6 @@
 <app-modal [showModal]="showModal">
     <div>
-        <h1 class="bg-primary-800 text-white text-xl p-2 rounded-t"> Completando venta </h1>
+        <h1 class="bg-secondary-600 text-white text-xl p-2 rounded-t"> Completando venta </h1>
         <div class="px-4 py-1">
 
             <div class="flex items-center justify-between p-2 text-2xl border rounded bg-yellow-100 border-gray-200 shadow mt-2">
@@ -20,7 +20,7 @@
         <!-- Footer -->
         <div class="flex p-4">
             <button class="bg-secondary-600 text-white p-2 rounded shadow w-full focus:outline-none hover:bg-secondary-500" (click)="completarVenta()"> Completar </button>
-            <button class="bg-gray-500 text-white p-2 rounded shadow w-full ml-4 focus:outline-none hover:bg-gray-400" (click)="showModal = false"> Cancelar </button>
+            <button class="bg-gray-600 text-white p-2 rounded shadow w-full ml-4 focus:outline-none hover:bg-gray-500" (click)="showModal = false"> Cancelar </button>
         </div>
     </div>
 </app-modal>
@@ -35,13 +35,13 @@
             <span class="ml-1 "> Historal de ventas </span>
         </button>
         <div *ngIf="productos.length> 0">
-            <button (click)="abrirModal()" class="p-2 flex items-center focus:outline-none shadow border-2 border-gray-800 rounded hover:text-secondary-700 bg-gray-100 text-gray-700 "> 
+            <button (click)="abrirModal()" class="p-2 flex items-center focus:outline-none shadow border-2 border-gray-800 rounded hover:text-secondary-700 bg-gray-100 text-gray-900 "> 
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
                 <span class="ml-1"> Completar venta </span>
             </button>
             <!-- <button (click)="modalReiniciarVenta()" class="p-2 shadow border rounded hover:bg-yellow-700 focus:outline-none bg-gray-800 text-white ml-2"> Reiniciar </button> -->
         </div>
-        <div *ngIf="precioTotal > 0" class="border-2 font-semibold border-gray-800 p-2 focus:outline-none bg-gray-100 text-gray-700 rounded">
+        <div *ngIf="precioTotal > 0" class="border-2 font-semibold border-gray-800 p-2 focus:outline-none bg-gray-100 text-gray-800 rounded">
             Total: ${{ precioTotal + totalAdicionalPorCredito - totalDescuentos | moneda }}
         </div>
     </div>
@@ -49,7 +49,7 @@
 <div class="px-10 pt-2 md:flex">
     <div class="w-full md:w-1/2">
         <div class="border shadow bg-white">
-            <h1 class="font-semibold mb-2 text-lg bg-primary-800 text-white p-2 rounded-t"> Ingresar producto </h1>
+            <h1 class="mb-2 text-lg bg-primary-800 text-white p-2 rounded-t"> Ingresar producto </h1>
             <div class="p-2 flex items-center">
                 <input type="text" id="codigo" (keyup.enter)="buscarProducto()" [(ngModel)]="codigo" placeholder="Codigo de producto" class="border w-1/2 bg-white shadow rounded p-2 outline-none">
                 <button (click)="buscarProducto()" class="ml-2 focus:outline-none border rounded shadow hover:bg-secondary-500 text-white bg-secondary-600 border-gray-300 p-2 w-1/2"> Cargar producto </button>
@@ -58,7 +58,7 @@
         <div class="bg-white rounded-t shadow mt-4">
             <p *ngIf="!productoActual && productos.length <= 0" class="text-gray-500 p-2"> Debes ingresar el codigo de un producto </p>
             <div *ngIf="productoActual && productoVenta && productos.length > 0">
-                <h1 class="font-semibold text-lg rounded-t bg-primary-800 text-white py-1 px-2"> Producto cargado </h1>
+                <h1 class="text-lg rounded-t bg-primary-800 text-white py-2 px-2"> Producto cargado </h1>
                 <div class="p-2">
                     <p class="text-lg font-semibold border-b-2 mb-2 pb-1"> {{ productoActual.descripcion }} </p>
                     <ul class="font-semibold">
@@ -73,10 +73,10 @@
         </div>
 
         <div *ngIf="productoActual && productoVenta && productos.length > 0" class="bg-white rounded-t shadow mt-4">
-            <h1 class="font-semibold text-lg rounded-t bg-primary-800 text-white py-1 px-2"> Detalles de pago </h1>
+            <h1 class="text-lg rounded-t bg-primary-800 text-white py-1 px-2"> Detalles de pago </h1>
             <div class="p-4">
                 <div>
-                    <h1 class="font-semibold text-gray-700"> Forma de pago </h1>
+                    <h1 class="font-semibold text-gray-900"> Forma de pago </h1>
                     <select (change)="calculoPrecioTotal()" [(ngModel)]="forma_pago" class="w-full border rounded shadow p-2 mt-2">
                         <option value="Efectivo"> Efectivo </option>
                         <option value="Debito"> Débito </option>
@@ -85,7 +85,7 @@
                     </select>
                 </div>
                 <div>
-                    <h1 class="font-semibold text-gray-700 mt-4"> Descuento porcentual </h1>
+                    <h1 class="font-semibold text-gray-900 mt-4"> Descuento porcentual </h1>
                     <select (change)="calculoPrecioTotal()" [(ngModel)]="descuento_porcentual" class="w-full border rounded shadow p-2 mt-2">                
                         <option value=1> Sin descuento </option>
                         <option value=0.05> Descuento del 5% </option>
@@ -102,9 +102,9 @@
         </div>
     </div>
     <div *ngIf="productos.length > 0" class="w-full md:w-1/2 border bg-white shadow rounded-t mt-4 md:mt-0 md:ml-4 h-full">
-        <h1 class="font-semibold text-lg text-white bg-primary-800 rounded-t p-2"> Detalle de venta </h1>
+        <h1 class="text-lg text-white bg-primary-800 rounded-t p-2"> Detalle de venta </h1>
         <div class="py-1 px-2 cursor-pointer">
-            <div *ngFor="let producto of productos" (click)="eliminarProducto(producto)" [ngClass]="{'bg-orange-100 border-orange-300': producto.promocion, 'bg-yellow-100 border-yellow-300': !producto.promocion}" class="flex items-center m-2 justify-between rounded bg-yellow-100 border hover:bg-red-100 hover:border-red-300">
+            <div *ngFor="let producto of productos" (click)="eliminarProducto(producto)" [ngClass]="{'bg-orange-100 border-orange-300': producto.promocion, 'bg-yellow-100 border-yellow-300': !producto.promocion}" class="flex animate__animated animate__fadeIn items-center m-2 justify-between rounded bg-yellow-100 border hover:bg-red-100 hover:border-red-300">
                 <div class="p-2">
                     <p class="font-semibold"> {{ producto.descripcion }} </p>
                     <p> Cantidad: {{ producto.tipo === 'Balanza' ? (producto.cantidad | moneda) : producto.cantidad }} ({{ producto.unidad_medida }}) </p>

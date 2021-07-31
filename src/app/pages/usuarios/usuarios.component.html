@@ -129,8 +129,8 @@
                             <tr class="animate__animated animate__fadeIn" *ngFor="let usuario of usuarios | filtroUsuarios:filtro.parametro:filtro.activo | paginate: {itemsPerPage: cantidadItems, currentPage: paginaActual}">
                                 <td class="px-5 py-2 border-b border-gray-200 text-xs">
                                     <p class="text-gray-900 whitespace-no-wrap">
-                                        <img *ngIf="usuario.role == 'USER_ROLE'" class="rounded-full border shadow w-10" src="assets/img/usuarios/usuario_cajero.png" alt="Avatar">
-                                        <img *ngIf="usuario.role == 'ADMIN_ROLE'" class="rounded-full border shadow w-10" src="assets/img/usuarios/usuario_administrador.png" alt="Avatar">
+                                        <img *ngIf="usuario.role == 'USER_ROLE'" class="rounded-full bg-orange-100 border-orange-400 border shadow w-10 h-10" src="assets/img/usuarios/usuario_cajero.png" alt="Avatar">
+                                        <img *ngIf="usuario.role == 'ADMIN_ROLE'" class="rounded-full bg-green-100 border-green-400 border shadow w-10 h-10" src="assets/img/usuarios/usuario_administrador.png" alt="Avatar">
                                     </p>
                                 </td>
                                 <td class="px-5 py-2 border-b border-gray-200 text-xs">
