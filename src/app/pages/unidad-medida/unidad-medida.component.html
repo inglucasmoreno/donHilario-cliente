@@ -2,11 +2,11 @@
     <div class="bg-white border-t-8 border-gray-800 rounded p-4 shadow">
         <div>
             <h1 class="text-2xl text-gray-800"> Nueva unidad </h1>
-            <p class="bg-green-600 font-semibold text-white w-max px-1 py-1 rounded text-xs mt-1"> Creando unidad </p>
+            <p class="text-gray-600"> Debe colocar una descripción </p>
         </div>
         <input #txtUnidad (keyup.enter)="nuevaUnidad(txtUnidad)" class="p-2 border focus:outline-none rounded w-full mt-3 shadow" type="text" placeholder="Ej. Unidad">
         <div class="flex mt-5">
-            <button (click)="nuevaUnidad(txtUnidad)" class=" w-1/2 focus:outline-none rounde font-semibold text-sm bg-secondary-600 text-white hover:bg-green-500 border rounded shadow p-2 "> Crear unidad </button>
+            <button (click)="nuevaUnidad(txtUnidad)" class=" w-1/2 focus:outline-none rounde font-semibold text-sm bg-secondary-800 text-white hover:bg-secondary-700 border rounded shadow p-2 "> Crear unidad </button>
             <button (click)="showModal=! showModal " class="w-1/2 focus:outline-none rounde text-sm font-semibold bg-gray-600 text-white hover:bg-gray-500 border rounded shadow p-2 ml-2 "> Cancelar </button>
         </div>
     </div>
@@ -59,7 +59,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button (click)="showModal = true" class="p-2 focus:outline-none text-gray-700 hover:text-green-600 rounded shadow border bg-gray-100"> Nueva unidad </button>
+                                <button (click)="showModal = true" class="p-2 focus:outline-none text-gray-700 hover:text-secondary-800 rounded shadow border bg-gray-100"> Nueva unidad </button>
                             </div>
 
                         </div>

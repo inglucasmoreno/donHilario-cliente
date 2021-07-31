@@ -17,7 +17,7 @@ export class AlertService {
       showCancelButton: true,
       confirmButtonText: buttonText,
       cancelButtonText: 'Cancelar', 
-      confirmButtonColor: '#22c55e'
+      confirmButtonColor: '#991b1b'
     });
   }
 
@@ -39,7 +39,7 @@ export class AlertService {
       title: 'Información',
       text: msg,
       confirmButtonText: 'Entendido',
-      confirmButtonColor: '#22c55e'
+      confirmButtonColor: '#991b1b'
     });  
   }
 
@@ -50,7 +50,7 @@ export class AlertService {
         title: 'Información',
         text: 'Formulario Inválido',
         confirmButtonText: 'Entendido',
-        confirmButtonColor: '#22c55e'
+        confirmButtonColor: '#991b1b'
       });    
   }   
 
@@ -61,7 +61,7 @@ export class AlertService {
       title: 'Error',
       text: msg,
       confirmButtonText: 'Entendido',
-      confirmButtonColor: '#22c55e'
+      confirmButtonColor: '#991b1b'
     });    
   }
 

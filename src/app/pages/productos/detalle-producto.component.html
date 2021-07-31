@@ -12,7 +12,7 @@
             </div>
             <!-- Footer -->
             <div class="flex p-4">
-                <button (click)="activarPromocion()" class="bg-secondary-600 text-white p-2 rounded shadow w-full focus:outline-none hover:bg-secondary-400"> Activar </button>
+                <button (click)="activarPromocion()" class="bg-secondary-800 text-white p-2 rounded shadow w-full focus:outline-none hover:bg-secondary-700"> Activar </button>
                 <button class="bg-gray-500 text-white p-2 rounded shadow w-full ml-4 focus:outline-none hover:bg-gray-400" (click)="showModal = false"> Cancelar </button>
             </div>
         </div>
@@ -20,7 +20,7 @@
             <p class="bg-gray-100 border border-gray-300 p-2 font-semibold rounded text-gray-700"> Este producto tiene una promoción activa </p>
             <p class="p-2 bg-orange-100 rounded border border-orange-200 w-max mt-2"> Precio de promoción: <span class="font-semibold"> ${{ producto.precio_promocion | moneda }} </span> </p>
             <div class="flex mt-4">
-                <button (click)="eliminarPromocion()" class="bg-secondary-600 text-white p-2 rounded shadow w-full focus:outline-none hover:bg-secondary-400"> Eliminar </button>
+                <button (click)="eliminarPromocion()" class="bg-secondary-800 text-white p-2 rounded shadow w-full focus:outline-none hover:bg-secondary-700"> Eliminar </button>
                 <button class="bg-gray-500 text-white p-2 rounded shadow w-full ml-4 focus:outline-none hover:bg-gray-400" (click)="showModal = false"> Cancelar </button>
             </div>
         </div>
