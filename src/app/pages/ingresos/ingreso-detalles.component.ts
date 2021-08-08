@@ -7,11 +7,11 @@ import { ProveedoresService } from '../../services/proveedores.service';
 import { AlertService } from '../../services/alert.service';
 
 import { Proveedor } from 'src/app/models/proveedor.model';
-import { Producto } from 'src/app/models/producto.model';
 
 import { Ingreso } from 'src/app/models/ingreso.model';
 import { IngresosProductosService } from '../../services/ingresos-productos.service';
 import { ProductosService } from 'src/app/services/productos.service';
+import { MediaResService } from '../../services/media-res.service';
 
 @Component({
   selector: 'app-ingreso-detalles',
@@ -30,6 +30,10 @@ export class IngresoDetallesComponent implements OnInit {
     cantidad: 0
   };
 
+  // Media res
+  public cantidadMediaRes = 1;
+  public mediaRes: any[] = [];
+
   // Actualizacion de precio
   public nuevoPrecio = null;
   public nuevoPorcentaje = 40;
@@ -46,6 +50,8 @@ export class IngresoDetallesComponent implements OnInit {
   // Modal
   public showModal = false;
   public showModalIngresar = false;
+  public showModalRes = false;
+  public showModalResEditar = false;
   
   // Proveedores
   public proveedorSeleccionado;
@@ -60,8 +66,8 @@ export class IngresoDetallesComponent implements OnInit {
 
   // Ordenar
   public ordenar = {
-  direccion: -1,  // Asc (1) | Desc (-1)
-  columna: 'createdAt'
+  direccion: 1,  // Asc (1) | Desc (-1)
+  columna: 'producto.descripcion'
 }
 
 
@@ -70,6 +76,7 @@ export class IngresoDetallesComponent implements OnInit {
               private ingresosService: IngresosService,
               private activatedRoute: ActivatedRoute,
               private alertService: AlertService,
+              private mediaResService: MediaResService,
               private proveedoresService: ProveedoresService,
               private productosService: ProductosService,
               private ingresosProductosService: IngresosProductosService) { }
@@ -77,6 +84,7 @@ export class IngresoDetallesComponent implements OnInit {
   ngOnInit(): void {
     this.dataService.ubicacionActual = 'Dashboard - Ingresos - Detalles';
     this.alertService.loading();
+    this.listarMediaRes();
     this.activatedRoute.params.subscribe( ({ id }) => {
       this.idIngreso = id;
       this.data.ingreso = id;
@@ -173,6 +181,19 @@ export class IngresoDetallesComponent implements OnInit {
     
   }
 
+  // Nueva media res
+  nuevaMediaRes(){
+    this.alertService.loading();
+    this.ingresosProductosService.nuevaMediaRes({ idIngreso: this.idIngreso, cantidad: this.cantidadMediaRes }).subscribe(resp => {
+      this.obtenerProductos();
+      this.cantidadMediaRes = 1;
+      this.showModalRes = false;
+      this.alertService.close();
+    },({error}) => {
+      this.alertService.errorApi(error.msg);
+    });
+  }
+
   // Ingreso por ID
   obtenerIngreso(){
     this.ingresosService.getIngreso(this.idIngreso).subscribe( ({ ingreso }) => {
@@ -191,6 +212,7 @@ export class IngresoDetallesComponent implements OnInit {
         this.ordenar.direccion,
         this.ordenar.columna
       ).subscribe( ({productos}) => {
+      console.log(productos);
       this.productos = productos;
       this.alertService.close();
     },({error}) => {
@@ -252,6 +274,29 @@ export class IngresoDetallesComponent implements OnInit {
       }
    }) 
 
+  }
+
+  modaMediaResEditar(): void {
+    this.showModalRes = false;
+    this.showModalResEditar = true;  
+  }
+
+  // Listar productos de media res
+  listarMediaRes(): void {
+    this.mediaResService.listarMediaRes().subscribe(({ productos }) => {
+      this.mediaRes = productos;
+    })
+  }
+
+  // Abrir modal media res
+  modalMediaRes(): void {
+    this.cantidadMediaRes = 1;
+    this.showModalRes = true;
+  }
+
+  volverModalRes(): void {
+    this.showModalResEditar = false;
+    this.showModalRes = true;
   }
 
   // Filtrado por parametro

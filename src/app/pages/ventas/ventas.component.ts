@@ -5,6 +5,7 @@ import { Producto } from '../../models/producto.model';
 import { AlertService } from '../../services/alert.service';
 import { VentasService } from '../../services/ventas.service';
 import { AuthService } from '../../services/auth.service';
+import { MayoristasService } from '../../services/mayoristas.service';
 
 @Component({
   selector: 'app-ventas',
@@ -16,6 +17,7 @@ export class VentasComponent implements OnInit {
 
   constructor( private dataService: DataService,
                public authService: AuthService,
+               private mayoristasService: MayoristasService,
                private productosService: ProductosService,
                private alertService: AlertService,
                private ventasService: VentasService) { }
@@ -46,7 +48,12 @@ export class VentasComponent implements OnInit {
     cantidad: 0,
     tipo: ''
   };
-  
+
+  // Mayoristas
+  public ventaMayorista = "false";
+  public mayoristaSeleccionado = "";
+  public mayoristas: any[] = [];
+
   // Descuentos y Beneficios + Forma de pago 
   public descuento_porcentual = 1;
   public forma_pago = 'Efectivo';
@@ -54,12 +61,16 @@ export class VentasComponent implements OnInit {
   ngOnInit(): void {
     document.getElementById('codigo').focus();
     this.dataService.ubicacionActual = 'Dashboard - Ventas';
+    this.listarMayoristas();
   }
 
   // Abrir modal
   abrirModal(): void {
     this.pago = null;
-    this.showModal = true;  
+    this.vuelto = 0;
+    this.showModal = true;
+    this.mayoristaSeleccionado = "";
+    this.ventaMayorista = 'false';  
   }
 
   // Se busca el producto a partir del codigo
@@ -71,6 +82,13 @@ export class VentasComponent implements OnInit {
     };
 
     this.productosService.productoPorCodigo(this.codigo).subscribe( ({ producto }) => {
+
+      // Producto activo?
+      if(!producto.activo){
+        this.codigo = '';
+        return this.alertService.info('El producto esta desactivado');
+      } 
+      
       this.productoActual = producto;
       this.productoVenta.descripcion = producto.descripcion;
       this.productoVenta.unidad_medida = producto.unidad_medida.descripcion;
@@ -179,38 +197,53 @@ export class VentasComponent implements OnInit {
 
   }
 
+  // Litar mayoristas
+  listarMayoristas(): void {
+    this.mayoristasService.listarMayoristas().subscribe( ({ mayoristas }) => {
+      this.mayoristas = mayoristas.filter(mayorista => mayorista.activo == true);
+    });  
+  }
+
   // Completar venta
   completarVenta(): void {
     this.alertService.question({msg:'¿Quieres completar la venta?', buttonText: 'Completar'})
                      .then((result)=>{
                        if(result.isConfirmed){
-                         this.alertService.loading();
-                         const data = { 
-                           forma_pago: this.forma_pago,
-                           total_balanza: Number(this.totalBalanza.toFixed(2)),
-                           total_mercaderia: Number(this.totalMercaderia.toFixed(2)),
-                           total_adicional_credito: Number(this.totalAdicionalPorCredito.toFixed(2)),
-                           total_descuento: Number(this.totalDescuentos.toFixed(2)),
-                           descuento_porcentual: this.descuento_porcentual,
-                           precio_total: Number(this.precioTotal.toFixed(2)),
-                           productos: this.productos 
-                          };
-                         this.ventasService.nuevaVenta(data).subscribe( (resp) => {
-                           this.dataService.detectarStockMinimo();
-                           this.reiniciarVenta();
-                           this.alertService.success('Venta completada');
-                           this.showModal = false;
-                           this.pago = null;
-                           document.getElementById('codigo').focus();      
-                         },({error}) => {
-                           this.alertService.errorApi(error.msg);
-                           this.showModal = false;
-                           this.pago = null;
-                           document.getElementById('codigo').focus();      
-                         });
-                       }
-                       document.getElementById('codigo').focus();
-                     });  
+                        
+                        if(this.ventaMayorista == 'true' && this.mayoristaSeleccionado == ""){
+                          return this.alertService.info('Debe seleccionar un mayorista');
+                        }
+
+                        this.alertService.loading();
+                        const data = { 
+                          forma_pago: this.forma_pago,
+                          total_balanza: Number(this.totalBalanza.toFixed(2)),
+                          total_mercaderia: Number(this.totalMercaderia.toFixed(2)),
+                          total_adicional_credito: Number(this.totalAdicionalPorCredito.toFixed(2)),
+                          total_descuento: Number(this.totalDescuentos.toFixed(2)),
+                          descuento_porcentual: this.descuento_porcentual,
+                          venta_mayorista: this.ventaMayorista === 'true' ? true : false,
+                          mayorista: this.ventaMayorista !== '' ? this.mayoristaSeleccionado : null,
+                          precio_total: Number(this.precioTotal.toFixed(2)),
+                          productos: this.productos 
+                        };
+                            
+                        this.ventasService.nuevaVenta(data).subscribe( (resp) => {
+                          this.dataService.detectarStockMinimo();
+                          this.reiniciarVenta();
+                          this.alertService.success('Venta completada');
+                          this.showModal = false;
+                          this.pago = null;
+                          document.getElementById('codigo').focus();      
+                        },({error}) => {
+                          this.alertService.errorApi(error.msg);
+                          this.showModal = false;
+                          this.pago = null;
+                          document.getElementById('codigo').focus();      
+                        });
+                      }
+                      document.getElementById('codigo').focus();
+                    });  
   }
   
   // Reiniciar venta

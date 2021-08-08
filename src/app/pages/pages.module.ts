@@ -30,6 +30,9 @@ import { CajasComponent } from './cajas/cajas.component';
 import { CajasHistorialComponent } from './cajas/cajas-historial.component';
 import { PromocionesComponent } from './productos/promociones.component';
 import { AlertaStockComponent } from './productos/alerta-stock.component';
+import { MayoristasComponent } from './mayoristas/mayoristas.component';
+import { NuevoMayoristaComponent } from './mayoristas/nuevo-mayorista.component';
+import { EditarMayoristaComponent } from './mayoristas/editar/editar-mayorista.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +60,9 @@ import { AlertaStockComponent } from './productos/alerta-stock.component';
     CajasHistorialComponent,
     PromocionesComponent,
     AlertaStockComponent,
+    MayoristasComponent,
+    NuevoMayoristaComponent,
+    EditarMayoristaComponent,
   ],
   imports: [
     CommonModule,

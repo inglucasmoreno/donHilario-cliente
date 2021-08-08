@@ -29,6 +29,9 @@ import { CajasComponent } from './cajas/cajas.component';
 import { CajasHistorialComponent } from './cajas/cajas-historial.component';
 import { PromocionesComponent } from './productos/promociones.component';
 import { AlertaStockComponent } from './productos/alerta-stock.component';
+import { MayoristasComponent } from './mayoristas/mayoristas.component';
+import { NuevoMayoristaComponent } from './mayoristas/nuevo-mayorista.component';
+import { EditarMayoristaComponent } from './mayoristas/editar/editar-mayorista.component';
 
 const routes: Routes = [
     {
@@ -71,6 +74,11 @@ const routes: Routes = [
             { path: 'proveedores', canActivate: [AdminGuard], component: ProveedoresComponent},
             { path: 'proveedores/nuevo', canActivate: [AdminGuard], component: NuevoProveedorComponent},
             { path: 'proveedores/editar/:id', canActivate: [AdminGuard], component: EditarProveedorComponent},
+
+            // Mayoristas
+            { path: 'mayoristas', canActivate: [AdminGuard], component: MayoristasComponent},
+            { path: 'mayoristas/nuevo', canActivate: [AdminGuard], component: NuevoMayoristaComponent},
+            { path: 'mayoristas/editar/:id', canActivate: [AdminGuard], component: EditarMayoristaComponent},
 
             // Cajas
             { path: 'cajas', component: CajasComponent},

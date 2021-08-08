@@ -69,6 +69,12 @@
                 <span class="ml-2"> Proveedores </span> 
             </button>
 
+            <!-- Mayoristas -->
+            <button *ngIf="authService.usuario.role == 'ADMIN_ROLE'" routerLink="mayoristas" routerLinkActive="text-secondary-700 bg-white border-l-4 border-secondary-700" class="flex hover:border-l-4 items-center mt-2 cursor-pointer py-2 px-2 w-full focus:outline-none text-white">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-briefcase"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                <span class="ml-2"> Mayoristas </span> 
+            </button>
+
             <!-- Cajas -->
             <button routerLink="cajas" routerLinkActive="text-yellow-600 font-semibold bg-white border-l-4 border-yellow-500" class="flex hover:border-l-4 items-center mt-2 cursor-pointer py-2 px-2 w-full focus:outline-none text-white">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>

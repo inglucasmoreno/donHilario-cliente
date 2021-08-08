@@ -13,16 +13,30 @@
                     <input type="number" [(ngModel)]="pago" (change)="calcularVuelto()" (keyup)="calcularVuelto()" class="border text-center text-xl p-2 w-full focus:outline-none shadow" placeholder="El cliente paga con ...">
                 </div>
                 <div class="w-1/2 ml-4">
-                    <div class="border text-xl bg-gray-100 p-2 w-full border-gray-300 text-gray-800 text-center"> {{ pago === null ? "Calculo de vuelto" : '$' + (vuelto | moneda) }} </div>
+                    <div class="border text-xl bg-gray-100 p-2 w-full border-gray-300 text-gray-800 text-center"> {{ (pago === null || vuelto
+                        <=0 ) ? "Calculo de vuelto" : '$' + (vuelto | moneda) }} </div>
+                    </div>
                 </div>
+
+                <div class="border px-3 py-2 mt-4 bg-gray-100">
+                    <select [(ngModel)]="ventaMayorista" #txtTipoVenta class="border rounded p-2 w-full shadow">
+                        <option value="false"> Venta normal </option>
+                        <option value="true"> Venta mayorista </option>
+                    </select>
+
+                    <select [(ngModel)]="mayoristaSeleccionado" *ngIf="ventaMayorista == 'true'" class="border rounded p-2 shadow w-full mt-2 text-sm">
+                        <option value=""> Debe seleccionar un mayorista </option>
+                        <option *ngFor="let mayorista of mayoristas" [value]="mayorista._id"> {{ mayorista.razon_social }} </option>
+                    </select>
+                </div>
+
+            </div>
+            <!-- Footer -->
+            <div class="flex p-4">
+                <button class="bg-secondary-800 text-white p-2 rounded shadow w-full focus:outline-none hover:bg-secondary-700" (click)="completarVenta()"> Completar </button>
+                <button class="bg-gray-600 text-white p-2 rounded shadow w-full ml-4 focus:outline-none hover:bg-gray-500" (click)="showModal = false"> Cancelar </button>
             </div>
         </div>
-        <!-- Footer -->
-        <div class="flex p-4">
-            <button class="bg-secondary-800 text-white p-2 rounded shadow w-full focus:outline-none hover:bg-secondary-700" (click)="completarVenta()"> Completar </button>
-            <button class="bg-gray-600 text-white p-2 rounded shadow w-full ml-4 focus:outline-none hover:bg-gray-500" (click)="showModal = false"> Cancelar </button>
-        </div>
-    </div>
 </app-modal>
 <div class="pt-5 md:px-10">
     <div class='bg-primary-800 flex items-center justify-between border shadow w-full p-2'>
