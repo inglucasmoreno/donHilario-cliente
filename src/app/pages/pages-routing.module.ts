@@ -32,6 +32,7 @@ import { AlertaStockComponent } from './productos/alerta-stock.component';
 import { MayoristasComponent } from './mayoristas/mayoristas.component';
 import { NuevoMayoristaComponent } from './mayoristas/nuevo-mayorista.component';
 import { EditarMayoristaComponent } from './mayoristas/editar/editar-mayorista.component';
+import { DesechosComponent } from './desechos/desechos.component';
 
 const routes: Routes = [
     {
@@ -79,6 +80,9 @@ const routes: Routes = [
             { path: 'mayoristas', canActivate: [AdminGuard], component: MayoristasComponent},
             { path: 'mayoristas/nuevo', canActivate: [AdminGuard], component: NuevoMayoristaComponent},
             { path: 'mayoristas/editar/:id', canActivate: [AdminGuard], component: EditarMayoristaComponent},
+
+            // Mayoristas
+            { path: 'desechos', component: DesechosComponent},
 
             // Cajas
             { path: 'cajas', component: CajasComponent},

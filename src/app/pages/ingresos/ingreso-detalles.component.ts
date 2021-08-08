@@ -284,6 +284,7 @@ export class IngresoDetallesComponent implements OnInit {
   // Listar productos de media res
   listarMediaRes(): void {
     this.mediaResService.listarMediaRes().subscribe(({ productos }) => {
+      console.log(productos);
       this.mediaRes = productos;
     })
   }

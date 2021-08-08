@@ -33,6 +33,7 @@ import { AlertaStockComponent } from './productos/alerta-stock.component';
 import { MayoristasComponent } from './mayoristas/mayoristas.component';
 import { NuevoMayoristaComponent } from './mayoristas/nuevo-mayorista.component';
 import { EditarMayoristaComponent } from './mayoristas/editar/editar-mayorista.component';
+import { DesechosComponent } from './desechos/desechos.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { EditarMayoristaComponent } from './mayoristas/editar/editar-mayorista.c
     MayoristasComponent,
     NuevoMayoristaComponent,
     EditarMayoristaComponent,
+    DesechosComponent,
   ],
   imports: [
     CommonModule,
