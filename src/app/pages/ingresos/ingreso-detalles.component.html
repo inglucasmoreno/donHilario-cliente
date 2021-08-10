@@ -18,7 +18,7 @@
     </div>
 </app-modal>
 
-<!-- Modal: Informacion y cantidad de producto a ingrear -->
+<!-- Modal: Informacion y cantidad de producto a ingresar -->
 <app-modal [showModal]="showModalIngresar">
     <div class="p-4" *ngIf="productoSeleccionado">
 
@@ -86,27 +86,35 @@
         <!-- Header -->
         <h1 class="bg-gray-800 p-2 rounded flex items-center justify-between">
             <span class="text-xl font-semibold text-white"> Editando media res </span>
-            <button (click)="volverModalRes()" title="Volver" class="bg-gray-100 border shadow rounded p-2 hover:text-secondary-500"> 
+            <button (click)="modalMediaRes()" title="Volver" class="bg-gray-100 border shadow rounded p-2 hover:text-secondary-500"> 
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
             </button>
         </h1>
 
-        <div class="mt-2">
+        <p class="bg-gray-100 text-gray-800 font-semibold p-2 mt-2 border border-gray-200 rounded"> Actualizando valores estandares </p>
+
+        <div class="flex items-center mt-3">
+            <button class="bg-secondary-800 text-white p-2 text-sm font-semibold rounded shadow w-full focus:outline-none hover:bg-secondary-700" (click)="actualizarMediaRes()"> Actualizar </button>
+            <button class="bg-gray-500 text-white p-2 rounded text-sm font-semibold shadow w-full ml-4 focus:outline-none hover:bg-gray-400" (click)="showModalResEditar = false"> Cancelar </button>
+        </div>
+
+        <div (click)="showDetallesActualizar = !showDetallesActualizar" class="flex items-center justify-between rounded border border-gray-200 bg-gray-100 px-2 py-1 cursor-pointer mt-3">
+            <p class="text-gray-800 font-semibold "> Detalles de cortes y cantidades </p>
+            <svg *ngIf="!showDetallesActualizar" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
+            <svg *ngIf="showDetallesActualizar" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+
+        <div *ngIf="showDetallesActualizar" class="mt-2">
             <div class="flex items-center justify-between p-1 border-b" *ngFor="let producto of mediaRes">
                 <p class="text-sm font-semibold"> {{ producto.descripcion }} </p>
                 <div>
-                    <input step="0.01" class="text-center w-24 border focus:outline-none rounded p-1" type="number" [value]="producto.cantidad">
+                    <input (change)="editarValorMediaRes(producto.id_producto, txtCantidad.value)" (keyup)="editarValorMediaRes(producto.id_producto, txtCantidad.value)" #txtCantidad step="0.01" class="text-center w-24 border focus:outline-none rounded p-1" type="number"
+                        [value]="producto.cantidad">
                     <span class="text-gray-400"> Kg </span>
                 </div>
             </div>
         </div>
 
-        <!-- Footer -->
-        <div class="flex items-center mt-4">
-            <button class="bg-secondary-800 text-white p-2 text-sm font-semibold rounded shadow w-full focus:outline-none hover:bg-secondary-700" (click)="nuevaMediaRes()"> Actualizar </button>
-            <button class="bg-gray-500 text-white p-2 rounded text-sm font-semibold shadow w-full ml-4 focus:outline-none hover:bg-gray-400" (click)="showModalResEditar = false"> Cancelar </button>
-        </div>
-        
     </div>
 </app-modal>
 
@@ -122,12 +130,23 @@
             </button>
         </h1>
 
-        <div class="flex items-center justify-between text-gray-800 bg-gray-100 px-2 py-1 border rounded mt-2 text-center">
-            <p class="font-semibold"> Cantidad de medias reses </p>
-            <input type="number" min=1 class="w-20 text-center focus:outline-none p-2 border rounded mt-2" [(ngModel)]="cantidadMediaRes">
+        <div class="flex items-center justify-between text-gray-800 bg-gray-100 px-2 py-2 border rounded mt-2 text-center">
+            <p class="font-semibold"> Cantidad de media reses </p>
+            <input type="number" min=1 class="w-20 text-center focus:outline-none p-2 border rounded" [(ngModel)]="cantidadMediaRes">
         </div>
 
-        <div class="mt-2">
+        <div class="flex items-center mt-3">
+            <button class="bg-secondary-800 text-white p-2 text-sm font-semibold rounded shadow w-full focus:outline-none hover:bg-secondary-700" (click)="nuevaMediaRes()"> Agregar </button>
+            <button class="bg-gray-500 text-white p-2 rounded text-sm font-semibold shadow w-full ml-4 focus:outline-none hover:bg-gray-400" (click)="showModalRes = false"> Cancelar </button>
+        </div>
+
+        <div (click)="showDetalles = !showDetalles" class="flex items-center justify-between rounded border border-gray-200 bg-gray-100 px-2 py-1 cursor-pointer mt-3">
+            <p class="text-gray-800 font-semibold "> Detalles de cortes y cantidades </p>
+            <svg *ngIf="!showDetalles" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
+            <svg *ngIf="showDetalles" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+
+        <div *ngIf="showDetalles" class="mt-2">
             <div class="flex items-center justify-between p-1 border-b" *ngFor="let producto of mediaRes">
                 <p class="text-sm font-semibold"> {{ producto.descripcion }} </p>
                 <p class="text-gray-500">
@@ -137,11 +156,6 @@
             </div>
         </div>
 
-        <!-- Footer -->
-        <div class="flex items-center mt-4">
-            <button class="bg-secondary-800 text-white p-2 text-sm font-semibold rounded shadow w-full focus:outline-none hover:bg-secondary-700" (click)="nuevaMediaRes()"> Agregar </button>
-            <button class="bg-gray-500 text-white p-2 rounded text-sm font-semibold shadow w-full ml-4 focus:outline-none hover:bg-gray-400" (click)="showModalRes = false"> Cancelar </button>
-        </div>
     </div>
 </app-modal>
 

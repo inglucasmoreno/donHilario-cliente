@@ -52,6 +52,8 @@ export class IngresoDetallesComponent implements OnInit {
   public showModalIngresar = false;
   public showModalRes = false;
   public showModalResEditar = false;
+  public showDetalles = false;
+  public showDetallesActualizar = false;
   
   // Proveedores
   public proveedorSeleccionado;
@@ -84,7 +86,6 @@ export class IngresoDetallesComponent implements OnInit {
   ngOnInit(): void {
     this.dataService.ubicacionActual = 'Dashboard - Ingresos - Detalles';
     this.alertService.loading();
-    this.listarMediaRes();
     this.activatedRoute.params.subscribe( ({ id }) => {
       this.idIngreso = id;
       this.data.ingreso = id;
@@ -183,6 +184,13 @@ export class IngresoDetallesComponent implements OnInit {
 
   // Nueva media res
   nuevaMediaRes(){
+    
+    // Se verifica si la cantidad es valida
+    if(this.cantidadMediaRes <= 0 || this.cantidadMediaRes === null){
+      this.alertService.info('Cantidad inválida');
+      return;
+    }
+
     this.alertService.loading();
     this.ingresosProductosService.nuevaMediaRes({ idIngreso: this.idIngreso, cantidad: this.cantidadMediaRes }).subscribe(resp => {
       this.obtenerProductos();
@@ -212,7 +220,6 @@ export class IngresoDetallesComponent implements OnInit {
         this.ordenar.direccion,
         this.ordenar.columna
       ).subscribe( ({productos}) => {
-      console.log(productos);
       this.productos = productos;
       this.alertService.close();
     },({error}) => {
@@ -229,6 +236,27 @@ export class IngresoDetallesComponent implements OnInit {
       this.alertService.errorApi(error.msg)
     });
   };
+
+  // Editando valores del array mediaRes
+  editarValorMediaRes(id: string, cantidad: string){
+    const resultado: any = this.mediaRes.find(elemento => {
+      return elemento.id_producto === id;
+    }); 
+    resultado.cantidad = Number(cantidad);
+  }
+  
+  // Actualizar valores de media res
+  actualizarMediaRes(){
+    for(let producto of this.mediaRes){
+      if(producto.cantidad <= 0 || producto.cantidad === null) return this.alertService.info('Hay cantidades inválidas');
+    } 
+    this.alertService.loading();
+    this.mediaResService.actualizarMediaRes(this.mediaRes).subscribe(()=>{
+      this.modalMediaRes();
+    },({error})=>{
+      this.alertService.errorApi(error);
+    });
+  }
 
   // Editar ingreso
   editarIngreso(){
@@ -277,26 +305,28 @@ export class IngresoDetallesComponent implements OnInit {
   }
 
   modaMediaResEditar(): void {
+    this.showDetallesActualizar = false;
     this.showModalRes = false;
     this.showModalResEditar = true;  
   }
 
   // Listar productos de media res
   listarMediaRes(): void {
+    this.alertService.loading();
     this.mediaResService.listarMediaRes().subscribe(({ productos }) => {
-      console.log(productos);
       this.mediaRes = productos;
+      this.alertService.close();
+    },({error})=>{
+      this.alertService.errorApi(error);
     })
   }
 
   // Abrir modal media res
   modalMediaRes(): void {
+    this.listarMediaRes();
     this.cantidadMediaRes = 1;
-    this.showModalRes = true;
-  }
-
-  volverModalRes(): void {
     this.showModalResEditar = false;
+    this.showDetalles = false;
     this.showModalRes = true;
   }
 

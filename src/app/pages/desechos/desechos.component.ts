@@ -12,8 +12,15 @@ import { AlertService } from '../../services/alert.service';
 })
 export class DesechosComponent implements OnInit {
 
-  public total = 0;
+  public cantidadTotal = 0;
+
+  // Desecho
   public desechos: Desechos[] = [];
+  public descripcion: string = null;
+  public cantidad: number = null;
+
+  // Modal
+  public showModal = false;
 
   // Paginación
   public paginaActual = 1;
@@ -28,7 +35,7 @@ export class DesechosComponent implements OnInit {
   // Ordenar
   public ordenar = {
     direccion: -1,  // Asc (1) | Desc (-1)
-    columna: 'descripcion'
+    columna: 'createdAt'
   }
 
   constructor(private alertService: AlertService,
@@ -45,14 +52,88 @@ export class DesechosComponent implements OnInit {
   listarDesechos(): void {
     this.desechosService.listarDesechos(
       this.ordenar.direccion,
-      this.ordenar.columna
-    ).subscribe(({desechos, total}) => {
+      this.ordenar.columna,
+      true
+    ).subscribe(({ desechos }) => {
       this.desechos = desechos;
-      this.total = total;
+      this.calcularTotal(desechos);
       this.alertService.close();
     },({error})=>{
       this.alertService.errorApi(error.msg);
     });
+  }
+
+  // Abrir modal
+  abrirModal(): void {
+    this.reiniciarFormulario();
+    this.showModal = true;
+  }
+
+  // Completar desechos
+  completarDesechos(): void {
+    this.alertService.question({msg: "Estas por realizar el cierre", buttonText: 'Completar'})
+    .then(({isConfirmed}) => {
+      if (isConfirmed){
+        this.desechosService.completarDesechos().subscribe(()=>{
+          this.alertService.close();
+          this.listarDesechos();
+        });
+      }
+    });    
+  }
+
+  // Nuevo desecho
+  nuevoDesecho(): void {
+        
+    if(this.cantidad === null || this.cantidad <= 0){
+      this.alertService.info('Cantidad inválida');      
+      return;
+    }
+  
+    this.alertService.loading();
+
+    const data = {
+      descripcion: this.descripcion !== null ? this.descripcion : 'SIN DESCRIPCION',
+      cantidad: this.cantidad 
+    };
+
+    this.desechosService.nuevoDesecho(data).subscribe(()=>{
+      this.alertService.close();
+      this.listarDesechos();
+      this.showModal = false;
+    },({error})=>{
+      this.alertService.errorApi(error);
+    });
+  }
+
+  // Eliminar desecho
+  eliminarDesecho(id: string): void {
+    this.alertService.question({msg: "Estas por eliminar un desecho", buttonText: 'Eliminar'})
+    .then(({isConfirmed}) => {
+      if (isConfirmed){
+        this.alertService.loading();
+        this.desechosService.eliminarDesecho(id).subscribe(()=>{
+          this.alertService.close();
+          this.listarDesechos();
+        },({error})=>{
+          this.alertService.errorApi(error);
+        });  
+      };
+    });
+  };
+  
+  // Calcular total
+  calcularTotal(desechos: any[]): void {
+    this.cantidadTotal = 0;
+    desechos.forEach( desecho => {
+      this.cantidadTotal += desecho.cantidad;
+    });
+  }
+
+  // Reiniciar formulario
+  reiniciarFormulario(): void {
+    this.descripcion = null;
+    this.cantidad = null;
   }
 
   // Filtrar Activo/Inactivo

@@ -34,8 +34,8 @@ export class MediaResService {
    }
   
    // Actualizar media res
-   actualizarMediaRes(id: string, data: any): Observable<any> {
-     return this.http.put(`${base_url}/media-res/${id}`, data, {
+   actualizarMediaRes(data: any): Observable<any> {
+     return this.http.put(`${base_url}/media-res`, data, {
        headers: {'x-token': localStorage.getItem('token')}
      })  
    }
