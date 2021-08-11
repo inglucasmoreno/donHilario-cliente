@@ -33,6 +33,11 @@ import { MayoristasComponent } from './mayoristas/mayoristas.component';
 import { NuevoMayoristaComponent } from './mayoristas/nuevo-mayorista.component';
 import { EditarMayoristaComponent } from './mayoristas/editar/editar-mayorista.component';
 import { DesechosComponent } from './desechos/desechos.component';
+import { ReportesComponent } from './reportes/reportes.component';
+import { ReportesVentasComponent } from './reportes/reportes-ventas.component';
+import { ReportesCantidadesDesechosComponent } from './reportes/reportes-cantidades-desechos.component';
+import { ReportesCajasComponent } from './reportes/reportes-cajas.component';
+import { ReportesIngresosComponent } from './reportes/reportes-ingresos.component';
 
 const routes: Routes = [
     {
@@ -83,6 +88,13 @@ const routes: Routes = [
 
             // Mayoristas
             { path: 'desechos', component: DesechosComponent},
+            
+            // Reportes
+            { path: 'reportes', component: ReportesComponent},
+            { path: 'reportes/ventas', component: ReportesVentasComponent},
+            { path: 'reportes/cantidades', component: ReportesCantidadesDesechosComponent},
+            { path: 'reportes/ingresos', component: ReportesIngresosComponent},
+            { path: 'reportes/cajas', component: ReportesCajasComponent},
 
             // Cajas
             { path: 'cajas', component: CajasComponent},
