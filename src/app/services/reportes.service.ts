@@ -1,0 +1,22 @@
+import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+const base_url = environment.base_url;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ReportesService {
+
+  constructor(private http: HttpClient) { }
+
+     // Cantidades y Desechos - Carnes
+     getCantidadesDesechos(data: any): Observable<any> {
+      return this.http.post(`${base_url}/reportes/cantidades-desechos`, data ,{
+        headers: {'x-token': localStorage.getItem('token')}
+      })
+    }
+
+}

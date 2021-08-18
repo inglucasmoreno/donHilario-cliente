@@ -53,7 +53,7 @@ export class DesechosComponent implements OnInit {
     this.desechosService.listarDesechos(
       this.ordenar.direccion,
       this.ordenar.columna,
-      true
+      ''
     ).subscribe(({ desechos }) => {
       this.desechos = desechos;
       this.calcularTotal(desechos);
