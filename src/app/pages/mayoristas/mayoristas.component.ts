@@ -72,11 +72,13 @@ export class MayoristasComponent implements OnInit {
 
   // Filtrar Activo/Inactivo
   filtrarActivos(activo: any): void{
+    this.paginaActual = 1;
     this.filtro.activo = activo;
   }
 
   // Filtrar por parametro
   filtrarDescripcion(parametro: string): void{
+    this.paginaActual = 1;
     this.filtro.parametro= parametro;
   }
 

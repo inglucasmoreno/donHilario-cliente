@@ -10,13 +10,29 @@ const base_url = environment.base_url;
 })
 export class ReportesService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
+  
+  // Ventas
+  ventas(
+      direccion: number = 1,
+      columna: string = 'descripcion',
+      data: any
+    ): Observable<any> {
+    return this.http.post(`${base_url}/reportes/ventas`, data ,{
+      params: {
+        direccion: String(direccion),
+        columna
+      },
+      headers: {'x-token': localStorage.getItem('token')}
+    })
+  }
 
-     // Cantidades y Desechos - Carnes
-     getCantidadesDesechos(data: any): Observable<any> {
-      return this.http.post(`${base_url}/reportes/cantidades-desechos`, data ,{
-        headers: {'x-token': localStorage.getItem('token')}
-      })
-    }
+  // Cantidades y Desechos - Carnes
+  getCantidadesDesechos(data: any): Observable<any> {
+    return this.http.post(`${base_url}/reportes/cantidades-desechos`, data ,{
+      headers: {'x-token': localStorage.getItem('token')}
+    })
+  }
+
 
 }

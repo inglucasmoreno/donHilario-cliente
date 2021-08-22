@@ -81,6 +81,4 @@ export class ReportesCajasComponent implements OnInit {
     this.listarCajas();
   }
 
-
-
 }

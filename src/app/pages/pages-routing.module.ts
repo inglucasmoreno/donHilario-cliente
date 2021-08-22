@@ -38,6 +38,8 @@ import { ReportesVentasComponent } from './reportes/reportes-ventas.component';
 import { ReportesCantidadesDesechosComponent } from './reportes/reportes-cantidades-desechos.component';
 import { ReportesCajasComponent } from './reportes/reportes-cajas.component';
 import { ReportesIngresosComponent } from './reportes/reportes-ingresos.component';
+import { ProduccionInternaComponent } from './produccion-interna/produccion-interna.component';
+import { ReportesVentasMayoristasComponent } from './reportes/reportes-ventas-mayoristas.component';
 
 const routes: Routes = [
     {
@@ -85,13 +87,17 @@ const routes: Routes = [
             { path: 'mayoristas', canActivate: [AdminGuard], component: MayoristasComponent},
             { path: 'mayoristas/nuevo', canActivate: [AdminGuard], component: NuevoMayoristaComponent},
             { path: 'mayoristas/editar/:id', canActivate: [AdminGuard], component: EditarMayoristaComponent},
-
-            // Mayoristas
+            
+            // Desechos
             { path: 'desechos', component: DesechosComponent},
             
+            // Produccion interna
+            { path: 'produccion-interna', component: ProduccionInternaComponent},
+
             // Reportes
             { path: 'reportes', component: ReportesComponent},
             { path: 'reportes/ventas', component: ReportesVentasComponent},
+            { path: 'reportes/ventas-mayoristas', component: ReportesVentasMayoristasComponent},
             { path: 'reportes/cantidades', component: ReportesCantidadesDesechosComponent},
             { path: 'reportes/ingresos', component: ReportesIngresosComponent},
             { path: 'reportes/cajas', component: ReportesCajasComponent},

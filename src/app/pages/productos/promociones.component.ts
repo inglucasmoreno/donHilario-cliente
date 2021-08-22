@@ -65,6 +65,7 @@ export class PromocionesComponent implements OnInit {
   
   // Filtrar por parametro
   filtrarDescripcion(parametro: string): void{
+    this.paginaActual = 1;
     this.filtro.parametro = parametro;
   }
 

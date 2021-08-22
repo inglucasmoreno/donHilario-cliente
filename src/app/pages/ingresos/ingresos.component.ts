@@ -92,11 +92,13 @@ export class IngresosComponent implements OnInit {
 
   // Filtro por activo
    filtrarActivos(activo: string): void{
+    this.paginaActual = 1;
     this.filtro.activo = activo;
   }
 
   // Filtrar parametro
   filtrarParametro(parametro: string): void{
+    this.paginaActual = 1;
     this.filtro.parametro = parametro;
   }
 

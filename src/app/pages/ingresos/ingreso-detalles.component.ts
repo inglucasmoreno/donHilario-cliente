@@ -332,6 +332,7 @@ export class IngresoDetallesComponent implements OnInit {
 
   // Filtrado por parametro
   filtroParametro(parametro: string){
+    this.paginaActual = 1;
     this.parametro = parametro;
   }
 

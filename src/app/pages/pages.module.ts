@@ -39,6 +39,8 @@ import { ReportesVentasComponent } from './reportes/reportes-ventas.component';
 import { ReportesCantidadesDesechosComponent } from './reportes/reportes-cantidades-desechos.component';
 import { ReportesIngresosComponent } from './reportes/reportes-ingresos.component';
 import { ReportesCajasComponent } from './reportes/reportes-cajas.component';
+import { ProduccionInternaComponent } from './produccion-interna/produccion-interna.component';
+import { ReportesVentasMayoristasComponent } from './reportes/reportes-ventas-mayoristas.component';
 
 @NgModule({
   declarations: [
@@ -75,6 +77,8 @@ import { ReportesCajasComponent } from './reportes/reportes-cajas.component';
     ReportesCantidadesDesechosComponent,
     ReportesIngresosComponent,
     ReportesCajasComponent,
+    ProduccionInternaComponent,
+    ReportesVentasMayoristasComponent,
   ],
   imports: [
     CommonModule,

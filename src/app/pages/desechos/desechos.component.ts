@@ -50,10 +50,11 @@ export class DesechosComponent implements OnInit {
 
   // Listar Desechos
   listarDesechos(): void {
+    this.alertService.loading();
     this.desechosService.listarDesechos(
       this.ordenar.direccion,
       this.ordenar.columna,
-      ''
+      this.filtro.activo
     ).subscribe(({ desechos }) => {
       this.desechos = desechos;
       this.calcularTotal(desechos);
@@ -138,7 +139,9 @@ export class DesechosComponent implements OnInit {
 
   // Filtrar Activo/Inactivo
   filtrarActivos(activo: any): void{
+    this.paginaActual = 1;
     this.filtro.activo = activo;
+    this.listarDesechos();
   }
 
   // Filtrar por parametro

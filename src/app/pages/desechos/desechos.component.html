@@ -25,7 +25,7 @@
                 <div class="md:flex md:items-center md:justify-between">
                     <div>
                         <h2 class="text-2xl font-semibold leading-tight text-gray-600"> Lista de desechos </h2>
-                        <p class="text-gray-600"> Cantidad total: {{ cantidadTotal | moneda }} Kg </p>
+                        <p [ngClass]="{'bg-green-100 border-green-300 text-green-700': filtro.activo === 'true', 'bg-red-100 text-red-700 border-red-300': filtro.activo === 'false'}" class="text-gray-800 px-2 border border-gray-300 py-1 mt-1 bg-gray-100 rounded w-max"> Cantidad total: {{ cantidadTotal | moneda }} Kg </p>
                     </div>
                     <div class="flex items-center mt-2 lg:mt-0">
                         <!-- <app-boton-reportes (click)="generarReporte()"></app-boton-reportes> -->
