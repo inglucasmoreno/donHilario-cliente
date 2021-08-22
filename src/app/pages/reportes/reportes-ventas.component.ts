@@ -3,6 +3,7 @@ import { DataService } from '../../services/data.service';
 import { ReportesService } from '../../services/reportes.service';
 import { AlertService } from '../../services/alert.service';
 import { VentasService } from '../../services/ventas.service';
+import { MayoristasService } from 'src/app/services/mayoristas.service';
 
 @Component({
   selector: 'app-reportes-ventas',
@@ -15,6 +16,9 @@ export class ReportesVentasComponent implements OnInit {
   // Flag inicio
   public inicio = true;
 
+  // Mayoristas
+  public mayorista = 'false';
+
   // Modal
   public showModalVenta = false;
   public showModalGastos = false;
@@ -23,6 +27,10 @@ export class ReportesVentasComponent implements OnInit {
   // ventas
   public ventas: any[] = [];
   public ventaSeleccionada: any = null;
+
+  // Mayorista
+  public mayoristaSeleccionado: any = '';
+  public mayoristas: any[] = [];
 
   // Gastos e Ingresos
   public otrosGastos: any[] = [];
@@ -37,7 +45,9 @@ export class ReportesVentasComponent implements OnInit {
   // Data
   public data = {
     fechaDesde: null,
-    fechaHasta: null
+    fechaHasta: null,
+    tipo_venta: 'todas',
+    mayoristaSeleccionado: ''
   }
 
   // Filtrado
@@ -64,16 +74,31 @@ export class ReportesVentasComponent implements OnInit {
   constructor(private dataService: DataService,
               private reportesService: ReportesService,
               private ventasService: VentasService,
+              private mayoristasService: MayoristasService,
               private alertService: AlertService) { }
 
   ngOnInit(): void {
     this.dataService.ubicacionActual = "Dashboard - Reportes - Ventas";
+    this.listarMayoristas();
   }
   
-  // Listar ventas
-  listarVentas(): void {
+  // Listar mayoristas
+  listarMayoristas(): void {
     this.alertService.loading();
-    this.reportesService.ventas(this.ordenar.direccion,this.ordenar.columna,this.data).subscribe(({ventas, otrosIngresos, otrosGastos}) => {
+    this.mayoristasService.listarMayoristas().subscribe( ({ mayoristas }) => {
+      this.mayoristas = mayoristas;
+      this.alertService.close();
+    });  
+  };
+
+  // Listar ventas
+  listarVentas(): void {    
+    this.alertService.loading();
+    this.reportesService.ventas(
+      this.ordenar.direccion,
+      this.ordenar.columna,
+      this.data
+    ).subscribe(({ventas, otrosIngresos, otrosGastos}) => {
       this.inicio = false;
       this.ventas = ventas;
       this.otrosGastos = otrosGastos;
@@ -149,8 +174,8 @@ export class ReportesVentasComponent implements OnInit {
 
   // Buscar
   buscar(): void {
-    this.listarVentas();
     this.paginaActualGastos = 1;
+    this.listarVentas();
   }
 
   // Ordenar por columna
