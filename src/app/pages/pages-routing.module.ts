@@ -37,9 +37,8 @@ import { ReportesComponent } from './reportes/reportes.component';
 import { ReportesVentasComponent } from './reportes/reportes-ventas.component';
 import { ReportesCantidadesDesechosComponent } from './reportes/reportes-cantidades-desechos.component';
 import { ReportesCajasComponent } from './reportes/reportes-cajas.component';
-import { ReportesIngresosComponent } from './reportes/reportes-ingresos.component';
 import { ProduccionInternaComponent } from './produccion-interna/produccion-interna.component';
-import { ReportesVentasMayoristasComponent } from './reportes/reportes-ventas-mayoristas.component';
+import { ReportesProductosComponent } from './reportes/reportes-productos.component';
 
 const routes: Routes = [
     {
@@ -97,9 +96,8 @@ const routes: Routes = [
             // Reportes
             { path: 'reportes', component: ReportesComponent},
             { path: 'reportes/ventas', component: ReportesVentasComponent},
-            { path: 'reportes/ventas-mayoristas', component: ReportesVentasMayoristasComponent},
+            { path: 'reportes/productos', component: ReportesProductosComponent},
             { path: 'reportes/cantidades', component: ReportesCantidadesDesechosComponent},
-            { path: 'reportes/ingresos', component: ReportesIngresosComponent},
             { path: 'reportes/cajas', component: ReportesCajasComponent},
 
             // Cajas

@@ -1,0 +1,68 @@
+<div class="flex p-4">
+    <div class="bg-white border w-1/2 h-full">
+        <h1 class="bg-gray-800 px-3 py-1 text-white rounded-t text-lg text-center">
+            Filtrado de productos
+        </h1>
+        <div class="bg-white p-2 mt-2">
+            <div class="flex items-center text-sm">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <label class="font-semibold ml-1"> Desde </label>
+            </div>
+            <div class="w-full">
+                <div class="bg-white my-2 flex">
+                    <input type="date" [(ngModel)]="data.fechaDesde" class="border rounded p-1 py-2 w-full shadow text-sm focus:outline-none">
+                </div>
+            </div>
+            <div class="w-full text-sm">
+                <div class="flex items-center mt-3">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    <label class="font-semibold ml-1"> Hasta </label>
+                </div>
+                <div class="bg-white my-2 flex">
+                    <input type="date" [(ngModel)]="data.fechaHasta" class="border rounded p-1 py-2 w-full shadow focus:outline-none text-sm">
+                </div>
+            </div>
+            <div class="bg-white my-3">
+                <p class="text-sm font-semibold"> Producto </p>
+                <select class="border rounded p-1 py-2 w-full shadow text-sm mt-2">
+                    <option value='todos'> Todos los productos </option>
+                </select>
+            </div>
+            <div class="bg-white my-3">
+                <p class="text-sm font-semibold"> Tipo de filtro </p>
+                <select [(ngModel)]="data.tipo_filtro" class="border rounded p-1 py-2 w-full shadow text-sm mt-2">
+                    <option value='Ingresos'> Ingresos </option>
+                    <option value='Egresos'> Egresos </option>
+                </select>
+            </div>
+            <div *ngIf="data.tipo_filtro === 'Ingresos'" class="bg-white my-3">
+                <p class="text-sm font-semibold"> Proveedor </p>
+                <select class="border rounded p-1 py-2 w-full shadow text-sm mt-2">
+                    <option value='todos_proveedores'> Todos los proveedores </option>
+                </select>
+            </div>
+            <div *ngIf="data.tipo_filtro === 'Egresos'" class="bg-white my-3">
+                <p class="text-sm font-semibold"> Mayorista </p>
+                <select class="border rounded p-1 py-2 w-full shadow text-sm mt-2">
+                    <option value='sin_mayoristas'> Todos los egresos </option>
+                    <option value='sin_mayoristas'> Sin mayoristas </option>
+                    <option value='todos_mayoristas'> Solo mayoristas </option>
+                </select>
+            </div>
+            <div class="flex items-center">
+                <button (click)="buscar()" class="p-1 border mt-3 focus:outline-none text-gray-700 bg-gray-100 hover:text-red-500 font-semibold shadow rounded text-center w-1/2 flex items-center justify-center text-sm"> 
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <span class="ml-1"> Buscar </span> 
+                </button>
+                <button routerLink="/dashboard/reportes" class="p-1 border mt-3 ml-2 focus:outline-none text-gray-700 bg-gray-100 hover:text-red-500 font-semibold shadow rounded text-center w-1/2 flex items-center justify-center text-sm"> 
+                    <span class="ml-1"> Regresar </span> 
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="bg-white border w-full ml-2 h-full">
+        <div>
+            <h1> Resultados </h1>
+        </div>
+    </div>
+</div>

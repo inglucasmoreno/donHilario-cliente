@@ -37,10 +37,9 @@ import { DesechosComponent } from './desechos/desechos.component';
 import { ReportesComponent } from './reportes/reportes.component';
 import { ReportesVentasComponent } from './reportes/reportes-ventas.component';
 import { ReportesCantidadesDesechosComponent } from './reportes/reportes-cantidades-desechos.component';
-import { ReportesIngresosComponent } from './reportes/reportes-ingresos.component';
 import { ReportesCajasComponent } from './reportes/reportes-cajas.component';
 import { ProduccionInternaComponent } from './produccion-interna/produccion-interna.component';
-import { ReportesVentasMayoristasComponent } from './reportes/reportes-ventas-mayoristas.component';
+import { ReportesProductosComponent } from './reportes/reportes-productos.component';
 
 @NgModule({
   declarations: [
@@ -75,10 +74,9 @@ import { ReportesVentasMayoristasComponent } from './reportes/reportes-ventas-ma
     ReportesComponent,
     ReportesVentasComponent,
     ReportesCantidadesDesechosComponent,
-    ReportesIngresosComponent,
     ReportesCajasComponent,
     ProduccionInternaComponent,
-    ReportesVentasMayoristasComponent,
+    ReportesProductosComponent,
   ],
   imports: [
     CommonModule,

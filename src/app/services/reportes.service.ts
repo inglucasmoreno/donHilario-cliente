@@ -27,6 +27,21 @@ export class ReportesService {
     })
   }
 
+  // Productos
+  productos(
+      direccion: number = 1,
+      columna: string = 'descripcion',
+      data: any
+    ): Observable<any> {
+    return this.http.post(`${base_url}/reportes/productos`, data ,{
+      params: {
+        direccion: String(direccion),
+        columna
+      },
+      headers: {'x-token': localStorage.getItem('token')}
+    })
+  }
+
   // Cantidades y Desechos - Carnes
   getCantidadesDesechos(data: any): Observable<any> {
     return this.http.post(`${base_url}/reportes/cantidades-desechos`, data ,{
