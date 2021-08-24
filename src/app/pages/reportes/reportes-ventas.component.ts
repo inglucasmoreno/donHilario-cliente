@@ -174,6 +174,8 @@ export class ReportesVentasComponent implements OnInit {
 
   // Buscar
   buscar(): void {
+    this.paginaActualVentas = 1;
+    this.paginaActualIngresos = 1;
     this.paginaActualGastos = 1;
     this.listarVentas();
   }

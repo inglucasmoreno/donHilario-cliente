@@ -27,6 +27,7 @@ export class IngresoDetallesComponent implements OnInit {
   public data = {
     ingreso: '',
     codigo: '',
+    proveedor: '',
     cantidad: 0
   };
 
@@ -192,7 +193,7 @@ export class IngresoDetallesComponent implements OnInit {
     }
 
     this.alertService.loading();
-    this.ingresosProductosService.nuevaMediaRes({ idIngreso: this.idIngreso, cantidad: this.cantidadMediaRes }).subscribe(resp => {
+    this.ingresosProductosService.nuevaMediaRes({ idIngreso: this.idIngreso, proveedor: this.data.proveedor, cantidad: this.cantidadMediaRes }).subscribe(() => {
       this.obtenerProductos();
       this.cantidadMediaRes = 1;
       this.showModalRes = false;
@@ -206,6 +207,7 @@ export class IngresoDetallesComponent implements OnInit {
   obtenerIngreso(){
     this.ingresosService.getIngreso(this.idIngreso).subscribe( ({ ingreso }) => {
       this.ingreso = ingreso;
+      this.data.proveedor = ingreso.proveedor._id;
       this.proveedorSeleccionado = ingreso.proveedor._id;
       this.obtenerProveedores();
     },({error})=> [

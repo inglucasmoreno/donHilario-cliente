@@ -11,7 +11,8 @@ import { AuthService } from '../../services/auth.service';
 })
 export class StatebarComponent implements OnInit {
 
-  constructor(public dataService: DataService) { }
+  constructor(public dataService: DataService,
+              public authService: AuthService) { }
 
   ngOnInit(): void {
     this.dataService.detectarPromociones();

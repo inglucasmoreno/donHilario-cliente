@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { DataService } from '../../services/data.service';
+import { ProductosService } from '../../services/productos.service';
+import { MayoristasService } from '../../services/mayoristas.service';
+import { ProveedoresService } from '../../services/proveedores.service';
+import { AlertService } from '../../services/alert.service';
+import { ReportesService } from '../../services/reportes.service';
 
 @Component({
   selector: 'app-reportes-productos',
@@ -8,21 +14,129 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReportesProductosComponent implements OnInit {
 
+  // Flag de inicio
+  public inicio = true;
+
+  // Ordenar
+  public ordenar = {
+    direccion: -1,  // Asc (1) | Desc (-1)
+    columna: 'createdAt'
+  }
+
   // Data
   public data = {
     fechaDesde: null,
     fechaHasta: null,
     tipo_filtro: 'Ingresos',
-    mayoristaSeleccionado: ''
+    tipo_egreso: '',
+    mayoristaSeleccionado: '',
+    productoSeleccionado: '',
+    proveedorSeleccionado: ''
   }
+
+  // Totales
+  public cantidadTotal = 0;
 
   // Mayoristas
   public mayoristas: any[] = [];
 
-  constructor() { }
+  // Proveedores
+  public proveedores: any[] = [];
 
-  ngOnInit(): void {};
+  // Productos
+  public productos: any[] = [];
 
-  buscar(): void {}
+  // Busqueda
+  public busqueda: any[] = [];
+
+  // Referencia
+  public referencia = {
+    unidad_medida: '',
+    tipo_producto: ''
+  }
+
+  // Paginacion
+  public paginaActual = 1;
+  public cantidadItems= 10;
+
+  constructor(private dataService: DataService,
+              private alertService: AlertService,
+              private productosService: ProductosService,
+              private mayoristasService: MayoristasService,
+              private proveedoresService: ProveedoresService,
+              private reportesService: ReportesService) {}
+
+  ngOnInit(): void {
+    this.dataService.ubicacionActual = "Dashboard - Reportes - Productos";
+    this.listarProductos();
+    this.listarProveedores();
+    this.listarMayoristas();
+  };
+
+  // Listar productos
+  listarProductos(): void {
+    this.productosService.listarProductos().subscribe(({productos}) => {
+      this.productos = productos;
+    },({error})=>{
+      this.alertService.errorApi(error);
+    });  
+  };
+
+  // Listar proveedores
+  listarProveedores(): void {
+    this.proveedoresService.listarProveedores().subscribe(({proveedores})=> {
+      this.proveedores = proveedores;
+    },({error}) => {
+      this.alertService.errorApi(error);
+    });
+  };
+
+  // Listar mayoristas
+  listarMayoristas(): void {
+    this.mayoristasService.listarMayoristas().subscribe(({mayoristas})=> {
+      this.mayoristas = mayoristas;
+    },({error}) => {
+      this.alertService.errorApi(error);
+    });
+  }
+  
+  // Listar productos de Ingreso/Egreso
+  listarBusqueda(): void{
+    this.alertService.loading();
+    this.reportesService.productos(this.ordenar.direccion, this.ordenar.columna, this.data).subscribe(({ productos })=>{
+      this.inicio = false;
+      this.referencia.unidad_medida = productos[0].producto.unidad_medida.descripcion;
+      this.referencia.tipo_producto = productos[0].producto.tipo;
+      this.busqueda = productos;
+      this.calculos();
+      this.alertService.close();
+    },({error})=>{
+      this.alertService.errorApi(error);
+    })   
+  }
+
+  // Calculos
+  calculos(): void {
+    let cantidadTotalTemp = 0;
+    this.busqueda.forEach( elemento => {
+      cantidadTotalTemp += elemento.cantidad; 
+    });
+    this.cantidadTotal = cantidadTotalTemp;
+  }
+
+  // Generar reporte
+  buscar(): void { 
+    if(this.data.productoSeleccionado.trim() === '') return this.alertService.info('Debes de seleccionar un producto');
+    this.paginaActual = 1;
+    this.listarBusqueda();  
+  }
+
+  // Ordenar por columna
+  ordenarPorColumna(columna: string): void{
+    this.alertService.loading();
+    this.ordenar.columna = columna;
+    this.ordenar.direccion = this.ordenar.direccion == 1 ? -1 : 1; 
+    this.listarBusqueda();
+  }
 
 }
