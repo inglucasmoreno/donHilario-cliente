@@ -26,6 +26,8 @@
                 <p class="text-sm font-semibold"> Producto </p>
                 <select name="productos" [(ngModel)]="data.productoSeleccionado" class="border rounded p-1 py-2 w-full shadow text-sm mt-2">
                     <option value=''> Seleccionar producto </option>
+                    <option value='todo_carnes'> Todas las carnes </option>
+                    <option value='todo_mercaderia'> Todo mercaderia </option>
                     <option *ngFor="let producto of productos" [value]='producto._id'> {{ producto.descripcion }} </option>
                 </select>
             </div>

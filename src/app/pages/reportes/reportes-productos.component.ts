@@ -105,8 +105,10 @@ export class ReportesProductosComponent implements OnInit {
     this.alertService.loading();
     this.reportesService.productos(this.ordenar.direccion, this.ordenar.columna, this.data).subscribe(({ productos })=>{
       this.inicio = false;
-      this.referencia.unidad_medida = productos[0].producto.unidad_medida.descripcion;
-      this.referencia.tipo_producto = productos[0].producto.tipo;
+      if(productos.length > 0){
+        this.referencia.unidad_medida = productos[0].producto.unidad_medida.descripcion;
+        this.referencia.tipo_producto = productos[0].producto.tipo;
+      }
       this.busqueda = productos;
       this.calculos();
       this.alertService.close();

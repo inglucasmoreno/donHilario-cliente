@@ -46,7 +46,8 @@ export class VentasComponent implements OnInit {
     unidad_medida: '',
     promocion: false,
     cantidad: 0,
-    tipo: ''
+    tipo: '',
+    carne: false
   };
 
   // Mayoristas
@@ -93,6 +94,7 @@ export class VentasComponent implements OnInit {
       this.productoVenta.descripcion = producto.descripcion;
       this.productoVenta.unidad_medida = producto.unidad_medida.descripcion;
       this.productoVenta.producto = producto._id;
+      this.productoVenta.carne = producto.carne;
       this.productoVenta.promocion = producto.promocion;
       producto.promocion === true ? this.productoVenta.precio_unitario = producto.precio_promocion : this.productoVenta.precio_unitario = producto.precio;
       this.productoVenta.tipo = producto.tipo;
@@ -141,7 +143,8 @@ export class VentasComponent implements OnInit {
         precio_total: this.productoVenta.precio_total, 
         promocion: this.productoVenta.promocion, 
         cantidad: this.productoVenta.cantidad,
-        tipo: this.productoVenta.tipo
+        tipo: this.productoVenta.tipo,
+        carne: this.productoVenta.carne
       });
     }
   
@@ -256,7 +259,8 @@ export class VentasComponent implements OnInit {
       unidad_medida: '',
       promocion: false,
       cantidad: 0,
-      tipo: ''
+      tipo: '',
+      carne: false
     };
     this.productos = [];  
     this.precioTotal = 0;

@@ -29,6 +29,7 @@ export class NuevoProductoComponent implements OnInit {
     cantidad_minima: [0, Validators.required],
     porcentaje_ganancia : [40, Validators.required],
     precio_costo: [0, Validators.required],
+    carne: ['false', Validators.required],
     activo: [true, Validators.required]
   });
   
@@ -83,13 +84,20 @@ export class NuevoProductoComponent implements OnInit {
                              (Number(precio_costo) >= 0) 
 
     if(formularioValido){
+      
       this.alertService.loading();
+      
+      // Se arma la data para la creacion del producto
       const data = this.productoForm.value;
       data.precio = this.precio_venta; 
       data.tipo = this.tipo;
+
       if(!this.stockMinimo) data['cantidad_minima'] = 0;
+      
+      this.tipo === 'Normal' ? data.carne = 'false': data.carne;
+
       this.productosService.nuevoProducto(data).subscribe( () => {
-        this.alertService.success('Producto creado correctamente')
+        this.alertService.success('Producto creado correctamente');
         this.dataService.detectarStockMinimo();
         this.reiniciarFormulario();  
         this.alertService.success('Producto creado correctamente');
@@ -100,7 +108,8 @@ export class NuevoProductoComponent implements OnInit {
       this.alertService.formularioInvalido();
     }
   }
-
+  
+  // Obtener unidades de medida
   obtenerUnidades(): void {
     this.unidadMedidaService.listarUnidades().subscribe( ({ unidades }) => {
       this.unidades= unidades;      
@@ -124,6 +133,7 @@ export class NuevoProductoComponent implements OnInit {
       cantidad_minima: 0,
       porcentaje_ganancia: 40,
       precio_costo: 0,
+      carne: 'false',
       activo: true
     })  
   }

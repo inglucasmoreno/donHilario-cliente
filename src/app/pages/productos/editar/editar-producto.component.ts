@@ -3,10 +3,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductosService } from 'src/app/services/productos.service';
 import { UnidadMedidaService } from 'src/app/services/unidad-medida.service';
-import { Producto } from '../../../models/producto.model';
 import { AlertService } from '../../../services/alert.service';
 import { DataService } from '../../../services/data.service';
-import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-editar-producto',
@@ -18,7 +16,6 @@ export class EditarProductoComponent implements OnInit {
 
   // Variables de producto
   public unidades = [];
-  private porcentajeVenta = environment.porcentajeVenta;
   public precio_venta = 0;
   public productoId = '';
   public stockMinimo = true;
@@ -36,6 +33,7 @@ export class EditarProductoComponent implements OnInit {
     cantidad_minima: 0,
     porcentaje_ganancia: 40,
     precio_costo: 0,
+    carne: 'false',
     activo: true  
   };
 
@@ -50,6 +48,7 @@ export class EditarProductoComponent implements OnInit {
     cantidad_minima: [0, Validators.required],
     porcentaje_ganancia: [40, Validators.required],
     precio_costo: [0, Validators.required],
+    carne: ['false', Validators.required],
     activo: [true, Validators.required]
   });
 
@@ -110,6 +109,7 @@ export class EditarProductoComponent implements OnInit {
         this.alertService.loading();
         const data = this.productoForm.value;
         data.precio = this.precio_venta;
+        this.tipo === 'Normal' ? data.carne = 'false' : data.carne = this.productoForm.value.carne;
         if(!this.stockMinimo) data.cantidad_minima = 0;
         this.productosService.actualizarProducto(this.producto._id, data).subscribe(()=>{
           this.alertService.success('Producto actualizado correctamente');
@@ -150,6 +150,7 @@ export class EditarProductoComponent implements OnInit {
         cantidad_minima: producto.cantidad_minima,
         porcentaje_ganancia: producto.porcentaje_ganancia,
         precio_costo: producto.precio_costo,
+        carne: producto.carne,
         activo: producto.activo        
       });
       this.actualizarPrecioVenta();
@@ -169,6 +170,7 @@ export class EditarProductoComponent implements OnInit {
       cantidad_minima: this.producto.cantidad_minima,
       porcentaje_ganancia: this.producto.porcentaje_ganancia,
       precio_costo: this.producto.precio_costo,
+      carne: this.producto.carne,
       activo: this.producto.activo        
     });
   }
