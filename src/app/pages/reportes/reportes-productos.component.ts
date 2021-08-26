@@ -20,7 +20,7 @@ export class ReportesProductosComponent implements OnInit {
   // Ordenar
   public ordenar = {
     direccion: -1,  // Asc (1) | Desc (-1)
-    columna: 'createdAt'
+    columna: '_id.createdAt'
   }
 
   // Data
@@ -106,8 +106,8 @@ export class ReportesProductosComponent implements OnInit {
     this.reportesService.productos(this.ordenar.direccion, this.ordenar.columna, this.data).subscribe(({ productos })=>{
       this.inicio = false;
       if(productos.length > 0){
-        this.referencia.unidad_medida = productos[0].producto.unidad_medida.descripcion;
-        this.referencia.tipo_producto = productos[0].producto.tipo;
+        this.referencia.unidad_medida = productos[0]._id.unidad;
+        this.referencia.tipo_producto = productos[0]._id.tipo;
       }
       this.busqueda = productos;
       this.calculos();

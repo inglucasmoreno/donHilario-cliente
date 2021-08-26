@@ -218,7 +218,12 @@
             </div>
         </div>
         <div class="bg-white border mt-3">
-            <h1 class="bg-gray-800 text-white text-lg py-1 rounded-t text-center"> Listado de ventas ({{ ventas.length }}) </h1>
+            <h1 class="bg-gray-800 flex items-center justify-between text-white text-lg py-1 rounded-t text-center">
+                <span class="ml-3">
+                    Listado de ventas ({{ ventas.length }}) 
+                </span>
+                <app-boton-reportes (click)="generarReporte()"></app-boton-reportes>
+            </h1>
             <div class="antialiased font-sans bg-white">
                 <div class="container mx-auto px-4 sm:px-4">
                     <div>

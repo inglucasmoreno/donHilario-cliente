@@ -4,6 +4,9 @@ import { ReportesService } from '../../services/reportes.service';
 import { AlertService } from '../../services/alert.service';
 import { VentasService } from '../../services/ventas.service';
 import { MayoristasService } from 'src/app/services/mayoristas.service';
+import { ReportesExcelService } from 'src/app/services/reportes-excel.service';
+import { saveAs } from 'file-saver-es'; 
+
 
 @Component({
   selector: 'app-reportes-ventas',
@@ -75,13 +78,26 @@ export class ReportesVentasComponent implements OnInit {
               private reportesService: ReportesService,
               private ventasService: VentasService,
               private mayoristasService: MayoristasService,
+              private reportesExcelService: ReportesExcelService,
               private alertService: AlertService) { }
 
   ngOnInit(): void {
     this.dataService.ubicacionActual = "Dashboard - Reportes - Ventas";
     this.listarMayoristas();
   }
-  
+
+  // Generar reporte
+  generarReporte(): void {
+    this.alertService.loading();
+    this.reportesExcelService.ventas({}).subscribe( reporte => {
+      saveAs(reporte, `Ventas.xlsx`);
+      this.alertService.close();
+    },({error})=>{
+      console.log(error);
+      this.alertService.errorApi(error);
+    });
+  }
+
   // Listar mayoristas
   listarMayoristas(): void {
     this.alertService.loading();
