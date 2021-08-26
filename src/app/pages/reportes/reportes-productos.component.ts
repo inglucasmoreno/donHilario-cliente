@@ -82,7 +82,7 @@ export class ReportesProductosComponent implements OnInit {
     .then(({isConfirmed}) => {
       if (isConfirmed){
         this.alertService.loading();
-        this.reportesExcelService.productos({busqueda: this.busqueda}).subscribe(reporte => {
+        this.reportesExcelService.productos({busqueda: this.busqueda, cantidad: this.cantidadTotal}).subscribe(reporte => {
           saveAs(reporte, `Productos.xlsx`);
           this.alertService.close();
         })

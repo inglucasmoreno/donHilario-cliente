@@ -92,7 +92,18 @@ export class ReportesVentasComponent implements OnInit {
     .then(({isConfirmed}) => {
       if (isConfirmed){
         this.alertService.loading();
-        this.reportesExcelService.ventas({ ventas: this.ventas }).subscribe(reporte => {
+        const data = {
+          ventas: this.ventas,
+          montoTotal: this.montoTotal,
+          montoTotalBalanza: this.montoTotalBalanza,
+          montoTotalMercaderia: this.montoTotalMercaderia,
+          totalAdicionalCredito: this.totalAdicionalCredito,
+          totalDescuentos: this.totalDescuentos,
+          totalVentas: this.montoTotal - this.totalDescuentos + this.totalAdicionalCredito,
+          totalOtrosIngresos: this.totalOtrosIngresos,
+          totalOtrosGastos: this.totalOtrosGastos
+        };
+        this.reportesExcelService.ventas(data).subscribe(reporte => {
           saveAs(reporte, `Ventas.xlsx`);
           this.alertService.close();
         },({error})=>{
