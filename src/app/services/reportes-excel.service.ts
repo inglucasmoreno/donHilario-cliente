@@ -14,11 +14,17 @@ export class ReportesExcelService {
 
     // Ventas
     ventas(data: any): Observable<any> {
-    return this.http.post(`${base_url}/reportes-excel/ventas`, data ,{
-      responseType: 'blob',
-      headers: {'x-token': localStorage.getItem('token')}
-    });
+      return this.http.post(`${base_url}/reportes-excel/ventas`, data ,{
+        responseType: 'blob',
+        headers: {'x-token': localStorage.getItem('token')}
+      });
+    }
 
-  }
-
+    // Productos
+    productos(data: any): Observable<any> {
+      return this.http.post(`${base_url}/reportes-excel/productos`, data ,{
+        responseType: 'blob',
+        headers: {'x-token': localStorage.getItem('token')}
+      });
+    }
 }

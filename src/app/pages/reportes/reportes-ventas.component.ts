@@ -88,14 +88,18 @@ export class ReportesVentasComponent implements OnInit {
 
   // Generar reporte
   generarReporte(): void {
-    this.alertService.loading();
-    this.reportesExcelService.ventas({}).subscribe( reporte => {
-      saveAs(reporte, `Ventas.xlsx`);
-      this.alertService.close();
-    },({error})=>{
-      console.log(error);
-      this.alertService.errorApi(error);
-    });
+    this.alertService.question({msg: "Se esta por generar un reporte", buttonText: 'Generar'})
+    .then(({isConfirmed}) => {
+      if (isConfirmed){
+        this.alertService.loading();
+        this.reportesExcelService.ventas({ ventas: this.ventas }).subscribe(reporte => {
+          saveAs(reporte, `Ventas.xlsx`);
+          this.alertService.close();
+        },({error})=>{
+          this.alertService.errorApi(error);
+        })
+      }
+    })
   }
 
   // Listar mayoristas

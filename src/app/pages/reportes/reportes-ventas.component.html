@@ -36,7 +36,7 @@
                             </td>
                             <td class="px-5 py-2 border-b border-gray-200 text-xs">
                                 <p class="text-gray-900 whitespace-no-wrap">
-                                    {{ gasto.descripcion }}
+                                    {{ gasto.app }}
                                 </p>
                             </td>
                             <td class="px-5 py-2 border-b border-gray-200 text-xs">
@@ -219,7 +219,7 @@
         </div>
         <div class="bg-white border mt-3">
             <h1 class="bg-gray-800 flex items-center justify-between text-white text-lg py-1 rounded-t text-center">
-                <span class="ml-3">
+                <span class="ml-5">
                     Listado de ventas ({{ ventas.length }}) 
                 </span>
                 <app-boton-reportes (click)="generarReporte()"></app-boton-reportes>

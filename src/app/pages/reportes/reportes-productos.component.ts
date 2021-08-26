@@ -5,6 +5,8 @@ import { MayoristasService } from '../../services/mayoristas.service';
 import { ProveedoresService } from '../../services/proveedores.service';
 import { AlertService } from '../../services/alert.service';
 import { ReportesService } from '../../services/reportes.service';
+import { ReportesExcelService } from 'src/app/services/reportes-excel.service';
+import { saveAs } from 'file-saver-es'; 
 
 @Component({
   selector: 'app-reportes-productos',
@@ -64,7 +66,8 @@ export class ReportesProductosComponent implements OnInit {
               private productosService: ProductosService,
               private mayoristasService: MayoristasService,
               private proveedoresService: ProveedoresService,
-              private reportesService: ReportesService) {}
+              private reportesService: ReportesService,
+              private reportesExcelService: ReportesExcelService) {}
 
   ngOnInit(): void {
     this.dataService.ubicacionActual = "Dashboard - Reportes - Productos";
@@ -72,6 +75,20 @@ export class ReportesProductosComponent implements OnInit {
     this.listarProveedores();
     this.listarMayoristas();
   };
+
+  // Generar reportes
+  generarReporte(): void {
+    this.alertService.question({msg: "Se esta por generar un reporte", buttonText: 'Generar'})
+    .then(({isConfirmed}) => {
+      if (isConfirmed){
+        this.alertService.loading();
+        this.reportesExcelService.productos({busqueda: this.busqueda}).subscribe(reporte => {
+          saveAs(reporte, `Productos.xlsx`);
+          this.alertService.close();
+        })
+      }
+    })
+  }
 
   // Listar productos
   listarProductos(): void {
