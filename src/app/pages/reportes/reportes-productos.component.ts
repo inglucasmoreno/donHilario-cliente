@@ -21,8 +21,8 @@ export class ReportesProductosComponent implements OnInit {
 
   // Ordenar
   public ordenar = {
-    direccion: -1,  // Asc (1) | Desc (-1)
-    columna: '_id.createdAt'
+    direccion: 1,  // Asc (1) | Desc (-1)
+    columna: '_id.producto'
   }
 
   // Data
@@ -82,7 +82,7 @@ export class ReportesProductosComponent implements OnInit {
     .then(({isConfirmed}) => {
       if (isConfirmed){
         this.alertService.loading();
-        this.reportesExcelService.productos({busqueda: this.busqueda, cantidad: this.cantidadTotal}).subscribe(reporte => {
+        this.reportesExcelService.productos({busqueda: this.busqueda, tipo_filtro: this.data.tipo_filtro, cantidad: this.cantidadTotal}).subscribe(reporte => {
           saveAs(reporte, `Productos.xlsx`);
           this.alertService.close();
         })

@@ -12,6 +12,7 @@ import { Ingreso } from 'src/app/models/ingreso.model';
 import { IngresosProductosService } from '../../services/ingresos-productos.service';
 import { ProductosService } from 'src/app/services/productos.service';
 import { MediaResService } from '../../services/media-res.service';
+import { CerdoService } from 'src/app/services/cerdo.service';
 
 @Component({
   selector: 'app-ingreso-detalles',
@@ -35,6 +36,10 @@ export class IngresoDetallesComponent implements OnInit {
   public cantidadMediaRes = 1;
   public mediaRes: any[] = [];
 
+  // Cerdo
+  public cantidadCerdos = 1;
+  public cerdo: any[] = [];
+
   // Actualizacion de precio
   public nuevoPrecio = null;
   public nuevoPorcentaje = 40;
@@ -53,6 +58,8 @@ export class IngresoDetallesComponent implements OnInit {
   public showModalIngresar = false;
   public showModalRes = false;
   public showModalResEditar = false;
+  public showModalCerdo = false;
+  public showModalCerdoEditar = false;
   public showDetalles = false;
   public showDetallesActualizar = false;
   
@@ -69,10 +76,9 @@ export class IngresoDetallesComponent implements OnInit {
 
   // Ordenar
   public ordenar = {
-  direccion: 1,  // Asc (1) | Desc (-1)
-  columna: 'producto.descripcion'
-}
-
+    direccion: 1,  // Asc (1) | Desc (-1)
+    columna: 'producto.descripcion'
+  }
 
   constructor(private dataService: DataService,
               private router: Router,
@@ -80,6 +86,7 @@ export class IngresoDetallesComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private alertService: AlertService,
               private mediaResService: MediaResService,
+              private cerdoService: CerdoService,
               private proveedoresService: ProveedoresService,
               private productosService: ProductosService,
               private ingresosProductosService: IngresosProductosService) { }
@@ -203,6 +210,26 @@ export class IngresoDetallesComponent implements OnInit {
     });
   }
 
+  // Nuevo cerdo
+  nuevoCerdo(){
+  
+    // Se verifica si la cantidad es valida
+    if(this.cantidadMediaRes <= 0 || this.cantidadMediaRes === null){
+      this.alertService.info('Cantidad inválida');
+      return;
+    }
+
+    this.alertService.loading();
+    this.ingresosProductosService.nuevoCerdo({ idIngreso: this.idIngreso, proveedor: this.data.proveedor, cantidad: this.cantidadCerdos }).subscribe(() => {
+      this.obtenerProductos();
+      this.cantidadCerdos= 1;
+      this.showModalCerdo = false;
+      this.alertService.close();
+    },({error}) => {
+      this.alertService.errorApi(error.msg);
+    });
+  }
+
   // Ingreso por ID
   obtenerIngreso(){
     this.ingresosService.getIngreso(this.idIngreso).subscribe( ({ ingreso }) => {
@@ -246,6 +273,14 @@ export class IngresoDetallesComponent implements OnInit {
     }); 
     resultado.cantidad = Number(cantidad);
   }
+
+  // Editando valores del array cerdo
+  editarValorCerdo(id: string, cantidad: string){
+    const resultado: any = this.cerdo.find(elemento => {
+      return elemento.id_producto === id;
+    }); 
+    resultado.cantidad = Number(cantidad);
+  }
   
   // Actualizar valores de media res
   actualizarMediaRes(){
@@ -255,6 +290,19 @@ export class IngresoDetallesComponent implements OnInit {
     this.alertService.loading();
     this.mediaResService.actualizarMediaRes(this.mediaRes).subscribe(()=>{
       this.modalMediaRes();
+    },({error})=>{
+      this.alertService.errorApi(error);
+    });
+  }
+
+  // Actualizar valores de cerdo
+  actualizarCerdo(){
+    for(let producto of this.cerdo){
+      if(producto.cantidad <= 0 || producto.cantidad === null) return this.alertService.info('Hay cantidades inválidas');
+    } 
+    this.alertService.loading();
+    this.cerdoService.actualizarCerdo(this.cerdo).subscribe(()=>{
+      this.modalCerdo();
     },({error})=>{
       this.alertService.errorApi(error);
     });
@@ -312,11 +360,28 @@ export class IngresoDetallesComponent implements OnInit {
     this.showModalResEditar = true;  
   }
 
+  modaCerdoEditar(): void {
+    this.showDetallesActualizar = false;
+    this.showModalCerdo = false;
+    this.showModalCerdoEditar = true;  
+  }
+
   // Listar productos de media res
   listarMediaRes(): void {
     this.alertService.loading();
     this.mediaResService.listarMediaRes().subscribe(({ productos }) => {
       this.mediaRes = productos;
+      this.alertService.close();
+    },({error})=>{
+      this.alertService.errorApi(error);
+    })
+  }
+
+  // Listar productos de cerdo
+  listarCerdo(): void {
+    this.alertService.loading();
+    this.cerdoService.listarCerdo().subscribe(({ productos }) => {
+      this.cerdo = productos;
       this.alertService.close();
     },({error})=>{
       this.alertService.errorApi(error);
@@ -330,6 +395,15 @@ export class IngresoDetallesComponent implements OnInit {
     this.showModalResEditar = false;
     this.showDetalles = false;
     this.showModalRes = true;
+  }
+
+  // Abrir modal cerdo
+  modalCerdo(): void {
+    this.listarCerdo();
+    this.cantidadCerdos = 1;
+    this.showModalCerdoEditar = false;
+    this.showDetalles = false;
+    this.showModalCerdo = true;
   }
 
   // Filtrado por parametro

@@ -48,6 +48,12 @@ export class IngresosProductosService {
     });
   };
 
+  // Nuevo cerdo
+  nuevoCerdo(data: any): Observable<any> {
+    return this.http.post(`${base_url}/ingreso_productos/cerdo`, data, {
+      headers: { 'x-token': localStorage.getItem('token') }
+    });
+  };
 
   // Actualizar producto
   actualizarProducto(id: string, data: any): Observable<any> {
