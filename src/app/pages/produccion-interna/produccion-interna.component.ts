@@ -19,7 +19,7 @@ export class ProduccionInternaComponent implements OnInit {
   public produccion: any[] = [];
   public data = {
     producto_entrada: '',
-    producto_salida: "asdasdsad",
+    producto_salida: '',
     cantidad_entrada: null,
     cantidad_salida: 10
   }
@@ -117,6 +117,11 @@ export class ProduccionInternaComponent implements OnInit {
       this.alertService.info('Cantidad inválida');      
       return;
     }
+
+    if(this.data.producto_entrada === '' || this.data.producto_entrada === null || this.data.producto_salida === '' || this.data.producto_salida === null){
+      this.alertService.info('Debe seleccionar los dos productos');      
+      return;
+    }
   
     this.alertService.loading();
     
@@ -149,7 +154,6 @@ export class ProduccionInternaComponent implements OnInit {
   calcularTotal(producciones: any[]): void {
     this.cantidadTotal_entrada = 0;
     this.cantidadTotal_salida = 0;
-
     producciones.forEach( produccion => {
       this.cantidadTotal_entrada += produccion.cantidad_entrada;
       this.cantidadTotal_salida += produccion.cantidad_salida;
@@ -160,7 +164,7 @@ export class ProduccionInternaComponent implements OnInit {
   reiniciarFormulario(): void {
     this.data = {
       producto_entrada: '',
-      producto_salida: null,
+      producto_salida: '',
       cantidad_entrada: null,
       cantidad_salida: null
     }

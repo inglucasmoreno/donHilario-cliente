@@ -13,6 +13,7 @@ import { IngresosProductosService } from '../../services/ingresos-productos.serv
 import { ProductosService } from 'src/app/services/productos.service';
 import { MediaResService } from '../../services/media-res.service';
 import { CerdoService } from 'src/app/services/cerdo.service';
+import { PolloService } from 'src/app/services/pollo.service';
 
 @Component({
   selector: 'app-ingreso-detalles',
@@ -40,6 +41,10 @@ export class IngresoDetallesComponent implements OnInit {
   public cantidadCerdos = 1;
   public cerdo: any[] = [];
 
+  // Pollo
+  public cantidadPollos = 1;
+  public pollo: any[] = [];
+
   // Actualizacion de precio
   public nuevoPrecio = null;
   public nuevoPorcentaje = 40;
@@ -60,6 +65,8 @@ export class IngresoDetallesComponent implements OnInit {
   public showModalResEditar = false;
   public showModalCerdo = false;
   public showModalCerdoEditar = false;
+  public showModalPollo = false;
+  public showModalPolloEditar = false;
   public showDetalles = false;
   public showDetallesActualizar = false;
   
@@ -87,10 +94,12 @@ export class IngresoDetallesComponent implements OnInit {
               private alertService: AlertService,
               private mediaResService: MediaResService,
               private cerdoService: CerdoService,
+              private polloService: PolloService,
               private proveedoresService: ProveedoresService,
               private productosService: ProductosService,
               private ingresosProductosService: IngresosProductosService) { }
-
+  
+  // Inicio del componente
   ngOnInit(): void {
     this.dataService.ubicacionActual = 'Dashboard - Ingresos - Detalles';
     this.alertService.loading();
@@ -169,7 +178,7 @@ export class IngresoDetallesComponent implements OnInit {
     });
   }
 
-  // Ingresando producto
+  // Nuevo producto
   nuevoProducto(){
     
     if(this.data.cantidad <= 0 || !this.data) return this.alertService.info('Cantidad inválida');
@@ -208,13 +217,14 @@ export class IngresoDetallesComponent implements OnInit {
     },({error}) => {
       this.alertService.errorApi(error.msg);
     });
+  
   }
 
   // Nuevo cerdo
   nuevoCerdo(){
   
     // Se verifica si la cantidad es valida
-    if(this.cantidadMediaRes <= 0 || this.cantidadMediaRes === null){
+    if(this.cantidadCerdos <= 0 || this.cantidadCerdos === null){
       this.alertService.info('Cantidad inválida');
       return;
     }
@@ -228,6 +238,28 @@ export class IngresoDetallesComponent implements OnInit {
     },({error}) => {
       this.alertService.errorApi(error.msg);
     });
+  
+  }
+
+  // Nuevo pollo
+  nuevoPollo(){
+
+    // Se verifica si la cantidad es valida
+    if(this.cantidadPollos <= 0 || this.cantidadPollos === null){
+      this.alertService.info('Cantidad inválida');
+      return;
+    }
+
+    this.alertService.loading();
+    this.ingresosProductosService.nuevoPollo({ idIngreso: this.idIngreso, proveedor: this.data.proveedor, cantidad: this.cantidadPollos }).subscribe(() => {
+      this.obtenerProductos();
+      this.cantidadPollos= 1;
+      this.showModalPollo = false;
+      this.alertService.close();
+    },({error}) => {
+      this.alertService.errorApi(error.msg);
+    });
+  
   }
 
   // Ingreso por ID
@@ -281,6 +313,14 @@ export class IngresoDetallesComponent implements OnInit {
     }); 
     resultado.cantidad = Number(cantidad);
   }
+
+  // Editando valores del array pollo
+  editarValorPollo(id: string, cantidad: string){
+    const resultado: any = this.pollo.find(elemento => {
+      return elemento.id_producto === id;
+    }); 
+    resultado.cantidad = Number(cantidad);
+  }
   
   // Actualizar valores de media res
   actualizarMediaRes(){
@@ -303,6 +343,19 @@ export class IngresoDetallesComponent implements OnInit {
     this.alertService.loading();
     this.cerdoService.actualizarCerdo(this.cerdo).subscribe(()=>{
       this.modalCerdo();
+    },({error})=>{
+      this.alertService.errorApi(error);
+    });
+  }
+
+  // Actualizar valores de pollo
+  actualizarPollo(){
+    for(let producto of this.pollo){
+      if(producto.cantidad <= 0 || producto.cantidad === null) return this.alertService.info('Hay cantidades inválidas');
+    } 
+    this.alertService.loading();
+    this.polloService.actualizarPollo(this.pollo).subscribe(()=>{
+      this.modalPollo();
     },({error})=>{
       this.alertService.errorApi(error);
     });
@@ -365,6 +418,12 @@ export class IngresoDetallesComponent implements OnInit {
     this.showModalCerdo = false;
     this.showModalCerdoEditar = true;  
   }
+  
+  modaPolloEditar(): void {
+    this.showDetallesActualizar = false;
+    this.showModalPollo = false;
+    this.showModalPolloEditar = true;  
+  }
 
   // Listar productos de media res
   listarMediaRes(): void {
@@ -388,6 +447,17 @@ export class IngresoDetallesComponent implements OnInit {
     })
   }
 
+  // Listar productos de pollo
+  listarPollo(): void {
+    this.alertService.loading();
+    this.polloService.listarPollo().subscribe(({ productos }) => {
+      this.pollo = productos;
+      this.alertService.close();
+    },({error})=>{
+      this.alertService.errorApi(error);
+    })
+  }
+
   // Abrir modal media res
   modalMediaRes(): void {
     this.listarMediaRes();
@@ -404,6 +474,15 @@ export class IngresoDetallesComponent implements OnInit {
     this.showModalCerdoEditar = false;
     this.showDetalles = false;
     this.showModalCerdo = true;
+  }
+
+  // Abrir modal pollo
+  modalPollo(): void {
+    this.listarPollo();
+    this.cantidadPollos = 1;
+    this.showModalPolloEditar = false;
+    this.showDetalles = false;
+    this.showModalPollo = true;
   }
 
   // Filtrado por parametro

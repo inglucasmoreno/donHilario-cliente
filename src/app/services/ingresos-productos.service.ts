@@ -55,6 +55,13 @@ export class IngresosProductosService {
     });
   };
 
+  // Nuevo pollo
+  nuevoPollo(data: any): Observable<any> {
+    return this.http.post(`${base_url}/ingreso_productos/pollo`, data, {
+      headers: { 'x-token': localStorage.getItem('token') }
+    });
+  };
+
   // Actualizar producto
   actualizarProducto(id: string, data: any): Observable<any> {
     return this.http.put(`${base_url}/ingreso_productos/${id}`, data, {

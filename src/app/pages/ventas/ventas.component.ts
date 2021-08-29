@@ -250,6 +250,14 @@ export class VentasComponent implements OnInit {
   }
   
   // Reiniciar venta
+  reiniciarVentaModal(): void {
+    this.alertService.question({msg:'Estas por reiniciar la venta', buttonText: 'Reiniciar'})
+                     .then((result)=>{
+                       if(result.isConfirmed) this.reiniciarVenta();
+                     });
+  };
+
+  // Reiniciar venta
   reiniciarVenta(): void {
     this.productoVenta = { 
       descripcion: '',

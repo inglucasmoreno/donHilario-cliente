@@ -157,6 +157,45 @@
     </div>
 </app-modal>
 
+<!-- Editar pollo -->
+<app-modal [showModal]="showModalPolloEditar">
+    <div class="p-4">
+
+        <!-- Header -->
+        <h1 class="bg-gray-800 p-2 rounded flex items-center justify-between">
+            <span class="text-xl font-semibold text-white"> Editando pollo </span>
+            <button (click)="modalPollo()" title="Volver" class="bg-gray-100 border shadow rounded p-2 hover:text-secondary-500"> 
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            </button>
+        </h1>
+
+        <p class="bg-gray-100 text-gray-800 font-semibold p-2 mt-2 border border-gray-200 rounded"> Actualizando valores estandares </p>
+
+        <div class="flex items-center mt-3">
+            <button class="bg-secondary-800 text-white p-2 text-sm font-semibold rounded shadow w-full focus:outline-none hover:bg-secondary-700" (click)="actualizarPollo()"> Actualizar </button>
+            <button class="bg-gray-500 text-white p-2 rounded text-sm font-semibold shadow w-full ml-4 focus:outline-none hover:bg-gray-400" (click)="showModalPolloEditar = false"> Cancelar </button>
+        </div>
+
+        <div (click)="showDetallesActualizar = !showDetallesActualizar" class="flex items-center justify-between rounded border border-gray-200 bg-gray-100 px-2 py-1 cursor-pointer mt-3">
+            <p class="text-gray-800 font-semibold "> Detalles de cortes y cantidades </p>
+            <svg *ngIf="!showDetallesActualizar" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
+            <svg *ngIf="showDetallesActualizar" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+
+        <div *ngIf="showDetallesActualizar" class="mt-2">
+            <div class="flex items-center justify-between p-1 border-b" *ngFor="let producto of pollo">
+                <p class="text-sm font-semibold"> {{ producto.descripcion }} </p>
+                <div>
+                    <input (change)="editarValorPollo(producto.id_producto, txtCantidadPollo.value)" (keyup)="editarValorPollo(producto.id_producto, txtCantidadPollo.value)" #txtCantidadPollo step="0.01" class="text-center w-24 border focus:outline-none rounded p-1" type="number"
+                        [value]="producto.cantidad">
+                    <span class="text-gray-400"> Kg </span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</app-modal>
+
 <!-- Nueva media res -->
 <app-modal [showModal]="showModalRes">
     <div class="p-4">
@@ -240,6 +279,47 @@
     </div>
 </app-modal>
 
+<!-- Nuevo pollo -->
+<app-modal [showModal]="showModalPollo">
+    <div class="p-4">
+
+        <!-- Header -->
+        <h1 class="bg-gray-800 p-2 rounded flex items-center justify-between">
+            <span class="text-xl font-semibold text-white"> Agregando pollo </span>
+            <button title="Editar pollo" (click)="modaPolloEditar()" class="bg-gray-100 border shadow rounded p-2 hover:text-secondary-500"> 
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+            </button>
+        </h1>
+
+        <div class="flex items-center justify-between text-gray-800 bg-gray-100 px-2 py-2 border rounded mt-2 text-center">
+            <p class="font-semibold"> Cantidad de pollos </p>
+            <input type="number" min=1 class="w-20 text-center focus:outline-none p-2 border rounded" [(ngModel)]="cantidadPollos">
+        </div>
+
+        <div class="flex items-center mt-3">
+            <button class="bg-secondary-800 text-white p-2 text-sm font-semibold rounded shadow w-full focus:outline-none hover:bg-secondary-700" (click)="nuevoPollo()"> Agregar </button>
+            <button class="bg-gray-500 text-white p-2 rounded text-sm font-semibold shadow w-full ml-4 focus:outline-none hover:bg-gray-400" (click)="showModalPollo = false"> Cancelar </button>
+        </div>
+
+        <div (click)="showDetalles = !showDetalles" class="flex items-center justify-between rounded border border-gray-200 bg-gray-100 px-2 py-1 cursor-pointer mt-3">
+            <p class="text-gray-800 font-semibold "> Detalles de cortes y cantidades </p>
+            <svg *ngIf="!showDetalles" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
+            <svg *ngIf="showDetalles" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+
+        <div *ngIf="showDetalles" class="mt-2">
+            <div class="flex items-center justify-between p-1 border-b" *ngFor="let producto of pollo">
+                <p class="text-sm font-semibold"> {{ producto.descripcion }} </p>
+                <p class="text-gray-500">
+                    {{ (producto.cantidad * cantidadPollos) | moneda }}
+                    <span> Kg </span>
+                </p>
+            </div>
+        </div>
+
+    </div>
+</app-modal>
+
 <app-tarjeta-lista *ngIf="ingreso">
 
     <!-- Encabezado -->
@@ -302,13 +382,20 @@
         <button (click)="modalCerdo()" class="p-2 mt-3 ml-2 hidden lg:block focus:outline-none border rounde rounded shadow bg-gray-100 text-gray-700 hover:bg-secondary-100" title="Agregar cerdo">
             <img class="w-8" src="assets/icons/cerdo.png" alt="Cerdo">
         </button>
+        <button (click)="modalPollo()" class="p-2 mt-3 ml-2 hidden lg:block focus:outline-none border rounde rounded shadow bg-gray-100 text-gray-700 hover:bg-secondary-100" title="Agregar pollo">
+            <img class="w-8" src="assets/icons/pollo.png" alt="Pollo">
+        </button>
         <button *ngIf="ingreso.activo" (click)="modalMediaRes()" title="Agregar media res" class="p-2 flex lg:hidden items-center mt-3 ml-4 focus:outline-none border rounde rounded shadow bg-gray-100 text-gray-700 hover:bg-secondary-100">
             <img class="w-8" src="assets/icons/vaca.png" alt="Media res">
             <span class="ml-1"> Agregar media res </span>
         </button>
         <button (click)="modalCerdo()" *ngIf="ingreso.activo" title="Agregar cerdo" class="p-2 flex lg:hidden items-center mt-3 ml-4 focus:outline-none border rounde rounded shadow bg-gray-100 text-gray-700 hover:bg-secondary-100">
-            <img class="w-8" src="assets/icons/cerdo.png" alt="Cerdo">
+            <img class="w-8" src="assets/icons/cerdo.png" alt="Pollo">
             <span class="ml-1"> Agregar cerdo </span>
+        </button>
+        <button (click)="modalPollo()" *ngIf="ingreso.activo" title="Agregar pollo" class="p-2 flex lg:hidden items-center mt-3 ml-4 focus:outline-none border rounde rounded shadow bg-gray-100 text-gray-700 hover:bg-secondary-100">
+            <img class="w-8" src="assets/icons/pollo.png" alt="Pollo">
+            <span class="ml-1"> Agregar pollo </span>
         </button>
     </div>
 

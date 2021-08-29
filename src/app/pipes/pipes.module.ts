@@ -14,6 +14,7 @@ import { FiltroPromocionesPipe } from './filtro-promociones.pipe';
 import { FiltroStockMinimoPipe } from './filtro-stock-minimo.pipe';
 import { FiltroMayoristasPipe } from './filtro-mayoristas.pipe';
 import { FiltroDesechosPipe } from './filtro-desechos.pipe';
+import { FechaSelectorPipe } from './fecha-selector.pipe';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { FiltroDesechosPipe } from './filtro-desechos.pipe';
     FiltroPromocionesPipe,
     FiltroStockMinimoPipe,
     FiltroMayoristasPipe,
-    FiltroDesechosPipe
+    FiltroDesechosPipe,
+    FechaSelectorPipe
   ],
   imports: [
     CommonModule
@@ -49,7 +51,8 @@ import { FiltroDesechosPipe } from './filtro-desechos.pipe';
     FiltroPromocionesPipe,
     FiltroStockMinimoPipe,
     FiltroMayoristasPipe,
-    FiltroDesechosPipe
+    FiltroDesechosPipe,
+    FechaSelectorPipe
   ]
 })
 export class PipesModule { }

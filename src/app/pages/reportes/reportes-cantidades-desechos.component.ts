@@ -33,9 +33,11 @@ export class ReportesCantidadesDesechosComponent implements OnInit {
   
   // Buscar
   buscar(): void {
-    if(this.fechaDesde == '' || this.fechaHasta == '') return this.alertService.info('Fecha inválida');
+    // if(this.fechaDesde == '' || this.fechaHasta == '') return this.alertService.info('Fecha inválida');
     this.alertService.loading();
     this.reportesService.getCantidadesDesechos({fechaDesde: this.fechaDesde, fechaHasta: this.fechaHasta}).subscribe(({desechosTotal, cantidadTotal}) => {
+      console.log(desechosTotal);
+      console.log(cantidadTotal);
       this.totales.cantidad = cantidadTotal;
       this.totales.desechos = desechosTotal;
       this.alertService.close();
