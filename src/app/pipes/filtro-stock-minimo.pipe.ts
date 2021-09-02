@@ -19,7 +19,7 @@ export class FiltroStockMinimoPipe implements PipeTransform {
     // Filtrado Activo - Inactivo - Todos
     if(boolActivo !== null){
       filtrados = valores.filter( valor => {
-        return (valor.activo == boolActivo && valor.stock_minimo && (valor.cantidad < valor.cantidad_minima));
+        return (valor.activo == boolActivo && valor.stock_minimo && (valor.cantidad <= valor.cantidad_minima));
       });
     }else if(boolActivo === null){
       filtrados = valores; 

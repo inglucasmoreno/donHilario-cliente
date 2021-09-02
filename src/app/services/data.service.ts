@@ -30,7 +30,7 @@ export class DataService {
     this.stockAlert= false;
     this.productosService.listarProductos().subscribe(({productos}) => {
       productos.forEach(producto => {
-        if(producto.stock_minimo && (producto.cantidad < producto.cantidad_minima)){
+        if(producto.stock_minimo && (producto.cantidad <= producto.cantidad_minima)){
           this.stockAlert = true;
           return;
         }

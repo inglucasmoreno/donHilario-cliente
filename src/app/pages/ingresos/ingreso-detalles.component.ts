@@ -325,7 +325,7 @@ export class IngresoDetallesComponent implements OnInit {
   // Actualizar valores de media res
   actualizarMediaRes(){
     for(let producto of this.mediaRes){
-      if(producto.cantidad <= 0 || producto.cantidad === null) return this.alertService.info('Hay cantidades inválidas');
+      if(producto.cantidad < 0 || producto.cantidad === null) return this.alertService.info('Hay cantidades inválidas');
     } 
     this.alertService.loading();
     this.mediaResService.actualizarMediaRes(this.mediaRes).subscribe(()=>{
@@ -338,7 +338,7 @@ export class IngresoDetallesComponent implements OnInit {
   // Actualizar valores de cerdo
   actualizarCerdo(){
     for(let producto of this.cerdo){
-      if(producto.cantidad <= 0 || producto.cantidad === null) return this.alertService.info('Hay cantidades inválidas');
+      if(producto.cantidad < 0 || producto.cantidad === null) return this.alertService.info('Hay cantidades inválidas');
     } 
     this.alertService.loading();
     this.cerdoService.actualizarCerdo(this.cerdo).subscribe(()=>{
@@ -351,7 +351,7 @@ export class IngresoDetallesComponent implements OnInit {
   // Actualizar valores de pollo
   actualizarPollo(){
     for(let producto of this.pollo){
-      if(producto.cantidad <= 0 || producto.cantidad === null) return this.alertService.info('Hay cantidades inválidas');
+      if(producto.cantidad < 0 || producto.cantidad === null) return this.alertService.info('Hay cantidades inválidas');
     } 
     this.alertService.loading();
     this.polloService.actualizarPollo(this.pollo).subscribe(()=>{

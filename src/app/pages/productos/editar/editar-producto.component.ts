@@ -45,6 +45,7 @@ export class EditarProductoComponent implements OnInit {
     descripcion: ['', Validators.required],
     unidad_medida: ['', Validators.required],
     stock_minimo: [false, Validators.required],
+    cantidad: [0, Validators.required],
     cantidad_minima: [0, Validators.required],
     porcentaje_ganancia: [40, Validators.required],
     precio_costo: [0, Validators.required],
@@ -91,7 +92,7 @@ export class EditarProductoComponent implements OnInit {
   // Editando producto
   editarProducto(): void {
 
-    const {codigo, descripcion, stock_minimo, cantidad_minima, precio_costo} = this.productoForm.value;   
+    const {codigo, descripcion, stock_minimo, cantidad_minima, precio_costo, cantidad} = this.productoForm.value;   
     
     const cantidadMinimaValida = stock_minimo && Number(cantidad_minima) < 0;
 
@@ -103,7 +104,7 @@ export class EditarProductoComponent implements OnInit {
     const formularioValido = this.productoForm.valid && 
                              codigo.trim() !== '' && 
                              descripcion.trim() !== '' && 
-                             Number(precio_costo) >= 0 
+                             Number(precio_costo) >= 0  
 
     if(formularioValido){ 
         this.alertService.loading();
@@ -147,6 +148,7 @@ export class EditarProductoComponent implements OnInit {
         descripcion: producto.descripcion,
         unidad_medida: producto.unidad_medida._id,
         stock_minimo: producto.stock_minimo,
+        cantidad: producto.cantidad,
         cantidad_minima: producto.cantidad_minima,
         porcentaje_ganancia: producto.porcentaje_ganancia,
         precio_costo: producto.precio_costo,
@@ -167,6 +169,7 @@ export class EditarProductoComponent implements OnInit {
       descripcion: this.producto.descripcion,
       unidad_medida: this.producto.unidad_medida._id,
       stock_minimo: this.producto.stock_minimo,
+      cantidad: this.producto.cantidad,
       cantidad_minima: this.producto.cantidad_minima,
       porcentaje_ganancia: this.producto.porcentaje_ganancia,
       precio_costo: this.producto.precio_costo,
