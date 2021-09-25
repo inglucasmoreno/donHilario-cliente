@@ -96,6 +96,15 @@
                     <span> Total efectivo en caja </span>
                     <span> ${{ data.efectivo_en_caja | moneda }} </span>
                 </p>
+                <p class="flex items-center justify-between p-2 border font-semibold bg-gray-100 mb-2 mt-2">
+                    <span> Tesoreria </span>
+                    <span> <input [(ngModel)]="data.tesoreria" type="number" placeholder="Ej. 15000" class="border bg-white rounded py-1 px-3 focus:outline-none text-center"></span>
+                </p>
+                <p class="flex items-center justify-between p-2 border font-semibold bg-gray-100 mb-2 mt-2">
+                    <span> Saldo inicial próxima caja </span>
+                    <span> ${{ (data.efectivo_en_caja - data.tesoreria) | moneda }} </span>
+                </p>
+
                 <button (click)="nuevaCaja()" class="p-2 border border-gray-200 shadow text-md bg-gray-100 text-gray-800 w-full my-2 rounded hover:text-secondary-700 focus:outline-none font-semibold"> 
                     Completar
                 </button>
@@ -184,7 +193,7 @@
     <div class="bg-white w-full md:w-1/2 border shadow md:ml-4 mt-2 md:mt-0 rounded-t h-full">
         <div class="bg-primary-800 p-2 flex items-center justify-between">
             <h1 class="text-white rounded-t text-lg font-medium"> Gastos e Ingresos </h1>
-            <button (click)="showModal = true" class="bg-gray-100 mr-2 px-2 py-1 shadow rounded text-sm font-semibold hover:text-secondary-700 text-gray-800"> Nuevo elemento </button>
+            <button (click)="modalNuevoElemento()" class="bg-gray-100 mr-2 px-2 py-1 shadow rounded text-sm font-semibold hover:text-secondary-700 text-gray-800"> Nuevo elemento </button>
         </div>
         <div class="p-2" *ngIf="ingresos.length <= 0 && gastos.length <= 0">
             <p class="text-gray-600"> No hay elementos activos </p>

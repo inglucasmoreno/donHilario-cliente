@@ -245,7 +245,14 @@
                     <span> Diferencia </span>
                     <span> ${{ cajaSeleccionada.diferencia | moneda}} </span>
                 </p>
-
+                <p class="font-semibold p-2 border-b flex items-center justify-between bg-gray-100 mt-2">
+                    <span> Tesoreria </span>
+                    <span> ${{ cajaSeleccionada.tesoreria | moneda }} </span>
+                </p>
+                <p class="font-semibold p-2 border-b flex items-center justify-between bg-green-100">
+                    <span> Saldo próxima caja </span>
+                    <span> ${{ (cajaSeleccionada.saldo_proxima_caja ? cajaSeleccionada.saldo_proxima_caja : 0) | moneda }} </span>
+                </p>
             </div>
         </div>
     </div>

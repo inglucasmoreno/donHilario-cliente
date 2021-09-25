@@ -4,6 +4,7 @@ import { DataService } from 'src/app/services/data.service';
 import { VentasService } from 'src/app/services/ventas.service';
 import { AlertService } from '../../services/alert.service';
 import { CajasService } from '../../services/cajas.service';
+import { TmpIngresosGastosService } from '../../services/tmp-ingresos-gastos.service';
 
 
 @Component({
@@ -79,6 +80,9 @@ export class CajasComponent implements OnInit {
     total_debito: 0,
     total_mercadopago: 0,
 
+    // Tesoreria
+    tesoreria: null,
+
     // Monto total
     efectivo_en_caja: 0,
     
@@ -88,9 +92,11 @@ export class CajasComponent implements OnInit {
               public authService: AuthService,
               private alertService: AlertService,
               private ventasService: VentasService,
+              private tmpIngresosGastosService: TmpIngresosGastosService,
               private cajasService: CajasService) { }
 
   ngOnInit(): void {
+    this.listarIngresoGastos();
     this.alertService.loading();
     this.dataService.ubicacionActual = 'Dashboard - Gestión de cajas';
     this.obtenerSaldoInicial();
@@ -184,11 +190,15 @@ export class CajasComponent implements OnInit {
           total_postnet: this.data.total_postnet,
           total_ventas: this.data.total_ventas,
           otros_gastos: this.totalOtrosGastos,
+          tesoreria: this.data.tesoreria !== null ? this.data.tesoreria : 0,
+          saldo_proxima_caja: this.data.efectivo_en_caja - this.data.tesoreria,
           otros_ingresos: this.totalOtrosIngresos
         };
         this.cajasService.nuevaCaja(data).subscribe(() => {
           this.reiniciarCaja();
           this.listarVentas();
+          this.limpiarIngresosGastos();
+          this.obtenerSaldoInicial();
           this.alertService.success('Cierre de caja correcto');
         },({error})=>{
           this.alertService.errorApi(error);
@@ -199,6 +209,7 @@ export class CajasComponent implements OnInit {
 
   // Reiniciar cierre de caja
   reiniciarCaja(): void {
+  this.data.tesoreria = null;
   this.totalOtrosGastos = 0;
   this.totalOtrosIngresos = 0;
   this.billetes = {
@@ -227,8 +238,19 @@ export class CajasComponent implements OnInit {
   this.gastos = [];
   }
 
+  // Modal: Ingresos y Gastos
+  modalNuevoElemento(): void {
+    this.elementoActual = {
+      descripcion: '',
+      monto: '',
+      tipo: this.elementoActual.tipo
+    } 
+    this.showModal = true;
+  }
+
   // Calculo del total de "Otros gastos" y "Otros ingresos"
   calculoGastosIngresos(): void {
+
     let totalGastosTmp = 0;
     let totalIngresosTmp = 0;
     
@@ -247,16 +269,40 @@ export class CajasComponent implements OnInit {
 
   }
 
+  // Limpiar Ingresos y Gastos
+  limpiarIngresosGastos(): void {
+    this.alertService.loading();
+    this.tmpIngresosGastosService.limpiarElemento().subscribe(()=>{
+      this.listarIngresoGastos();
+    },({error})=>{
+      this.alertService.errorApi(error);
+    });
+  }
+
   // Eliminar Ingreso/Gasto
   eliminarIngresoGasto(elemento: any): void {
     this.alertService.question({ msg: '¿Quieres eliminar este elemento?', buttonText: 'Eliminar' })
-          .then(({isConfirmed}) => {  
+          .then(({isConfirmed}) => {
             if (isConfirmed) {
-              if(elemento.tipo === 'Ingreso') this.ingresos = this.ingresos.filter( ingreso => ingreso.descripcion !== elemento.descripcion );
-              if(elemento.tipo === 'Gasto') this.gastos = this.gastos.filter( gasto => gasto.descripcion !== elemento.descripcion ); 
-              this.calculoGastosIngresos();
+              this.alertService.loading();
+              this.tmpIngresosGastosService.eliminarElemento(elemento._id).subscribe( () => {
+                this.listarIngresoGastos();
+              },({error})=>{
+                this.alertService.errorApi(error);
+              });  
             }
           });
+  }
+
+  // Listar gastos e ingresos
+  listarIngresoGastos(): void {
+    this.tmpIngresosGastosService.listarElementos().subscribe( ({ingresos, gastos}) => {
+      this.ingresos = ingresos;
+      this.gastos = gastos;
+      this.calculoGastosIngresos();
+    },({error})=>{
+      this.alertService.errorApi(error);
+    });
   }
 
   // Nuevo Ingreso/Gasto
@@ -267,25 +313,25 @@ export class CajasComponent implements OnInit {
       return;
     }
 
-    if(this.elementoActual.tipo === 'Ingreso'){
-      this.ingresos.push({
-        descripcion: this.elementoActual.descripcion.toUpperCase(),
-        monto: this.elementoActual.monto,
-        tipo: this.elementoActual.tipo
-      });    
-    }else if(this.elementoActual.tipo === 'Gasto'){
-      this.gastos.push({
-        descripcion: this.elementoActual.descripcion.toUpperCase(),
-        monto: this.elementoActual.monto,
-        tipo: this.elementoActual.tipo
-      });      
+    const data = {
+      descripcion: this.elementoActual.descripcion.trim(),
+      tipo: this.elementoActual.tipo,
+      monto: this.elementoActual.monto
     }
+    
+    this.alertService.loading();
+    this.tmpIngresosGastosService.nuevoElemento(data).subscribe( () => {
+      this.listarIngresoGastos();
+    },({error})=>{
+      this.alertService.errorApi(error);
+    });
+
+
     
     this.calculoGastosIngresos();
     
     this.showModal = false;
 
-    this.alertService.success('Elemento cargado correctamente');
 
     this.elementoActual = {
       descripcion: '',
@@ -381,6 +427,7 @@ export class CajasComponent implements OnInit {
                                    this.billetes.total_500 + 
                                    this.billetes.total_1000;
     this.billetes.diferencia = this.billetes.total_billetes - this.data.efectivo_en_caja;
+    this.alertService.close();
   }
 
 }
