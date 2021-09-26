@@ -32,6 +32,7 @@ export class CajasComponent implements OnInit {
 
   // Ventas
   public ventas: any[] = [];
+  public personalizadas: any[] = [];
 
   // Control de billetes
   public billetes: any = {
@@ -142,8 +143,9 @@ export class CajasComponent implements OnInit {
 
   // Listar ventas
   listarVentas(): void {
-    this.ventasService.listarVentas().subscribe( ({ ventas }) => {
+    this.ventasService.listarVentas().subscribe( ({ ventas, personalizadas }) => {
       this.ventas = ventas;
+      this.personalizadas = personalizadas;
       this.calculos();
       this.alertService.close();
     }, ({ error }) => {
@@ -326,12 +328,9 @@ export class CajasComponent implements OnInit {
       this.alertService.errorApi(error);
     });
 
-
-    
     this.calculoGastosIngresos();
     
     this.showModal = false;
-
 
     this.elementoActual = {
       descripcion: '',
@@ -359,24 +358,45 @@ export class CajasComponent implements OnInit {
     let total_debito_tmp = 0;
     let total_mercadopago_tmp = 0;
 
+    let personalizadas: any[] = [];
+
+    // Ventas comunes
     this.ventas.forEach( venta => {
+      
       total_ventas_tmp += venta.precio_total;
       total_mercaderia_tmp += venta.total_mercaderia;
       total_balanza_tmp += venta.total_balanza;
       
       // Efectivo o Postnet
       if(venta.forma_pago === 'Efectivo'){
-        total_efectivo_tmp += venta.precio_total
-      }else{
+        total_efectivo_tmp += venta.precio_total;
+      }else if(venta.forma_pago === 'Debito' || venta.forma_pago === 'Credito' || venta.forma_pago === 'MercadoPago'){
         total_postnet_tmp += venta.precio_total - venta.total_descuento;
         if(venta.forma_pago === 'Debito') total_debito_tmp += venta.precio_total;
         else if(venta.forma_pago === 'Credito') total_credito_tmp += venta.precio_total;
         else if(venta.forma_pago === 'MercadoPago') total_mercadopago_tmp += venta.precio_total;
       };
-          
+
+      // Personalizado
+      if(venta.forma_pago === 'Personalizada'){
+        personalizadas.push(...venta.forma_pago_personalizada);
+      }
+
       total_descuentos_tmp += venta.total_descuento;
       total_adicional_credito_tmp += venta.total_adicional_credito;
       
+    });
+    
+    // Impacto de las ventas con forma de pago personalizadas
+    personalizadas.forEach(elemento => {
+      if(elemento.tipo === 'Efectivo') {
+        total_efectivo_tmp += elemento.monto;
+      }else{
+        total_postnet_tmp += elemento.monto;
+        if(elemento.tipo === 'Debito') total_debito_tmp += elemento.monto;
+        else if(elemento.tipo === 'Credito') total_credito_tmp += elemento.monto;
+        else if(elemento.tipo === 'MercadoPago') total_mercadopago_tmp += elemento.monto;    
+      } 
     });
   
     // Montos finales

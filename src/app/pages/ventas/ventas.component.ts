@@ -25,8 +25,18 @@ export class VentasComponent implements OnInit {
   // Modal
   public showModal = false;
 
+  // Forma de pago
+  public idFormaPago = 0;
+  public nuevaForma: any = {
+    tipo: 'Efectivo',
+    monto: null 
+  }
+
+  public totalPersonalizado = 0;
+
   // Venta
   public codigo: string = '';
+  public multiplesFormasPago: any[] = [];
   public vuelto = 0;
   public pago = null;
   public precioTotal = 0;
@@ -209,6 +219,14 @@ export class VentasComponent implements OnInit {
 
   // Completar venta
   completarVenta(): void {
+  
+    // Verificaciones de forma de pago personalizada
+    if(this.forma_pago === 'Personalizada'){
+      const totalPagar = this.precioTotal + this.totalAdicionalPorCredito - this.totalDescuentos;
+      const verificacion = totalPagar - this.totalPersonalizado;
+      if(verificacion !== 0) return this.alertService.info('Error en la forma de pago personalizada');
+    }
+
     this.alertService.question({msg:'¿Quieres completar la venta?', buttonText: 'Completar'})
                      .then((result)=>{
                        if(result.isConfirmed){
@@ -220,6 +238,7 @@ export class VentasComponent implements OnInit {
                         this.alertService.loading();
                         const data = { 
                           forma_pago: this.forma_pago,
+                          forma_pago_personalizada: this.forma_pago === 'Personalizada' ? this.multiplesFormasPago : [],
                           total_balanza: Number(this.totalBalanza.toFixed(2)),
                           total_mercaderia: Number(this.totalMercaderia.toFixed(2)),
                           total_adicional_credito: Number(this.totalAdicionalPorCredito.toFixed(2)),
@@ -249,6 +268,49 @@ export class VentasComponent implements OnInit {
                     });  
   }
   
+  // Agregar forma de pago - Forma de pago personalizada
+  agregarFormaPago(): void {
+    
+    const totalPagar = this.precioTotal + this.totalAdicionalPorCredito - this.totalDescuentos;
+
+    // Verificaciones
+    
+    // 1) - Cantidad invalida
+    if(this.nuevaForma.monto <= 0) return this.alertService.info('Cantidad inválida');
+    
+    // 2) - Se supera el total a pagar
+    if(this.nuevaForma.monto + this.totalPersonalizado > totalPagar) return this.alertService.info('No puedes superar el total a pagar');
+
+    // 3) - Tipo de pago repetido
+    const metodoRepetido = this.multiplesFormasPago.find( elemento => (elemento.tipo === this.nuevaForma.tipo));
+    if(metodoRepetido) return this.alertService.info('Este metodo de pago ya esta agregado');
+
+    this.idFormaPago += 1;
+    this.multiplesFormasPago.push({ id: this.idFormaPago, tipo: this.nuevaForma.tipo, monto: this.nuevaForma.monto });
+    this.nuevaForma.monto = null;
+    this.nuevaForma.tipo = 'Efectivo';
+    this.calcularTotalPersonalizado();
+    
+  }
+
+  // Eliminar forma de pago - Forma de pago personalizada
+  eliminarFormaPago(id: number): void {
+    this.alertService.question({msg:'¿Quieres eliminar la forma de pago?', buttonText: 'Eliminar'})
+    .then((result)=>{
+      if(result.isConfirmed){
+        this.multiplesFormasPago = this.multiplesFormasPago.filter(elemento => (elemento.id !== id));
+        this.calcularTotalPersonalizado();       
+     }
+   });  
+  }  
+
+  // Calcular total - Forma de pago personalizada
+  calcularTotalPersonalizado(): void {
+    let tmpTotal = 0;
+    this.multiplesFormasPago.forEach( elemento => { tmpTotal += elemento.monto; });
+    this.totalPersonalizado = tmpTotal;
+  }
+
   // Reiniciar venta
   reiniciarVentaModal(): void {
     this.alertService.question({msg:'Estas por reiniciar la venta', buttonText: 'Reiniciar'})
@@ -270,6 +332,11 @@ export class VentasComponent implements OnInit {
       tipo: '',
       carne: false
     };
+
+    this.idFormaPago = 0;
+    this.nuevaForma = { tipo: 'Efectivo', monto: null };
+    this.totalPersonalizado = 0;
+    this.multiplesFormasPago = [];
     this.productos = [];  
     this.precioTotal = 0;
     this.totalBalanza = 0;

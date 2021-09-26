@@ -7,10 +7,13 @@
                 <p class="py-1 px-2 border bg-gray-100 w-max rounded"> <span class="font-semibold"> Fecha de creación: </span> {{ venta.createdAt | fecha }} </p>
                 <p class="py-1 px-2 border bg-gray-100 w-max rounded mt-1"> <span class="font-semibold"> Usuario creador: </span> {{ venta.usuario_creacion }} </p>
                 <p class="py-1 px-2 border bg-blue-100 w-max rounded mt-1" *ngIf="venta.venta_mayorista"> <span class="font-semibold"> Cliente mayorista: </span> {{ venta.mayorista.razon_social }} </p>
-                <p class="py-1 px-2 border bg-gray-100 w-max rounded mt-1"> <span class="font-semibold"> Forma de pago: </span> {{ venta.forma_pago }} </p>
+                <p [ngClass]="{'bg-yellow-100': venta.forma_pago == 'Personalizada'}" class="py-1 px-2 border bg-gray-100 w-max rounded mt-1"> <span class="font-semibold"> Forma de pago: </span> {{ venta.forma_pago }} </p>
                 <p class="py-1 px-2 border bg-gray-100 w-max rounded mt-1"> <span class="font-semibold"> Monto total: </span> ${{ (venta.precio_total + venta.total_adicional_credito) | moneda }} </p>
                 <p class="py-1 px-2 border bg-red-100 w-max rounded mt-1" *ngIf="venta.total_descuento > 0"> <span class="font-semibold"> Descuento por sistema: </span> ${{ venta.total_descuento | moneda }} </p>
                 <p class="py-1 px-2 border bg-red-100 w-max rounded mt-1" *ngIf="venta.total_descuento > 0"> <span class="font-semibold"> Monto total con descuento: </span> ${{ (venta.precio_total + venta.total_adicional_credito) - venta.total_descuento | moneda }} </p>
+                <div *ngIf="venta.forma_pago === 'Personalizada'">
+                    <p *ngFor="let elemento of venta.forma_pago_personalizada" class="py-1 px-2 border bg-yellow-100 w-max rounded mt-1"> <span class="font-semibold"> {{ elemento.tipo }}: </span> ${{ elemento.monto | moneda}} </p>
+                </div>
             </div>
         </div>
     </div>
