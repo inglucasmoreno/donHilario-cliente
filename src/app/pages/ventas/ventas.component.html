@@ -36,7 +36,7 @@
                             <!-- <option value="Credito"> Tarjeta de crédito (+10%) </option> -->
                             <option value="MercadoPago"> Mercadopago </option>
                         </select>
-                        <input [(ngModel)]="nuevaForma.monto" type="number" class="border w-1/3 ml-2 rounded border-gray-200 p-2 focus:outline-none" placeholder="Monto">
+                        <input (keyup.enter)="agregarFormaPago()" [(ngModel)]="nuevaForma.monto" type="number" class="border w-1/3 ml-2 rounded border-gray-200 p-2 focus:outline-none" placeholder="Monto">
                         <button (click)="agregarFormaPago()" class="border border-gray-200 bg-gray-100 rounded ml-2 p-2 w-1/3 font-semibold hover:text-red-700 focus:outline-none"> Agregar </button>
                     </div>
                     <div *ngIf="forma_pago === 'Personalizada' && multiplesFormasPago.length > 0">
@@ -82,6 +82,8 @@
             </div>
         </div>
 </app-modal>
+
+<!-- Interfaz principal -->
 <div class="pt-5 md:px-10">
     <div class='bg-primary-800 flex items-center justify-between border shadow w-full p-2'>
         <div *ngIf="productos.length <= 0" class="text-white text-xl flex items-center justify-between p-1">
