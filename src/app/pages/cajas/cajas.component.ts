@@ -193,7 +193,7 @@ export class CajasComponent implements OnInit {
           total_ventas: this.data.total_ventas,
           otros_gastos: this.totalOtrosGastos,
           tesoreria: this.data.tesoreria !== null ? this.data.tesoreria : 0,
-          saldo_proxima_caja: this.data.efectivo_en_caja - this.data.tesoreria,
+          saldo_proxima_caja: Number((this.data.efectivo_en_caja - this.data.tesoreria).toFixed(2)),
           otros_ingresos: this.totalOtrosIngresos
         };
         this.cajasService.nuevaCaja(data).subscribe(() => {

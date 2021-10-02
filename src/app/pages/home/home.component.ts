@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { environment } from '../../../environments/environment';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-home',

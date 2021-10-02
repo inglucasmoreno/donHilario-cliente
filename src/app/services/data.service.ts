@@ -12,6 +12,17 @@ export class DataService {
   
   constructor(private productosService: ProductosService) { }
   
+  // Redonde de numeros
+  redondear(numero:number, decimales:number):number {
+  
+    if (typeof numero != 'number' || typeof decimales != 'number') return null;
+
+    let signo = numero >= 0 ? 1 : -1;
+
+    return Number((Math.round((numero * Math.pow(10, decimales)) + (signo * 0.0001)) / Math.pow(10, decimales)).toFixed(decimales));
+  
+  }
+
   // Detector de promociones
   detectarPromociones(): void {
     this.promocionesAlert= false;
