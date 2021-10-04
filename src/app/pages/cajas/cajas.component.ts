@@ -167,7 +167,7 @@ export class CajasComponent implements OnInit {
                             this.billetes.cantidad_1000 !== null
 
     if(!billetesValidos) {
-      this.alertService.info('Error en formulario de billetes');
+      this.alertService.info('Debe colocar un valor para cada billete');
       return;
     }
               
