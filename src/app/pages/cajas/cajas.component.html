@@ -93,16 +93,23 @@
                     </p>
                 </div>
                 <p class="flex items-center justify-between p-2 border font-semibold bg-gray-100 mb-2 mt-2">
-                    <span> Total efectivo en caja </span>
+                    <span> Total efectivo en caja (Sistema) </span>
                     <span> ${{ data.efectivo_en_caja | moneda }} </span>
                 </p>
+                <div class="flex items-center justify-between p-2 font-semibold border bg-gray-100">
+                    <span> Total efectivo en caja (Real) </span>
+                    <span> ${{ (billetes.total_billetes) | moneda }} </span>
+                </div>
                 <p class="flex items-center justify-between p-2 border font-semibold bg-gray-100 mb-2 mt-2">
                     <span> Tesoreria </span>
                     <span> <input [(ngModel)]="data.tesoreria" type="number" placeholder="Ej. 15000" class="border bg-white rounded py-1 px-3 focus:outline-none text-center"></span>
                 </p>
+
+                <!-- <span> ${{ (data.efectivo_en_caja - data.tesoreria) | moneda }} </span> -->
+
                 <p class="flex items-center justify-between p-2 border font-semibold bg-gray-100 mb-2 mt-2">
                     <span> Saldo inicial próxima caja </span>
-                    <span> ${{ (data.efectivo_en_caja - data.tesoreria) | moneda }} </span>
+                    <span> ${{ (billetes.total_billetes - data.tesoreria) | moneda }} </span>
                 </p>
 
                 <button (click)="nuevaCaja()" class="p-2 border border-gray-200 shadow text-md bg-gray-100 text-gray-800 w-full my-2 rounded hover:text-secondary-700 focus:outline-none font-semibold"> 

@@ -97,6 +97,7 @@ export class CajasComponent implements OnInit {
               private cajasService: CajasService) { }
 
   ngOnInit(): void {
+    this.localBilletes();
     this.listarIngresoGastos();
     this.alertService.loading();
     this.dataService.ubicacionActual = 'Dashboard - Gestión de cajas';
@@ -193,7 +194,7 @@ export class CajasComponent implements OnInit {
           total_ventas: this.data.total_ventas,
           otros_gastos: this.totalOtrosGastos,
           tesoreria: this.data.tesoreria !== null ? this.data.tesoreria : 0,
-          saldo_proxima_caja: Number((this.data.efectivo_en_caja - this.data.tesoreria).toFixed(2)),
+          saldo_proxima_caja: Number((this.billetes.total_billetes - this.data.tesoreria).toFixed(2)),
           otros_ingresos: this.totalOtrosIngresos
         };
         this.cajasService.nuevaCaja(data).subscribe(() => {
@@ -236,6 +237,9 @@ export class CajasComponent implements OnInit {
     total_billetes: 0,
     diferencia: 0
   }
+  
+  localStorage.setItem('billetes', this.billetes);
+  
   this.ingresos = [];
   this.gastos = [];
   }
@@ -426,6 +430,12 @@ export class CajasComponent implements OnInit {
     this.calculo_billetes();
   }
 
+  // LocalStorage: Billetes
+  localBilletes(): void {
+    const tempBilletes = localStorage.getItem('billetes');
+    if(tempBilletes) this.billetes = JSON.parse(localStorage.getItem('billetes'));
+  }
+
   // Calculo de billetes
   calculo_billetes() {
     this.billetes.total_monedas = this.billetes.cantidad_monedas;
@@ -447,7 +457,8 @@ export class CajasComponent implements OnInit {
                                    this.billetes.total_500 + 
                                    this.billetes.total_1000;
     this.billetes.diferencia = this.billetes.total_billetes - this.data.efectivo_en_caja;
+    localStorage.setItem('billetes', JSON.stringify(this.billetes)); // Se guarda en el LocalStorage
     this.alertService.close();
   }
-
+  
 }
