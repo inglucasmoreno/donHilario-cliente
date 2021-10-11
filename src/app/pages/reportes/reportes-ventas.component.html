@@ -2,7 +2,7 @@
 <app-modal [showModal]="showModalGastos">
     <h1 class="p-1 bg-gray-800 text-white rounded-t px-3 text-lg flex items-center justify-between">
         <span class="text-lg"> Otros gastos ({{ otrosGastos.length }}) </span>
-        <svg (click)="showModalGastos = false" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x bg-red-500 cursor-pointer rounded"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        <svg (click)="showModalGastos = false" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x cursor-pointer"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
     </h1>
     <div class="p-2">
         <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
@@ -59,7 +59,7 @@
 <app-modal [showModal]="showModalIngresos">
     <h1 class="p-1 bg-gray-800 text-white rounded-t px-3 text-lg flex items-center justify-between">
         <span class="text-lg"> Otros ingresos ({{ otrosIngresos.length }}) </span>
-        <svg (click)="showModalIngresos = false" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x bg-red-500 cursor-pointer rounded"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        <svg (click)="showModalIngresos = false" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x cursor-pointer"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
     </h1>
     <div class="p-2">
         <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
@@ -116,17 +116,20 @@
 <app-modal [showModal]="showModalVenta">
     <h1 class="p-1 bg-gray-800 text-white rounded-t px-3 text-lg flex items-center justify-between">
         <span> Detalles de venta </span>
-        <svg (click)="showModalVenta = false" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x bg-red-500 cursor-pointer rounded"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        <svg (click)="showModalVenta = false" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x cursor-pointer"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
     </h1>
     <div class="p-2 border" *ngIf=" ventaSeleccionada ">
         <div class="p-2 text-gray-700 text-sm ">
             <p class="py-1 px-2 border bg-gray-100 w-max rounded "> <span class="font-semibold "> Fecha de creación: </span> {{ ventaSeleccionada.createdAt | fecha }} </p>
             <p class="py-1 px-2 border bg-gray-100 w-max rounded mt-1 "> <span class="font-semibold "> Usuario creador: </span> {{ ventaSeleccionada.usuario_creacion }} </p>
-            <p class="py-1 px-2 border bg-blue-100 w-max rounded mt-1 " *ngIf="ventaSeleccionada.venta_mayorista "> <span class="font-semibold "> Cliente mayorista: </span> {{ ventaSeleccionada.mayorista.razon_social }} </p>
-            <p class="py-1 px-2 border bg-gray-100 w-max rounded mt-1 "> <span class="font-semibold "> Forma de pago: </span> {{ ventaSeleccionada.forma_pago }} </p>
-            <p class="py-1 px-2 border bg-gray-100 w-max rounded mt-1 "> <span class="font-semibold "> Monto total: </span> ${{ (ventaSeleccionada.precio_total + ventaSeleccionada.total_adicional_credito) | moneda }} </p>
+            <p class="py-1 px-2 border bg-blue-100 w-max rounded mt-1 " *ngIf="ventaSeleccionada.venta_mayorista"> <span class="font-semibold "> Cliente mayorista: </span> {{ ventaSeleccionada.mayorista.razon_social }} </p>
+            <p class="py-1 px-2 border bg-green-100 w-max rounded mt-1 " *ngIf="ventaSeleccionada.forma_pago == 'Cuenta corriente'"> <span class="font-semibold "> Usuario cuenta corriente: </span> {{ ventaSeleccionada.usuario_cuenta_corriente }} </p>
+            <p [ngClass]="{'bg-green-100' : ventaSeleccionada.forma_pago === 'Cuenta corriente', 'bg-yellow-100' : ventaSeleccionada.forma_pago === 'Personalizada', 'bg-red-100' : ventaSeleccionada.forma_pago === 'Anulacion balanza'}" class="py-1 px-2 border bg-gray-100 w-max rounded mt-1 ">
+                <span class="font-semibold "> Forma de pago: </span> {{ ventaSeleccionada.forma_pago }} </p>
+            <p [ngClass]="{'bg-red-100': ventaSeleccionada.forma_pago == 'Anulacion balanza'}" class="py-1 px-2 border bg-gray-100 w-max rounded mt-1 "> <span class="font-semibold "> Monto total: </span> ${{ (ventaSeleccionada.precio_total + ventaSeleccionada.total_adicional_credito) | moneda }} </p>
             <p class="py-1 px-2 border bg-red-100 w-max rounded mt-1 " *ngIf="ventaSeleccionada.total_descuento> 0"> <span class="font-semibold"> Descuento por sistema: </span> ${{ ventaSeleccionada.total_descuento | moneda }} </p>
             <p class="py-1 px-2 border bg-red-100 w-max rounded mt-1" *ngIf="ventaSeleccionada.total_descuento > 0"> <span class="font-semibold"> Monto total con descuento: </span> ${{ (ventaSeleccionada.precio_total + ventaSeleccionada.total_adicional_credito) - ventaSeleccionada.total_descuento | moneda }} </p>
+            <p *ngFor="let formaPago of ventaSeleccionada.forma_pago_personalizada" class="py-1 px-2 border bg-yellow-100 w-max rounded mt-1 "> <span class="font-semibold">{{ formaPago.tipo }}</span>: ${{ formaPago.monto | moneda }} </p>
         </div>
     </div>
 </app-modal>
@@ -171,11 +174,11 @@
                 </select>
             </div>
             <div class="flex items-center">
-                <button (click)="buscar()" class="p-1 border mt-3 focus:outline-none text-gray-700 bg-gray-100 hover:text-red-500 font-semibold shadow rounded text-center w-1/2 flex items-center justify-center text-sm"> 
+                <button (click)="buscar()" class="p-1 border mt-3 focus:outline-none text-gray-700 bg-gray-100 hover:text-red-700 font-semibold shadow rounded text-center w-1/2 flex items-center justify-center text-sm"> 
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                     <span class="ml-1"> Buscar </span> 
                 </button>
-                <button routerLink="/dashboard/reportes" class="p-1 border mt-3 ml-2 focus:outline-none text-gray-700 bg-gray-100 hover:text-red-500 font-semibold shadow rounded text-center w-1/2 flex items-center justify-center text-sm"> 
+                <button routerLink="/dashboard/reportes" class="p-1 border mt-3 ml-2 focus:outline-none text-gray-700 bg-gray-100 hover:text-red-700 font-semibold shadow rounded text-center w-1/2 flex items-center justify-center text-sm"> 
                     <span class="ml-1"> Regresar </span> 
                 </button>
             </div>
@@ -277,7 +280,8 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr (click)="abrirModalVenta(venta._id)" [ngClass]="{'bg-blue-100': venta.venta_mayorista}" class="animate__animated animate__fadeIn hover:bg-yellow-100 cursor-pointer" *ngFor="let venta of ventas | paginate: {itemsPerPage: cantidadItems, currentPage: paginaActualVentas}">
+                                        <tr (click)="abrirModalVenta(venta._id)" [ngClass]="{'bg-blue-100': venta.venta_mayorista, 'bg-green-100': venta.forma_pago === 'Cuenta corriente', 'bg-red-100': venta.forma_pago === 'Anulacion balanza'}" class="animate__animated animate__fadeIn hover:bg-yellow-100 cursor-pointer"
+                                            *ngFor="let venta of ventas | paginate: {itemsPerPage: cantidadItems, currentPage: paginaActualVentas}">
                                             <td class="px-5 py-2 border-b border-gray-200">
                                                 <p class="text-gray-900 whitespace-no-wrap text-sm">
                                                     {{ venta.createdAt | fecha }}

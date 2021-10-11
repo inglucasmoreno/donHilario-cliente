@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DataService } from 'src/app/services/data.service';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -15,9 +16,11 @@ export class HeaderComponent implements OnInit {
   public showMenu = true;
   public openAdmin = true;
 
-  constructor( public authService: AuthService ) { }
+  constructor( public authService: AuthService,
+               public dataService: DataService ) { }
 
   ngOnInit(): void {
+    this.dataService.calcularTotalCuentaCorriente();
   }
 
   // Metodo: Cerrar sesion

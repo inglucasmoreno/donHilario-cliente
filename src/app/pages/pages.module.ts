@@ -40,6 +40,7 @@ import { ReportesCantidadesDesechosComponent } from './reportes/reportes-cantida
 import { ReportesCajasComponent } from './reportes/reportes-cajas.component';
 import { ProduccionInternaComponent } from './produccion-interna/produccion-interna.component';
 import { ReportesProductosComponent } from './reportes/reportes-productos.component';
+import { CuentaCorrienteComponent } from './cuenta-corriente/cuenta-corriente.component';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { ReportesProductosComponent } from './reportes/reportes-productos.compon
     ReportesCajasComponent,
     ProduccionInternaComponent,
     ReportesProductosComponent,
+    CuentaCorrienteComponent,
   ],
   imports: [
     CommonModule,

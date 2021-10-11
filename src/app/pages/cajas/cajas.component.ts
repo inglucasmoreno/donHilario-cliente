@@ -80,6 +80,8 @@ export class CajasComponent implements OnInit {
     total_credito: 0,
     total_debito: 0,
     total_mercadopago: 0,
+    total_cuenta_corriente: 0,
+    total_anulacion_balanza: 0,
 
     // Tesoreria
     tesoreria: null,
@@ -181,6 +183,7 @@ export class CajasComponent implements OnInit {
           gastos: this.gastos,
           saldo_inicial: this.data.saldo_inicial,
           total_balanza: this.data.total_balanza,
+          total_anulacion_balanza: this.data.total_anulacion_balanza,
           total_mercaderia: this.data.total_mercaderia,
           total_descuentos: this.data.total_descuento,
           total_adicional_credito: this.data.total_adicional_credito,
@@ -189,6 +192,7 @@ export class CajasComponent implements OnInit {
           total_credito: this.data.total_credito,
           total_debito: this.data.total_debito,
           total_mercadopago: this.data.total_mercadopago,
+          total_cuenta_corriente: this.data.total_cuenta_corriente,
           diferencia: this.billetes.diferencia,
           total_postnet: this.data.total_postnet,
           total_ventas: this.data.total_ventas,
@@ -361,24 +365,32 @@ export class CajasComponent implements OnInit {
     let total_credito_tmp = 0;
     let total_debito_tmp = 0;
     let total_mercadopago_tmp = 0;
+    let total_cuenta_corriente_tmp = 0;
+    let total_anulacion_balanza_tmp = 0;
 
     let personalizadas: any[] = [];
 
     // Ventas comunes
     this.ventas.forEach( venta => {
       
-      total_ventas_tmp += venta.precio_total;
       total_mercaderia_tmp += venta.total_mercaderia;
-      total_balanza_tmp += venta.total_balanza;
+      
+      if(venta.forma_pago !== 'Anulacion balanza'){
+        total_ventas_tmp += venta.precio_total;
+        total_balanza_tmp += venta.total_balanza;
+      }else{
+        total_anulacion_balanza_tmp += venta.total_balanza;
+      }
       
       // Efectivo o Postnet
       if(venta.forma_pago === 'Efectivo'){
         total_efectivo_tmp += venta.precio_total;
-      }else if(venta.forma_pago === 'Debito' || venta.forma_pago === 'Credito' || venta.forma_pago === 'MercadoPago'){
+      }else if(venta.forma_pago === 'Debito' || venta.forma_pago === 'Credito' || venta.forma_pago === 'MercadoPago' || venta.forma_pago === 'Cuenta corriente'){
         total_postnet_tmp += venta.precio_total - venta.total_descuento;
         if(venta.forma_pago === 'Debito') total_debito_tmp += venta.precio_total;
         else if(venta.forma_pago === 'Credito') total_credito_tmp += venta.precio_total;
         else if(venta.forma_pago === 'MercadoPago') total_mercadopago_tmp += venta.precio_total;
+        else if(venta.forma_pago === 'Cuenta corriente') total_cuenta_corriente_tmp += venta.precio_total;
       };
 
       // Personalizado
@@ -414,6 +426,8 @@ export class CajasComponent implements OnInit {
     this.data.total_credito = total_credito_tmp + total_adicional_credito_tmp;
     this.data.total_debito = total_debito_tmp;
     this.data.total_mercadopago = total_mercadopago_tmp;
+    this.data.total_cuenta_corriente = total_cuenta_corriente_tmp;
+    this.data.total_anulacion_balanza = total_anulacion_balanza_tmp;
 
     this.calculo_monto_total();
     

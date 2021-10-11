@@ -39,6 +39,7 @@ import { ReportesCantidadesDesechosComponent } from './reportes/reportes-cantida
 import { ReportesCajasComponent } from './reportes/reportes-cajas.component';
 import { ProduccionInternaComponent } from './produccion-interna/produccion-interna.component';
 import { ReportesProductosComponent } from './reportes/reportes-productos.component';
+import { CuentaCorrienteComponent } from './cuenta-corriente/cuenta-corriente.component';
 
 const routes: Routes = [
     {
@@ -60,6 +61,9 @@ const routes: Routes = [
             { path: 'usuarios/nuevo', canActivate: [AdminGuard], component: NuevoUsuarioComponent },
             { path: 'usuarios/editar/:id', canActivate: [AdminGuard], component: EditarUsuarioComponent },
             { path: 'usuarios/password/:id', canActivate: [AdminGuard], component: EditarPasswordComponent },
+
+            // Cuenta corriente
+            { path: 'cuenta_corriente/:id', canActivate: [], component: CuentaCorrienteComponent },
                         
             // Productos
             { path: 'productos', canActivate: [AdminGuard], component: ProductosComponent},

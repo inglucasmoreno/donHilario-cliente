@@ -6,9 +6,6 @@
                 <div [ngClass]="{'bg-red-100 ':authService.usuario.role === 'ADMIN_ROLE', 'bg-orange-100':authService.usuario.role === 'USER_ROLE'}" class="rounded-full h-14 w-14 flex items-center justify-center mr-3">
                     <img *ngIf="authService.usuario.role === 'ADMIN_ROLE'" src="assets/img/usuarios/usuario_administrador.png" alt="A">
                     <img *ngIf="authService.usuario.role === 'USER_ROLE'" class="w-10/12" src="assets/img/usuarios/usuario_cajero.png" alt="C">
-                    <!-- <span class="text-secondary-500 text-2xl font-semibold">
-                        {{ authService.usuario.apellido.substr(0,1) }}
-                    </span> -->
                 </div>
                 <div class="focus:outline-none focus:shadow-outline">
                     <div>
@@ -22,7 +19,7 @@
             <i [ngClass]="{'rotate-180': showMenu, 'rotate-0': !showMenu}" class="fas fa-chevron-up text-gray-600 text-3xl transition-transform duration-200 transform"></i>
           </button>
         </div>
-        <hr>
+        <p [routerLink]="['/dashboard/cuenta_corriente', authService.usuario.uid]" class="text-sm text-center text-white bg-secondary-800 font-semibold p-1 hover:bg-secondary-700 cursor-pointer"> Cuenta corriente: ${{ dataService.totalCuentaCorriente | moneda }} </p>
         <nav *ngIf="showMenu" class="flex-grow lg:block pb-4 lg:pb-0 mt-2 lg:overflow-y-auto">
 
             <!-- Home -->

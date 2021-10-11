@@ -67,7 +67,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr [routerLink]="['/dashboard/ventas/detalles', venta._id]" [ngClass]="{'bg-blue-100': venta.venta_mayorista}" class="animate__animated animate__fadeIn hover:bg-yellow-100 cursor-pointer" *ngFor="let venta of ventas | paginate: {itemsPerPage: cantidadItems, currentPage: paginaActual}">
+                                <tr [routerLink]="['/dashboard/ventas/detalles', venta._id]" [ngClass]="{'bg-blue-100': venta.venta_mayorista, 'bg-green-100': venta.forma_pago == 'Cuenta corriente', 'bg-red-100': venta.forma_pago == 'Anulacion balanza'}" class="animate__animated animate__fadeIn hover:bg-yellow-100 cursor-pointer"
+                                    *ngFor="let venta of ventas | paginate: {itemsPerPage: cantidadItems, currentPage: paginaActual}">
                                     <td class="px-5 py-2 border-b border-gray-200">
                                         <p class="text-gray-900 whitespace-no-wrap text-sm">
                                             {{ venta.createdAt | fecha }}

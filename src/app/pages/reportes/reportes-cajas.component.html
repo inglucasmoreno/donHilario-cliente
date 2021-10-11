@@ -91,9 +91,17 @@
             <div class="mt-2 text-sm">
                 <p class="font-semibold p-2 border-b flex items-center justify-between">
                     <span>
-                        <span class="text-green-500"> (+) </span> Total balanza
+                        <span class="text-green-500"> (+) </span> Total balanza {{ cajaSeleccionada.total_anulacion_balanza > 0 ? 'sin anulaciones' : null }}
                     </span>
                     <span class="font-normal"> ${{ cajaSeleccionada.total_balanza | moneda}} </span>
+                </p>
+                <p *ngIf="cajaSeleccionada.total_anulacion_balanza > 0" class="flex items-center font-semibold justify-between border-b p-2">
+                    <span> <span class="text-sm font-semibold text-red-500"> (+) </span> Total anulación balanza </span>
+                    <span class="font-normal text-red-500"> ${{ cajaSeleccionada.total_anulacion_balanza | moneda }} </span>
+                </p>
+                <p *ngIf="cajaSeleccionada.total_anulacion_balanza > 0" class="flex items-center font-semibold justify-between border-b p-2">
+                    <span> <span class="text-sm font-semibold text-red-500"> (+) </span> Total balanza con anulaciones </span>
+                    <span class="font-normal text-red-500"> ${{ cajaSeleccionada.total_balanza + cajaSeleccionada.total_anulacion_balanza | moneda }} </span>
                 </p>
                 <p class="font-semibold p-2 border-b flex items-center justify-between">
                     <span>
@@ -180,6 +188,10 @@
                     <div class="font-semibold p-2 border-b flex items-center justify-between border border-red-200 bg-red-100 text-red-500">
                         <span> MercadoPago </span>
                         <span class="font-normal text-red-500"> -${{ cajaSeleccionada.total_mercadopago | moneda}} </span>
+                    </div>
+                    <div class="font-semibold p-2 border-b flex items-center justify-between border border-red-200 bg-red-100 text-red-500">
+                        <span> Cuenta corriente </span>
+                        <span class="font-normal text-red-500"> -${{ (cajaSeleccionada.total_cuenta_corriente ? cajaSeleccionada.total_cuenta_corriente : 0) | moneda}} </span>
                     </div>
                 </div>
                 <p class="font-semibold p-2 border-b flex items-center justify-between bg-gray-100">

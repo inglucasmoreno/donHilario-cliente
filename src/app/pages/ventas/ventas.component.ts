@@ -6,6 +6,8 @@ import { AlertService } from '../../services/alert.service';
 import { VentasService } from '../../services/ventas.service';
 import { AuthService } from '../../services/auth.service';
 import { MayoristasService } from '../../services/mayoristas.service';
+import { UsuariosService } from '../../services/usuarios.service';
+import { CuentaCorrienteService } from '../../services/cuenta-corriente.service';
 
 @Component({
   selector: 'app-ventas',
@@ -17,6 +19,8 @@ export class VentasComponent implements OnInit {
 
   constructor( public dataService: DataService,
                public authService: AuthService,
+               private cuentaCorrienteService: CuentaCorrienteService,
+               private usuariosService: UsuariosService,
                private mayoristasService: MayoristasService,
                private productosService: ProductosService,
                private alertService: AlertService,
@@ -24,6 +28,11 @@ export class VentasComponent implements OnInit {
 
   // Modal
   public showModal = false;
+
+  // Usuarios
+  public usuarios: any = [];
+  public usuarioSeleccionado: any = '';
+  public usuarioDescripcion: string = '';
 
   // Forma de pago
   public idFormaPago = 0;
@@ -68,10 +77,40 @@ export class VentasComponent implements OnInit {
   
   ngOnInit(): void {
     document.getElementById('codigo').focus();
+    this.recuperarData();
     this.dataService.ubicacionActual = 'Dashboard - Ventas';
     this.listarMayoristas();
   }
 
+  // Listando usuarios
+  listarUsuarios(): void {
+    this.alertService.loading();
+    this.usuariosService.listarUsuarios().subscribe( ({ usuarios }) => {
+      this.alertService.close();
+      this.usuarios = usuarios.filter( usuario => usuario.activo );
+    }, ({ error }) => {
+      this.alertService.errorApi( error );
+    });
+  }
+
+  // Seleccionando usuario
+  seleccionandoUsuario(idUsuario: string): void{
+
+    if(idUsuario === ''){
+      this.usuarioDescripcion = '';
+      return;
+    }
+    
+    this.alertService.loading();
+    this.usuariosService.getUsuario(idUsuario).subscribe( usuario => {
+      this.usuarioDescripcion = usuario.apellido + ' ' + usuario.nombre;
+      this.alertService.close();
+    },({error}) => {
+      this.alertService.errorApi(error);
+    });
+  
+  }
+  
   // Abrir modal
   abrirModal(): void {
     this.pago = null;
@@ -123,6 +162,27 @@ export class VentasComponent implements OnInit {
       this.codigo = '';
       document.getElementById('codigo').focus();
     })
+  }
+
+  // Almacenar informacion - LocalStorage
+  almacenarData(): void {
+    // Almacenamiento en LocalStorage
+    localStorage.setItem('productoActual', JSON.stringify(this.productoActual));
+    localStorage.setItem('productoVenta', JSON.stringify(this.productoVenta));
+    localStorage.setItem('productos', JSON.stringify(this.productos));
+    localStorage.setItem('precioTotal', JSON.stringify(this.precioTotal));
+    localStorage.setItem('totalBalanza', JSON.stringify(this.totalBalanza));
+    localStorage.setItem('totalMercaderia', JSON.stringify(this.totalMercaderia));
+  }
+
+  // Recuperacion de informacion - LocalStorage
+  recuperarData(): void {
+    this.productoActual = localStorage.getItem('productoActual') ? JSON.parse(localStorage.getItem('productoActual')) : {};
+    this.productoVenta = localStorage.getItem('productoVenta') ? JSON.parse(localStorage.getItem('productoVenta')) : {};
+    this.productos = localStorage.getItem('productos') ? JSON.parse(localStorage.getItem('productos')) : [];
+    this.precioTotal = localStorage.getItem('precioTotal') ? JSON.parse(localStorage.getItem('precioTotal')) : 0;
+    this.totalBalanza = localStorage.getItem('totalBalanza') ? JSON.parse(localStorage.getItem('totalBalanza')) : 0;
+    this.totalMercaderia = localStorage.getItem('totalMercaderia') ? JSON.parse(localStorage.getItem('totalMercaderia')) : 0;
   }
 
   // Agregar producto
@@ -180,6 +240,11 @@ export class VentasComponent implements OnInit {
     this.totalAdicionalPorCredito = 0;
     this.totalDescuentos = 0;
 
+    // Se listan los usuarios si se selecciona cuenta corriente
+    if(this.forma_pago === 'Cuenta corriente'){
+      this.listarUsuarios();
+    }     
+    
     // Precio total sin descuentos ni beneficios
     this.productos.forEach(elemento => {
       precioTempTotal += elemento.precio_total;
@@ -193,7 +258,7 @@ export class VentasComponent implements OnInit {
     }
     
     // Se aplica descuento porcentual
-    if(this.descuento_porcentual != 1){
+    if(this.descuento_porcentual != 1 && this.forma_pago !== 'Cuenta corriente' && this.forma_pago !== 'Anulacion balanza'){
       // const descuento = 1 - this.descuento_porcentual
       // precioTempTotal = precioTempTotal * descuento;
       this.totalDescuentos = (precioTempTotal + this.totalAdicionalPorCredito) * this.descuento_porcentual; 
@@ -203,6 +268,8 @@ export class VentasComponent implements OnInit {
     this.totalBalanza = balanzaTempTotal;
     this.totalMercaderia = mercaderiaTempTotal;
 
+    // Almacenamiento en LocalStorage
+    this.almacenarData();
     this.calcularVuelto();
 
   }
@@ -216,7 +283,7 @@ export class VentasComponent implements OnInit {
 
   // Completar venta
   completarVenta(): void {
-  
+
     // Verificaciones de forma de pago personalizada
     if(this.forma_pago === 'Personalizada'){
       const totalPagar = this.precioTotal + this.totalAdicionalPorCredito - this.totalDescuentos;
@@ -224,17 +291,35 @@ export class VentasComponent implements OnInit {
       if(verificacion !== 0) return this.alertService.info('Error en la forma de pago personalizada');
     }
 
-    this.alertService.question({msg:'¿Quieres completar la venta?', buttonText: 'Completar'})
-                     .then((result)=>{
-                       if(result.isConfirmed){
-                        
-                        if(this.ventaMayorista == 'true' && this.mayoristaSeleccionado == ""){
-                          return this.alertService.info('Debe seleccionar un mayorista');
-                        }
+    // Verificacion de pago por cuenta corriente
+    if(this.forma_pago === 'Cuenta corriente' && this.usuarioSeleccionado === ''){
+      this.alertService.info('Debe seleccionar un usuario');
+      return;
+    }
 
+    // Verificacion - Anulacion balanza
+    if(this.forma_pago === 'Anulacion balanza'){
+      let productoIncorrecto = this.productos.find( producto => (producto.tipo === 'Normal'));
+      if(productoIncorrecto) return this.alertService.info('Todos los productos deben ser de balanza');
+    }
+
+    // Completando - Venta
+    this.alertService.question({msg:'¿Quieres completar la venta?', buttonText: 'Completar'})
+                      .then((result)=>{
+                        if(result.isConfirmed){
+                        
+                        // Verificacion - Venta mayorista
+                        const verificacionMayorista = this.ventaMayorista == 'true' && 
+                                                      this.mayoristaSeleccionado == "" &&
+                                                      this.forma_pago !== 'Cuenta corriente'
+                        
+                        if(verificacionMayorista) return this.alertService.info('Debe seleccionar un mayorista');
+                        
                         this.alertService.loading();
+                        
                         const data = { 
                           forma_pago: this.forma_pago,
+                          usuario_cuenta_corriente: this.forma_pago === 'Cuenta corriente' ? this.usuarioDescripcion : '',
                           forma_pago_personalizada: this.forma_pago === 'Personalizada' ? this.multiplesFormasPago : [],
                           total_balanza: this.dataService.redondear(this.totalBalanza, 2),
                           total_mercaderia: this.dataService.redondear(this.totalMercaderia, 2),
@@ -246,14 +331,19 @@ export class VentasComponent implements OnInit {
                           precio_total: this.dataService.redondear(this.precioTotal, 2),
                           productos: this.productos 
                         };
-                            
-                        this.ventasService.nuevaVenta(data).subscribe( (resp) => {
+                        
+                        // Completando - Venta
+                        this.ventasService.nuevaVenta(data).subscribe( (resp) => {   
                           this.dataService.detectarStockMinimo();
-                          this.reiniciarVenta();
-                          this.alertService.success('Venta completada');
-                          this.showModal = false;
-                          this.pago = null;
-                          document.getElementById('codigo').focus();      
+                          if(this.forma_pago === 'Cuenta corriente'){ // Se ingresa a cuenta corriente si es necesario
+                            this.ingresoCuentaCorriente();
+                          }else{
+                            this.reiniciarVenta();
+                            this.alertService.success('Venta completada');
+                            this.showModal = false;
+                            this.pago = null;
+                            document.getElementById('codigo').focus();      
+                          }                 
                         },({error}) => {
                           this.alertService.errorApi(error.msg);
                           this.showModal = false;
@@ -265,6 +355,25 @@ export class VentasComponent implements OnInit {
                     });  
   }
   
+  // Ingresar a cuenta corriente
+  ingresoCuentaCorriente(): void {
+    const dataCuentaCorriente = { 
+      usuario: this.usuarioSeleccionado, 
+      total: this.precioTotal,
+      productos: this.productos
+    }
+    this.cuentaCorrienteService.nuevaCuentaCorriente(dataCuentaCorriente).subscribe( () => {
+      this.dataService.calcularTotalCuentaCorriente();
+      this.reiniciarVenta();
+      this.alertService.success('Ingreso a cuenta corriente completado');
+      this.showModal = false;
+      this.pago = null;
+      document.getElementById('codigo').focus(); 
+    },({error}) => {
+      this.alertService.errorApi(error);
+    })
+  }
+
   // Agregar forma de pago - Forma de pago personalizada
   agregarFormaPago(): void {
     
@@ -331,6 +440,8 @@ export class VentasComponent implements OnInit {
       carne: false
     };
 
+    this.usuarioSeleccionado = '';
+    this.usuarioDescripcion = '';
     this.idFormaPago = 0;
     this.nuevaForma = { tipo: 'Efectivo', monto: null };
     this.totalPersonalizado = 0;
@@ -346,6 +457,7 @@ export class VentasComponent implements OnInit {
     this.vuelto = 0;
     this.forma_pago = 'Efectivo';
     this.descuento_porcentual = 1;
+    this.almacenarData();
     document.getElementById('codigo').focus();
   }
 

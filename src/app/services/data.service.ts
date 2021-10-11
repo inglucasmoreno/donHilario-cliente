@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { AuthService } from './auth.service';
+import { CuentaCorrienteService } from './cuenta-corriente.service';
 import { ProductosService } from './productos.service';
 
 @Injectable({
@@ -9,9 +11,23 @@ export class DataService {
   ubicacionActual: string = 'Dashboard';
   promocionesAlert = false;
   stockAlert = false;
+  totalCuentaCorriente = 0;
   
-  constructor(private productosService: ProductosService) { }
+  constructor(private productosService: ProductosService,
+              private authService: AuthService,
+              private cuentaCorrienteService: CuentaCorrienteService) { }
   
+  // Calculo de monto en cuenta corriente - Usuario online
+  calcularTotalCuentaCorriente(): void {
+    this.cuentaCorrienteService.listarCuentasCorrientes(this.authService.usuario.uid, -1, 'createdAt', true).subscribe(({cuentas_corrientes}) => {
+      let totalTmp = 0;
+      cuentas_corrientes.forEach( elemento => {
+        totalTmp += elemento.total;
+      });
+      this.totalCuentaCorriente = totalTmp;  
+    });
+  }
+
   // Redonde de numeros
   redondear(numero:number, decimales:number):number {
   
