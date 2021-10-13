@@ -138,6 +138,7 @@ export class ReportesProductosComponent implements OnInit {
   calculos(): void {
     let cantidadTotalTemp = 0;
     this.busqueda.forEach( elemento => {
+      console.log(elemento);
       cantidadTotalTemp += elemento.cantidad; 
     });
     this.cantidadTotal = cantidadTotalTemp;

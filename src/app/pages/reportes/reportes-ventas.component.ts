@@ -62,6 +62,7 @@ export class ReportesVentasComponent implements OnInit {
   // Calculos
   public montoTotal = 0;
   public montoTotalBalanza = 0;
+  public montoTotalAnulacionBalanza = 0;
   public montoTotalMercaderia = 0;
   public totalDescuentos = 0;
   public totalAdicionalCredito = 0;
@@ -96,6 +97,7 @@ export class ReportesVentasComponent implements OnInit {
           ventas: this.ventas,
           montoTotal: this.montoTotal,
           montoTotalBalanza: this.montoTotalBalanza,
+          montoTotalAnulacionBalanza: this.montoTotalAnulacionBalanza,
           montoTotalMercaderia: this.montoTotalMercaderia,
           totalAdicionalCredito: this.totalAdicionalCredito,
           totalDescuentos: this.totalDescuentos,
@@ -144,32 +146,42 @@ export class ReportesVentasComponent implements OnInit {
   // Calculos
   calculos(): void {
     
+    // Valores temporales iniciales
     let montoTotalTemp = 0;
     let montoTotalBalanzaTemp = 0;
+    let montoTotalAnulacionBalanzaTemp = 0;
     let montoTotalMercaderiaTemp = 0;
     let totalDescuentosTemp = 0;
     let totalAdicionalCreditoTemp = 0;
     let totalOtrosGastosTemp = 0;
     let totalOtrosIngresosTemp = 0;
 
+    // Calculo de ventas
     this.ventas.forEach( venta => {
-      montoTotalTemp += venta.precio_total;
-      montoTotalBalanzaTemp += venta.total_balanza;
-      montoTotalMercaderiaTemp += venta.total_mercaderia;
-      totalDescuentosTemp += venta.total_descuento;
-      totalAdicionalCreditoTemp += venta.total_adicional_credito;
+      if(venta.forma_pago === 'Anulacion balanza'){ // Anulacion de balanza no es una venta
+        montoTotalAnulacionBalanzaTemp += venta.precio_total;
+      }else{
+        montoTotalTemp += venta.precio_total;
+        montoTotalBalanzaTemp += venta.total_balanza;
+        montoTotalMercaderiaTemp += venta.total_mercaderia;
+        totalDescuentosTemp += venta.total_descuento;
+        totalAdicionalCreditoTemp += venta.total_adicional_credito;
+      }
     });  
-
+    
+    // Total - Gastos
     this.otrosGastos.forEach( gasto => {
       totalOtrosGastosTemp += gasto.monto;
     })
 
+    // Total - Ingresos
     this.otrosIngresos.forEach( ingreso => {
       totalOtrosIngresosTemp += ingreso.monto;
     })
 
     this.montoTotal = montoTotalTemp;
     this.montoTotalBalanza = montoTotalBalanzaTemp;
+    this.montoTotalAnulacionBalanza = montoTotalAnulacionBalanzaTemp;
     this.montoTotalMercaderia = montoTotalMercaderiaTemp;
     this.totalDescuentos = totalDescuentosTemp;
     this.totalAdicionalCredito = totalAdicionalCreditoTemp;

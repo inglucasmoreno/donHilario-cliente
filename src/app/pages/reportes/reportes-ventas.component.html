@@ -4,7 +4,13 @@
         <span class="text-lg"> Otros gastos ({{ otrosGastos.length }}) </span>
         <svg (click)="showModalGastos = false" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x cursor-pointer"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
     </h1>
-    <div class="p-2">
+    <div class="mx-2 mt-2 p-2 border border-red-400 bg-red-100 w-max rounded">
+        Total gastos:
+        <span class="font-semibold text-red-500">
+            -${{ totalOtrosGastos | moneda }}
+        </span>
+    </div>
+    <div class="px-2">
         <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
             <div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
                 <table class="min-w-full leading-normal">
@@ -40,8 +46,8 @@
                                 </p>
                             </td>
                             <td class="px-5 py-2 border-b border-gray-200 text-xs">
-                                <p class="text-gray-900 whitespace-no-wrap">
-                                    ${{ gasto.monto | moneda }}
+                                <p class="whitespace-no-wrap font-semibold text-red-500">
+                                    -${{ gasto.monto | moneda }}
                                 </p>
                             </td>
                         </tr>
@@ -61,7 +67,13 @@
         <span class="text-lg"> Otros ingresos ({{ otrosIngresos.length }}) </span>
         <svg (click)="showModalIngresos = false" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x cursor-pointer"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
     </h1>
-    <div class="p-2">
+    <div class="mx-2 mt-2 p-2 border bg-green-100 border-green-400 rounded w-max">
+        Total ingresos:
+        <span class="font-semibold">
+            ${{ totalOtrosIngresos | moneda }}
+        </span>
+    </div>
+    <div class="px-2">
         <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
             <div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
                 <table class="min-w-full leading-normal">
@@ -97,7 +109,7 @@
                                 </p>
                             </td>
                             <td class="px-5 py-2 border-b border-gray-200 text-xs">
-                                <p class="text-gray-900 whitespace-no-wrap">
+                                <p class="whitespace-no-wrap font-semibold text-green-600">
                                     ${{ ingreso.monto | moneda }}
                                 </p>
                             </td>
@@ -203,7 +215,9 @@
             <div class="bg-white border w-1/2 rounded-t ml-auto mr-auto shadow">
                 <h1 class="bg-gray-800 text-white px-3 py-1 text-lg text-center rounded-t"> Montos totales </h1>
                 <div class="p-2 text-sm">
-                    <p class="flex items-center justify-between p-1 border-b font-semibold"> Total balanza <span> ${{ montoTotalBalanza | moneda }} </span> </p>
+                    <p class="flex items-center justify-between p-1 border-b font-semibold"> Total balanza con anulaciones <span> ${{ (montoTotalAnulacionBalanza + montoTotalBalanza) | moneda }} </span> </p>
+                    <p class="flex items-center justify-between p-1 border-b font-semibold"> Total anulación balanza <span class="text-red-500"> -${{ montoTotalAnulacionBalanza | moneda }} </span> </p>
+                    <p class="flex items-center justify-between p-1 border-b font-semibold"> Total balanza sin anulaciones <span> ${{ montoTotalBalanza | moneda }} </span> </p>
                     <p class="flex items-center justify-between p-1 border-b font-semibold"> Total mercaderia <span> ${{ montoTotalMercaderia | moneda }} </span> </p>
                     <p class="flex items-center justify-between p-1 border-b font-semibold"> Total adicional por credito <span> ${{ totalAdicionalCredito | moneda }} </span> </p>
                     <p class="flex items-center justify-between p-1 text-red-500 font-semibold"> Total descuentos por sistema <span> -${{ totalDescuentos | moneda }} </span> </p>

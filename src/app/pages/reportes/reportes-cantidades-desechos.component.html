@@ -46,14 +46,22 @@
             </p>
             <input [(ngModel)]="fechaHasta" type="date" class="focus:outline-none border rounded p-2 w-full mt-2">
             <div class="flex mt-3 items-center">
-                <button (click)="buscar()" class="flex items-center text-sm justify-center p-2 border rounded shadow border-gray-200 bg-gray-100 w-full mt-3 focus:outline-none hover:text-secondary-600 font-semibold text-gray-700"> 
+                <button (click)="buscar()" class="flex items-center text-sm justify-center p-2 border rounded shadow border-gray-200 bg-gray-100 w-full mt-3 focus:outline-none hover:text-secondary-700 font-semibold text-gray-700"> 
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                     <span class="ml-1"> Buscar </span>
                 </button>
-                <button routerLink="/dashboard/reportes" class="flex text-sm ml-2 items-center justify-center p-2 border rounded shadow border-gray-200 bg-gray-100 w-full mt-3 focus:outline-none hover:text-secondary-600 font-semibold text-gray-700"> 
+                <button routerLink="/dashboard/reportes" class="flex text-sm ml-2 items-center justify-center p-2 border rounded shadow border-gray-200 bg-gray-100 w-full mt-3 focus:outline-none hover:text-secondary-700 font-semibold text-gray-700"> 
                     Regresar
                 </button>
             </div>
         </div>
+    </div>
+</div>
+
+<div>
+    <div class="chart-wrsapper">
+        <canvas baseChart>
+
+        </canvas>
     </div>
 </div>
